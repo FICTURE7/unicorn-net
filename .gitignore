@@ -1,0 +1,13 @@
+# Binaries
+bin/
+obj/
+
+# Visual Studio
+.vs/
+Debug/
+*.VC.db
+*.VC.opendb
+
+# Scripts output/input files.
+scripts/*.cs
+scripts/*.reg
