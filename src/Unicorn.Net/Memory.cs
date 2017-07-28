@@ -20,14 +20,52 @@ namespace Unicorn
         private readonly Emulator _emulator;
 
         /// <summary>
-        /// Maps memory for emulation with the specified starting address, size and <see cref="MemoryPermissions"/>.
+        /// Maps a memory region for emulation with the specified starting address, size and <see cref="MemoryPermissions"/>.
         /// </summary>
         /// <param name="address">Starting address of memory region.</param>
         /// <param name="size">Size of memory region.</param>
-        /// <param name="perms">Permission of memory region.</param>
-        public void Map(ulong address, int size, MemoryPermissions perms)
+        /// <param name="permissions">Permissions of memory region.</param>
+        public void Map(ulong address, int size, MemoryPermissions permissions)
         {
-            var err = UnicornLib.uc_mem_map(_emulator._uc, address, size, (int)perms);
+            if (size < 0)
+                throw new ArgumentOutOfRangeException(nameof(size), "Size must be non-negative.");
+            if (permissions > MemoryPermissions.All)
+                throw new ArgumentException("Permissions was invalid.", nameof(permissions));
+
+            var err = UnicornLib.uc_mem_map(_emulator._uc, address, size, (int)permissions);
+            if (err != UnicornError.UC_ERR_OK)
+                throw new UnicornException(err);
+        }
+
+        /// <summary>
+        /// Unmaps a region of memory used for emulation with the specified starting address and size.
+        /// </summary>
+        /// <param name="address">Starting address of memory region.</param>
+        /// <param name="size">Size of memory region.</param>
+        public void Unmap(ulong address, int size)
+        {
+            if (size < 0)
+                throw new ArgumentOutOfRangeException(nameof(size), "Size must be non-negative.");
+
+            var err = UnicornLib.uc_mem_unmap(_emulator._uc, address, size);
+            if (err != UnicornError.UC_ERR_OK)
+                throw new UnicornException(err);
+        }
+
+        /// <summary>
+        /// Sets permissions for a region of memory with the specified starting address, size and <see cref="MemoryPermissions"/>.
+        /// </summary>
+        /// <param name="address">Starting address of memory region.</param>
+        /// <param name="size">Size of memory region.</param>
+        /// <param name="permissions">Permissions of memory region.</param>
+        public void Protect(ulong address, int size, MemoryPermissions permissions)
+        {
+            if (size < 0)
+                throw new ArgumentOutOfRangeException(nameof(size), "Size must be non-negative.");
+            if (permissions > MemoryPermissions.All)
+                throw new ArgumentException("Permissions was invalid.", nameof(permissions));
+            
+            var err = UnicornLib.uc_mem_protect(_emulator._uc, address, size, (int)permissions);
             if (err != UnicornError.UC_ERR_OK)
                 throw new UnicornException(err);
         }

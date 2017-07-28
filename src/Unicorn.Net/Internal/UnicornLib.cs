@@ -41,14 +41,20 @@ namespace Unicorn.Internal
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern UnicornError uc_emu_stop(UIntPtr uc);
 
-        // Memory Read/Write/Map
+        // Memory Read/Write/Map/Unmap/Protect
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern UnicornError uc_mem_map(UIntPtr uc, ulong address, int size, int perms);
+
+        [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
+        public static extern UnicornError uc_mem_unmap(UIntPtr uc, ulong address, int size);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern UnicornError uc_mem_write(UIntPtr uc, ulong address, byte[] bytes, int size);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern UnicornError uc_mem_read(UIntPtr uc, ulong address, byte[] bytes, int size);
+
+        [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
+        public static extern UnicornError uc_mem_protect(UIntPtr uc, ulong address, int size, int perms);
     }
 }
