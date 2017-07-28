@@ -26,9 +26,16 @@ namespace Unicorn
             // Space
         }
 
-        internal UnicornException(UnicornError err) : base(Marshal.PtrToStringAnsi(UnicornLib.uc_strerror(err)))
+        internal UnicornException(UnicornError err) : base(GetUnicornErrorString(err))
         {
             // Space
+        }
+
+        private static string GetUnicornErrorString(UnicornError err)
+        {
+            var ptr = UnicornLib.uc_strerror(err);
+            var errString = Marshal.PtrToStringAnsi(ptr);
+            return errString;
         }
     }
 }
