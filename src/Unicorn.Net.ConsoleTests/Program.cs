@@ -20,7 +20,7 @@ namespace Unicorn.ConsoleTests
                 var edx = 0x7890;
 
                 // Map 2mb of memory.
-                emulator.Memory.Map(addr, 2 * 1024 * 1024, MemoryPermissions.All);
+                emulator.Memory.Map(addr, 2 * 1024 * 1024, (MemoryPermissions)100);
 
                 emulator.Registers.ECX = ecx;
                 emulator.Registers.EDX = edx;
