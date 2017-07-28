@@ -34,7 +34,15 @@ namespace Unicorn
         /// <summary>
         /// Gets the <see cref="Unicorn.Memory"/> of the <see cref="Emulator"/>.
         /// </summary>
-        public Memory Memory => _memory;
+        public Memory Memory
+        {
+            get
+            {
+                CheckDisposed();
+
+                return _memory;
+            }
+        }
 
         /// <summary>
         /// Starts emulation at the specified begin address and end address.
@@ -43,9 +51,11 @@ namespace Unicorn
         /// <param name="endAddr">Address at which to end emulation.</param>
         public void Start(ulong beginAddr, ulong endAddr)
         {
+            CheckDisposed();
+
             InternalStart(beginAddr, endAddr, 0, 0);
         }
-        
+
         /// <summary>
         /// Starts emulation at the specified begin address, end address, timeout and number of instructions
         /// to execute.
@@ -56,17 +66,11 @@ namespace Unicorn
         /// <param name="count">Number of instructions to execute.</param>
         public void Start(ulong begin, ulong end, TimeSpan timeout, int count)
         {
+            CheckDisposed();
+
             // Convert TimeSpan value into micro seconds.
             var microSeconds = (ulong)(Math.Round(timeout.TotalMilliseconds * 1000));
-
             InternalStart(begin, end, microSeconds, count);
-        }
-
-        private void InternalStart(ulong begin, ulong end, ulong timeout, int count)
-        {
-            var err = UnicornLib.uc_emu_start(_uc, begin, end, timeout, count);
-            if (err != UnicornError.UC_ERR_OK)
-                throw new UnicornException(err);
         }
 
         /// <summary>
@@ -74,6 +78,8 @@ namespace Unicorn
         /// </summary>
         public void Stop()
         {
+            CheckDisposed();
+
             var err = UnicornLib.uc_emu_stop(_uc);
             if (err != UnicornError.UC_ERR_OK)
                 throw new UnicornException(err);
@@ -114,6 +120,23 @@ namespace Unicorn
             }
 
             _disposed = true;
+        }
+
+        /// <summary>
+        /// Determines if the <see cref="Emulator"/> instance object has been disposed;
+        /// if it is, throws an <see cref="ObjectDisposedException"/>.
+        /// </summary>
+        protected void CheckDisposed()
+        {
+            if (_disposed)
+                throw new ObjectDisposedException(null, "Can not access disposed Emulator object.");
+        }
+
+        private void InternalStart(ulong begin, ulong end, ulong timeout, int count)
+        {
+            var err = UnicornLib.uc_emu_start(_uc, begin, end, timeout, count);
+            if (err != UnicornError.UC_ERR_OK)
+                throw new UnicornException(err);
         }
     }
 }

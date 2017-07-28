@@ -22,6 +22,14 @@ namespace Unicorn.x86
         /// <summary>
         /// Gets the <see cref="x86Registers"/> of the <see cref="x86Emulator"/> instance.
         /// </summary>
-        public x86Registers Registers => _registers;
+        public x86Registers Registers
+        {
+            get
+            {
+                CheckDisposed();
+
+                return _registers;
+            }
+        }
     }
 }
