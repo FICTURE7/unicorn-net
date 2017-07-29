@@ -32,8 +32,35 @@ using (var emulator = new x86Emulator(x86Mode.b32))
 ```
 
 ### TODO
-List of stuff thats needs to implemented.
-- [ ] Making a proper TODO list.
+List of stuff thats needs to implemented or that has been implemented.
+- [ ] Emulator
+    - [x] uc_emu_start
+    - [x] uc_emu_stop
+    - [ ] uc_query
+    - [ ] Context
+        - [ ] uc_context_alloc
+        - [ ] uc_context_save
+        - [ ] uc_context_restore
+- [x] Registers
+    - [x] uc_reg_read
+    - [x] uc_reg_write
+- [ ] Memory
+    - [x] uc_mem_write
+    - [x] uc_mem_read
+    - [x] uc_mem_protect
+    - [ ] uc_mem_regions
+    - [x] uc_mem_map
+    - [x] uc_mem_unmap
+- [ ] Hooking
+    - [ ] uc_hook_add
+    - [ ] uc_hook_del
+- [ ] Arches
+    - [x] x86
+    - [ ] arm
+    - [ ] arm64
+    - [ ] m68k
+    - [ ] mips
+    - [ ] sparc
 
 ### Licensing
 Unicorn.Net is licensed under the permissive [MIT License](/LICENSE).
