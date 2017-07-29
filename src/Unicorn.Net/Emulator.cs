@@ -24,7 +24,7 @@ namespace Unicorn
         }
 
         // To determine if we've been disposed or not.
-        private bool _disposed;
+        internal bool _disposed;
         // Memory object instance which represents the memory of the emulator.
         private readonly Memory _memory;
 
@@ -126,7 +126,7 @@ namespace Unicorn
         /// Determines if the <see cref="Emulator"/> instance object has been disposed;
         /// if it is, throws an <see cref="ObjectDisposedException"/>.
         /// </summary>
-        protected void CheckDisposed()
+        protected internal void CheckDisposed()
         {
             if (_disposed)
                 throw new ObjectDisposedException(null, "Can not access disposed Emulator object.");

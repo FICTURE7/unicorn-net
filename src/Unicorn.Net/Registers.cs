@@ -25,6 +25,8 @@ namespace Unicorn
         /// <returns>Value of register read.</returns>
         protected long Read(int regId)
         {
+            _emulator.CheckDisposed();
+
             var value = 0L;
             unsafe
             {
@@ -42,6 +44,8 @@ namespace Unicorn
         /// <param name="value">Value to write to register.</param>
         protected void Write(int regId, long value)
         {
+            _emulator.CheckDisposed();
+
             unsafe
             {
                 var err = UnicornLib.uc_reg_write(_emulator._uc, regId, &value);

@@ -15,6 +15,9 @@ namespace Unicorn.Internal
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr uc_strerror(UnicornError err);
 
+        [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
+        public static extern UnicornError uc_free(UIntPtr mem);
+
 #if !RELEASE
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern bool uc_arch_supported(int arch); // Not used.
@@ -41,7 +44,7 @@ namespace Unicorn.Internal
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern UnicornError uc_emu_stop(UIntPtr uc);
 
-        // Memory Read/Write/Map/Unmap/Protect
+        // Memory Read/Write/Map/Unmap/Protect/Regions
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern UnicornError uc_mem_map(UIntPtr uc, ulong address, int size, int perms);
 
@@ -56,5 +59,16 @@ namespace Unicorn.Internal
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern UnicornError uc_mem_protect(UIntPtr uc, ulong address, int size, int perms);
+
+        [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
+        public static extern UnicornError uc_mem_regions(UIntPtr uc, ref UIntPtr regions, ref int count);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct uc_mem_region
+        {
+            public ulong begin;
+            public ulong end;
+            public ulong perms;
+        }
     }
 }

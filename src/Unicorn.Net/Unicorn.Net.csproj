@@ -49,6 +49,7 @@
     <Compile Include="Internal\UnicornMode.cs" />
     <Compile Include="Memory.cs" />
     <Compile Include="MemoryPermissions.cs" />
+    <Compile Include="MemoryRegion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registers.cs" />
     <Compile Include="UnicornException.cs" />
