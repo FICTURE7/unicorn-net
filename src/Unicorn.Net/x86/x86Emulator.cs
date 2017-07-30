@@ -31,5 +31,10 @@ namespace Unicorn.x86
                 return _registers;
             }
         }
+
+        /// <summary>
+        /// Gets the <see cref="x86Mode"/> of the <see cref="x86Emulator"/>.
+        /// </summary>
+        public new x86Mode Mode => (x86Mode)base.Mode;
     }
 }

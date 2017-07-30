@@ -60,6 +60,24 @@ namespace Unicorn
         }
 
         /// <summary>
+        /// Gets the page size of <see cref="Memory"/>.
+        /// </summary>
+        public int PageSize
+        {
+            get
+            {
+                _emulator.CheckDisposed();
+
+                var size = 0;
+                var err = UnicornLib.uc_query(_emulator._uc, UnicornQuery.UC_QUERY_PAGE_SIZE, ref size);
+                if (err != UnicornError.UC_ERR_OK)
+                    throw new UnicornException(err);
+
+                return size;
+            }
+        }
+
+        /// <summary>
         /// Maps a memory region for emulation with the specified starting address, size and <see cref="MemoryPermissions"/>.
         /// </summary>
         /// <param name="address">Starting address of memory region.</param>

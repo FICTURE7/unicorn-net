@@ -18,6 +18,9 @@ namespace Unicorn.Internal
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern UnicornError uc_free(UIntPtr mem);
 
+        [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
+        public static extern UnicornError uc_query(UIntPtr uc, UnicornQuery query, ref int result);
+
 #if !RELEASE
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern bool uc_arch_supported(int arch); // Not used.

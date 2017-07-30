@@ -20,6 +20,7 @@ namespace Unicorn
             }
 
             _uc = uc;
+            _mode = mode;
             _memory = new Memory(this);
         }
 
@@ -27,6 +28,8 @@ namespace Unicorn
         internal bool _disposed;
         // Memory object instance which represents the memory of the emulator.
         private readonly Memory _memory;
+        // Mode with which the Emulator instance was initialized.
+        private readonly UnicornMode _mode;
 
         // Pointer to the native unicorn engine handle.
         internal readonly UIntPtr _uc;
@@ -41,6 +44,30 @@ namespace Unicorn
                 CheckDisposed();
 
                 return _memory;
+            }
+        }
+
+        /// <summary>
+        /// Gets the mode of the <see cref="Emulator"/>.
+        /// </summary>
+        public int Mode
+        {
+            get
+            {
+                CheckDisposed();
+
+                // Unicorn throws UC_ERR_ARGS when the emulator is not in arm?
+
+                //var mode = 0;
+                //var err = UnicornLib.uc_query(_uc, UnicornQuery.UC_QUERY_MODE, ref mode);
+                //if (err != UnicornError.UC_ERR_OK)
+                //    throw new UnicornException(err);
+
+                //Debug.Assert(mode == (int)_mode);
+
+                //return mode;
+
+                return (int)_mode;
             }
         }
 
