@@ -44,11 +44,11 @@ List of stuff thats needs to implemented or that has been implemented.
 - [x] Registers
     - [x] uc_reg_read
     - [x] uc_reg_write
-- [ ] Memory
+- [x] Memory
     - [x] uc_mem_write
     - [x] uc_mem_read
     - [x] uc_mem_protect
-    - [ ] uc_mem_regions
+    - [x] uc_mem_regions
     - [x] uc_mem_map
     - [x] uc_mem_unmap
 - [ ] Hooking
