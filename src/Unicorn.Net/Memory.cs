@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Unicorn.Internal;
 
 namespace Unicorn
@@ -32,29 +33,27 @@ namespace Unicorn
                 var regionsPtr = UIntPtr.Zero;
                 var regions = (MemoryRegion[])null;
 
-                unsafe
+                var err = UnicornLib.uc_mem_regions(_emulator._uc, ref regionsPtr, ref count);
+                if (err != UnicornError.UC_ERR_OK)
+                    throw new UnicornException(err);
+
+                regions = new MemoryRegion[count];
+                var signedPtr = new IntPtr(regionsPtr.ToUInt32());
+                for (int i = 0; i < count; i++)
                 {
-                    var err = UnicornLib.uc_mem_regions(_emulator._uc, ref regionsPtr, ref count);
-                    if (err != UnicornError.UC_ERR_OK)
-                        throw new UnicornException(err);
+                    var nativeStruct = (UnicornLib.uc_mem_region)Marshal.PtrToStructure(signedPtr, typeof(UnicornLib.uc_mem_region));
+                    var region = new MemoryRegion(nativeStruct);
 
-                    regions = new MemoryRegion[count];
+                    regions[i] = region;
 
-                    var regionsUnsafePtr = (UnicornLib.uc_mem_region*)regionsPtr;
-                    for (int i = 0; i < count; i++)
-                    {
-                        var nativeRegion = regionsUnsafePtr[i];
-                        var region = new MemoryRegion(nativeRegion);
-
-                        regions[i] = region;
-                    }
-
-                    // Clean up the memory allocated by uc_mem_regions because we
-                    // don't like memory leaks.
-                    err = UnicornLib.uc_free(regionsPtr);
-                    if (err != UnicornError.UC_ERR_OK)
-                        throw new UnicornException(err);
+                    signedPtr += Marshal.SizeOf(nativeStruct);
                 }
+
+                // Clean up the memory allocated by uc_mem_regions because we
+                // don't like memory leaks.
+                err = UnicornLib.uc_free(regionsPtr);
+                if (err != UnicornError.UC_ERR_OK)
+                    throw new UnicornException(err);
                 return regions;
             }
         }
@@ -105,6 +104,9 @@ namespace Unicorn
         public void Unmap(ulong address, int size)
         {
             _emulator.CheckDisposed();
+
+            Debug.Assert((address & (ulong)PageSize) == 0);
+            Debug.Assert((size & PageSize) == 0);
 
             //TODO: Check if the address & size aligns to 4KB (page align).
 

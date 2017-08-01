@@ -28,17 +28,17 @@ namespace Unicorn.Internal
 
         // Open/Close
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern unsafe UnicornError uc_open(UnicornArch arch, UnicornMode mode, UIntPtr* uc);
+        public static extern UnicornError uc_open(UnicornArch arch, UnicornMode mode, ref UIntPtr uc);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern UnicornError uc_close(UIntPtr uc);
 
         // Registers Read/Write
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern unsafe UnicornError uc_reg_read(UIntPtr uc, int regid, long* value);
+        public static extern UnicornError uc_reg_read(UIntPtr uc, int regid, ref long value);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern unsafe UnicornError uc_reg_write(UIntPtr uc, int regid, long* value);
+        public static extern UnicornError uc_reg_write(UIntPtr uc, int regid, ref long value);
 
         // Emulator Start/Stop
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]

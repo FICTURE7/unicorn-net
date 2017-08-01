@@ -12,12 +12,9 @@ namespace Unicorn
         internal Emulator(UnicornArch arch, UnicornMode mode)
         {
             var uc = UIntPtr.Zero;
-            unsafe
-            {
-                var err = UnicornLib.uc_open(arch, mode, &uc);
-                if (err != UnicornError.UC_ERR_OK)
-                    throw new UnicornException(err);
-            }
+            var err = UnicornLib.uc_open(arch, mode, ref uc);
+            if (err != UnicornError.UC_ERR_OK)
+                throw new UnicornException(err);
 
             _uc = uc;
             _mode = mode;
