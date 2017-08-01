@@ -146,11 +146,7 @@ namespace Unicorn
             _disposed = true;
         }
 
-        /// <summary>
-        /// Determines if the <see cref="Emulator"/> instance object has been disposed;
-        /// if it is, throws an <see cref="ObjectDisposedException"/>.
-        /// </summary>
-        protected internal void CheckDisposed()
+        internal void CheckDisposed()
         {
             if (_disposed)
                 throw new ObjectDisposedException(null, "Can not access disposed Emulator object.");
