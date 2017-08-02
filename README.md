@@ -33,14 +33,14 @@ using (var emulator = new x86Emulator(x86Mode.b32))
 
 ### TODO
 List of stuff thats needs to implemented or that has been implemented.
-- [ ] Emulator
+- [x] Emulator
     - [x] uc_emu_start
     - [x] uc_emu_stop
     - [x] uc_query
-- [ ] Context
-    - [ ] uc_context_alloc
-    - [ ] uc_context_save
-    - [ ] uc_context_restore
+- [x] Context
+    - [x] uc_context_alloc
+    - [x] uc_context_save
+    - [x] uc_context_restore
 - [x] Registers
     - [x] uc_reg_read
     - [x] uc_reg_write
