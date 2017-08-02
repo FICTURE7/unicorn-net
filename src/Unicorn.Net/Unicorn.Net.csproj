@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context.cs" />
     <Compile Include="Emulator.cs" />
     <Compile Include="Internal\UnicornArch.cs" />
     <Compile Include="Internal\UnicornError.cs" />

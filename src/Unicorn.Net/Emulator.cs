@@ -17,17 +17,20 @@ namespace Unicorn
                 throw new UnicornException(err);
 
             _uc = uc;
+            _arch = arch;
             _mode = mode;
             _memory = new Memory(this);
         }
 
         // To determine if we've been disposed or not.
-        internal bool _disposed;
+        private bool _disposed;
         // Memory object instance which represents the memory of the emulator.
         private readonly Memory _memory;
-        // Mode with which the Emulator instance was initialized.
-        private readonly UnicornMode _mode;
 
+        // Arch with which the Emulator instance was initialized.
+        internal readonly UnicornArch _arch;
+        // Mode with which the Emulator instance was initialized.
+        internal readonly UnicornMode _mode;
         // Pointer to the native unicorn engine handle.
         internal readonly UIntPtr _uc;
 
@@ -53,18 +56,53 @@ namespace Unicorn
             {
                 CheckDisposed();
 
-                // Unicorn throws UC_ERR_ARGS when the emulator is not in arm?
+                // -> Unicorn returns UC_ERR_ARGS when the emulator is not in arm?
 
-                //var mode = 0;
-                //var err = UnicornLib.uc_query(_uc, UnicornQuery.UC_QUERY_MODE, ref mode);
-                //if (err != UnicornError.UC_ERR_OK)
-                //    throw new UnicornException(err);
-
-                //Debug.Assert(mode == (int)_mode);
-
-                //return mode;
+                /*
+                var mode = 0;
+                var err = UnicornLib.uc_query(_uc, UnicornQuery.UC_QUERY_MODE, ref mode);
+                if (err != UnicornError.UC_ERR_OK)
+                    throw new UnicornException(err);
+                Debug.Assert(mode == (int)_mode);
+                */
 
                 return (int)_mode;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Unicorn.Context"/> of the <see cref="Emulator"/> instance.
+        /// </summary>
+        public Context Context
+        {
+            get
+            {
+                CheckDisposed();
+
+                var context = UIntPtr.Zero;
+                var err = UnicornLib.uc_context_alloc(_uc, ref context);
+                if (err != UnicornError.UC_ERR_OK)
+                    throw new UnicornException(err);
+
+                err = UnicornLib.uc_context_save(_uc, context);
+                if (err != UnicornError.UC_ERR_OK)
+                    throw new UnicornException(err);
+
+                return new Context(this, context);
+            }
+            set
+            {
+                CheckDisposed();
+
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+                if (value._disposed)
+                    throw new ObjectDisposedException(null, "Can not access disposed Context object.");
+                if (value._arch != _arch || value._mode != _mode)
+                    throw new ArgumentException("value must have same arch and mode as the Emulator instance.", nameof(value));
+
+                var context = value._context;
+                UnicornLib.uc_context_restore(_uc, context);
             }
         }
 
@@ -138,10 +176,6 @@ namespace Unicorn
             //NOTE: Might consider throwing an exception here?
             var err = UnicornLib.uc_close(_uc);
             Debug.Assert(err == UnicornError.UC_ERR_OK, $"Disposal uc_close of Emulator instance did not return UC_ERR_OK, but {err}.");
-            if (disposing)
-            {
-                // Dispose managed resources.
-            }
 
             _disposed = true;
         }

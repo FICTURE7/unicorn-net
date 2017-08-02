@@ -21,14 +21,23 @@ namespace Unicorn.ConsoleTests
 
                 // Map 2mb of memory.
                 emulator.Memory.Map(addr, 2 * 1024 * 1024, MemoryPermissions.All);
-                emulator.Memory.Unmap(addr + (1024 * 4), 4 * 1024 - 1);
 
-                emulator.Registers.ECX = ecx;
-                emulator.Registers.EDX = edx;
+                // Save context.
+                using (var context = emulator.Context)
+                {
+                    emulator.Registers.ECX = ecx;
+                    emulator.Registers.EDX = edx;
 
-                emulator.Memory.Write(addr, x86code, x86code.Length);
+                    emulator.Memory.Write(addr, x86code, x86code.Length);
 
-                emulator.Start(addr, addr + (ulong)x86code.Length);
+                    emulator.Start(addr, addr + (ulong)x86code.Length);
+
+                    Console.WriteLine(emulator.Registers.ECX);
+                    Console.WriteLine(emulator.Registers.EDX);
+
+                    // Restore context back.
+                    emulator.Context = context;
+                }
 
                 Console.WriteLine(emulator.Registers.ECX);
                 Console.WriteLine(emulator.Registers.EDX);

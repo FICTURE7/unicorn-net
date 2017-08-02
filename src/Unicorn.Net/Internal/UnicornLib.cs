@@ -73,5 +73,15 @@ namespace Unicorn.Internal
             public ulong end;
             public ulong perms;
         }
+
+        // Context Alloc/Save/Restore.
+        [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
+        public static extern UnicornError uc_context_alloc(UIntPtr uc, ref UIntPtr context);
+
+        [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
+        public static extern UnicornError uc_context_save(UIntPtr uc, UIntPtr context);
+
+        [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
+        public static extern UnicornError uc_context_restore(UIntPtr uc, UIntPtr context);
     }
 }
