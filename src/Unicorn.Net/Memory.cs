@@ -59,7 +59,7 @@ namespace Unicorn
         }
 
         /// <summary>
-        /// Gets the page size of <see cref="Memory"/>.
+        /// Gets the page size of <see cref="Memory"/> which is 4KB.
         /// </summary>
         public int PageSize
         {
@@ -105,10 +105,10 @@ namespace Unicorn
         {
             _emulator.CheckDisposed();
 
-            Debug.Assert((address & (ulong)PageSize) == 0);
-            Debug.Assert((size & PageSize) == 0);
-
-            //TODO: Check if the address & size aligns to 4KB (page align).
+            if ((address & (ulong)PageSize) != (ulong)PageSize)
+                throw new ArgumentException("Address must be aligned with page size.", nameof(address));
+            if ((size & PageSize) != PageSize)
+                throw new ArgumentException("Size must be a multiple of page size.", nameof(size));
 
             if (size < 0)
                 throw new ArgumentOutOfRangeException(nameof(size), "Size must be non-negative.");
@@ -127,6 +127,11 @@ namespace Unicorn
         public void Protect(ulong address, int size, MemoryPermissions permissions)
         {
             _emulator.CheckDisposed();
+
+            if ((address & (ulong)PageSize) != (ulong)PageSize)
+                throw new ArgumentException("Address must be aligned with page size.", nameof(address));
+            if ((size & PageSize) != PageSize)
+                throw new ArgumentException("Size must be a multiple of page size.", nameof(size));
 
             if (size < 0)
                 throw new ArgumentOutOfRangeException(nameof(size), "Size must be non-negative.");
