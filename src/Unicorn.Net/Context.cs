@@ -9,20 +9,44 @@ namespace Unicorn
     /// </summary>
     public class Context : IDisposable
     {
-        internal Context(Emulator emulator, UIntPtr context)
+        internal Context(Emulator emulator)
         {
             Debug.Assert(emulator != null);
-            Debug.Assert(context != UIntPtr.Zero);
+
+            var err = UnicornLib.uc_context_alloc(emulator._uc, ref _context);
+            if (err != UnicornError.UC_ERR_OK)
+                throw new UnicornException(err);
 
             _arch = emulator._arch;
             _mode = emulator._mode;
-            _context = context;
         }
 
         internal bool _disposed;
         internal readonly UnicornArch _arch;
         internal readonly UnicornMode _mode;
         internal readonly UIntPtr _context;
+
+        internal void Capture(Emulator emulator)
+        {
+            Debug.Assert(emulator != null);
+            Debug.Assert(emulator._arch == _arch);
+            Debug.Assert(emulator._mode == _mode);
+
+            var err = UnicornLib.uc_context_save(emulator._uc, _context);
+            if (err != UnicornError.UC_ERR_OK)
+                throw new UnicornException(err);
+        }
+
+        internal void Restore(Emulator emulator)
+        {
+            Debug.Assert(emulator != null);
+            Debug.Assert(emulator._arch == _arch);
+            Debug.Assert(emulator._mode == _mode);
+
+            var err = UnicornLib.uc_context_restore(emulator._uc, _context);
+            if (err != UnicornError.UC_ERR_OK)
+                throw new UnicornException(err);
+        }
 
         // No real need for the dispose pattern here, but it
         // does not hurt.

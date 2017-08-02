@@ -79,16 +79,9 @@ namespace Unicorn
             {
                 CheckDisposed();
 
-                var context = UIntPtr.Zero;
-                var err = UnicornLib.uc_context_alloc(_uc, ref context);
-                if (err != UnicornError.UC_ERR_OK)
-                    throw new UnicornException(err);
-
-                err = UnicornLib.uc_context_save(_uc, context);
-                if (err != UnicornError.UC_ERR_OK)
-                    throw new UnicornException(err);
-
-                return new Context(this, context);
+                var context = new Context(this);
+                context.Capture(this);
+                return context;
             }
             set
             {
@@ -101,8 +94,7 @@ namespace Unicorn
                 if (value._arch != _arch || value._mode != _mode)
                     throw new ArgumentException("value must have same arch and mode as the Emulator instance.", nameof(value));
 
-                var context = value._context;
-                UnicornLib.uc_context_restore(_uc, context);
+                value.Restore(this);
             }
         }
 
