@@ -1,5 +1,5 @@
 # Unicorn.Net
-Slightly fancier *WIP* .NET binding/wrapper for the unicorn-engine.
+Slightly fancier *WIP* .NET binding/wrapper for the [Unicorn engine](https://github.com/unicorn-engine/unicorn).
 
 ### Example
 Here is an example of how to use it. This is also the same example as the official documentation available [here](http://www.unicorn-engine.org/docs/tutorial.html) but in C# and using Unicorn.Net.
