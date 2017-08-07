@@ -1,6 +1,6 @@
 ﻿namespace Unicorn.Internal
 {
-    internal enum UnicornMode
+    internal enum uc_mode
     {
         // From unicorn.h
 

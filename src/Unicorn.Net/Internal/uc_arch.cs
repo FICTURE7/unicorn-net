@@ -1,6 +1,6 @@
 ﻿namespace Unicorn.Internal
 {
-    internal enum UnicornArch
+    internal enum uc_arch
     {
         // From unicorn.h
 

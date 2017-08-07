@@ -1,6 +1,6 @@
 ﻿namespace Unicorn.Internal
 {
-    internal enum UnicornError
+    internal enum uc_err
     {
         // From unicorn.h
 
