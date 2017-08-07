@@ -19,10 +19,14 @@ namespace Unicorn.ConsoleTests
                 var ecx = 0x1234;
                 var edx = 0x7890;
 
+                // Add a code hook.
+                emulator.Hooks.Code.Add(CodeHook, 1, 0, null);
+
                 // Map 2mb of memory.
                 emulator.Memory.Map(addr, 2 * 1024 * 1024, MemoryPermissions.All);
 
-                // Save context.
+                // Capture context.
+                Console.WriteLine("-> Capturing context...");
                 using (var context = emulator.Context)
                 {
                     emulator.Registers.ECX = ecx;
@@ -32,18 +36,29 @@ namespace Unicorn.ConsoleTests
 
                     emulator.Start(addr, addr + (ulong)x86code.Length);
 
-                    Console.WriteLine(emulator.Registers.ECX);
-                    Console.WriteLine(emulator.Registers.EDX);
+                    Console.WriteLine($"ECX = {emulator.Registers.ECX}");
+                    Console.WriteLine($"EDX = {emulator.Registers.EDX}");
 
-                    // Restore context back.
+
+                    Console.WriteLine("-> Restoring context...");
+
+                    // Restore captured context.
                     emulator.Context = context;
                 }
 
-                Console.WriteLine(emulator.Registers.ECX);
-                Console.WriteLine(emulator.Registers.EDX);
+                Console.WriteLine($"ECX = {emulator.Registers.ECX}");
+                Console.WriteLine($"EDX = {emulator.Registers.EDX}");
             }
 
             Console.ReadLine();
+        }
+
+        private static void CodeHook(Emulator emulator, ulong address, int size, object userData)
+        {
+            var eflags = ((x86Emulator)emulator).Registers.EFLAGS;
+
+            Console.WriteLine($"-> Tracing instruction at 0x{address.ToString("x2")} of size 0x{size.ToString("x2")}.");
+            Console.WriteLine($"-> EFLAGS = {eflags.ToString("x2")}");
         }
     }
 }

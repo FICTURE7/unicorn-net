@@ -12,7 +12,7 @@ namespace Unicorn.x86
         /// <see cref="x86Mode"/> to use.
         /// </summary>
         /// <param name="mode">Mode to use.</param>
-        public x86Emulator(x86Mode mode) : base(UnicornArch.UC_ARCH_X86, (UnicornMode)mode)
+        public x86Emulator(x86Mode mode) : base(uc_arch.UC_ARCH_X86, (uc_mode)mode)
         {
             _registers = new x86Registers(this);
         }

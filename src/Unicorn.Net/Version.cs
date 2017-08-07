@@ -10,7 +10,7 @@ namespace Unicorn
     {
         static Version()
         {
-            var nativeVersion = UnicornLib.uc_version(UIntPtr.Zero, UIntPtr.Zero);
+            var nativeVersion = unicorn.uc_version(UIntPtr.Zero, UIntPtr.Zero);
             var major = nativeVersion >> 0x8;
             var minor = nativeVersion & 0xF;
 

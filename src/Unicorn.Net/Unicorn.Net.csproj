@@ -42,16 +42,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeHooksContainer.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Emulator.cs" />
-    <Compile Include="Internal\UnicornArch.cs" />
-    <Compile Include="Internal\UnicornError.cs" />
-    <Compile Include="Internal\UnicornLib.cs" />
-    <Compile Include="Internal\UnicornMode.cs" />
-    <Compile Include="Internal\UnicornQuery.cs" />
+    <Compile Include="Hooks.cs" />
+    <Compile Include="HooksContainer.cs" />
+    <Compile Include="HookType.cs" />
+    <Compile Include="Internal\uc_arch.cs" />
+    <Compile Include="Internal\uc_err.cs" />
+    <Compile Include="Internal\uc_hook_type.cs" />
+    <Compile Include="Internal\unicorn.cs" />
+    <Compile Include="Internal\uc_mem_type.cs" />
+    <Compile Include="Internal\uc_mode.cs" />
+    <Compile Include="Internal\uc_query_type.cs" />
     <Compile Include="Memory.cs" />
+    <Compile Include="MemoryHooksContainer.cs" />
     <Compile Include="MemoryPermissions.cs" />
     <Compile Include="MemoryRegion.cs" />
+    <Compile Include="MemoryType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registers.cs" />
     <Compile Include="UnicornException.cs" />

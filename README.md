@@ -1,7 +1,9 @@
 # Unicorn.Net
 Slightly fancier *WIP* .NET binding/wrapper for the [Unicorn engine](https://github.com/unicorn-engine/unicorn).
 
-### Example
+#### NOTE
+
+### Examples
 Here is an example of how to use it. This is also the same example as the official documentation available [here](http://www.unicorn-engine.org/docs/tutorial.html) but in C# and using Unicorn.Net.
 ```csharp
 using (var emulator = new x86Emulator(x86Mode.b32))
@@ -31,8 +33,11 @@ using (var emulator = new x86Emulator(x86Mode.b32))
 }
 ```
 
+#### Contexts
+
+
 ### TODO
-List of stuff thats needs to implemented or that has been implemented.
+List of stuff thats needs to be implemented or that has been implemented.
 - [x] Emulator
     - [x] uc_emu_start
     - [x] uc_emu_stop
@@ -61,6 +66,8 @@ List of stuff thats needs to implemented or that has been implemented.
     - [ ] m68k
     - [ ] mips
     - [ ] sparc
+    
+- [ ] Actual bindings
 
 ### Licensing
 Unicorn.Net is licensed under the permissive [MIT License](/LICENSE).

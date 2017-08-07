@@ -33,15 +33,15 @@ namespace Unicorn
                 var regionsPtr = UIntPtr.Zero;
                 var regions = (MemoryRegion[])null;
 
-                var err = UnicornLib.uc_mem_regions(_emulator._uc, ref regionsPtr, ref count);
-                if (err != UnicornError.UC_ERR_OK)
+                var err = unicorn.uc_mem_regions(_emulator._uc, ref regionsPtr, ref count);
+                if (err != uc_err.UC_ERR_OK)
                     throw new UnicornException(err);
 
                 regions = new MemoryRegion[count];
                 var signedPtr = new IntPtr(regionsPtr.ToUInt32());
                 for (int i = 0; i < count; i++)
                 {
-                    var nativeStruct = (UnicornLib.uc_mem_region)Marshal.PtrToStructure(signedPtr, typeof(UnicornLib.uc_mem_region));
+                    var nativeStruct = (unicorn.uc_mem_region)Marshal.PtrToStructure(signedPtr, typeof(unicorn.uc_mem_region));
                     var region = new MemoryRegion(nativeStruct);
 
                     regions[i] = region;
@@ -51,8 +51,8 @@ namespace Unicorn
 
                 // Clean up the memory allocated by uc_mem_regions because we
                 // don't like memory leaks.
-                err = UnicornLib.uc_free(regionsPtr);
-                if (err != UnicornError.UC_ERR_OK)
+                err = unicorn.uc_free(regionsPtr);
+                if (err != uc_err.UC_ERR_OK)
                     throw new UnicornException(err);
                 return regions;
             }
@@ -68,8 +68,8 @@ namespace Unicorn
                 _emulator.CheckDisposed();
 
                 var size = 0;
-                var err = UnicornLib.uc_query(_emulator._uc, UnicornQuery.UC_QUERY_PAGE_SIZE, ref size);
-                if (err != UnicornError.UC_ERR_OK)
+                var err = unicorn.uc_query(_emulator._uc, uc_query_type.UC_QUERY_PAGE_SIZE, ref size);
+                if (err != uc_err.UC_ERR_OK)
                     throw new UnicornException(err);
 
                 return size;
@@ -91,8 +91,8 @@ namespace Unicorn
             if (permissions > MemoryPermissions.All)
                 throw new ArgumentException("Permissions is invalid.", nameof(permissions));
 
-            var err = UnicornLib.uc_mem_map(_emulator._uc, address, size, (int)permissions);
-            if (err != UnicornError.UC_ERR_OK)
+            var err = unicorn.uc_mem_map(_emulator._uc, address, size, (int)permissions);
+            if (err != uc_err.UC_ERR_OK)
                 throw new UnicornException(err);
         }
 
@@ -113,8 +113,8 @@ namespace Unicorn
             if (size < 0)
                 throw new ArgumentOutOfRangeException(nameof(size), "Size must be non-negative.");
 
-            var err = UnicornLib.uc_mem_unmap(_emulator._uc, address, size);
-            if (err != UnicornError.UC_ERR_OK)
+            var err = unicorn.uc_mem_unmap(_emulator._uc, address, size);
+            if (err != uc_err.UC_ERR_OK)
                 throw new UnicornException(err);
         }
 
@@ -138,8 +138,8 @@ namespace Unicorn
             if (permissions > MemoryPermissions.All)
                 throw new ArgumentException("Permissions is invalid.", nameof(permissions));
 
-            var err = UnicornLib.uc_mem_protect(_emulator._uc, address, size, (int)permissions);
-            if (err != UnicornError.UC_ERR_OK)
+            var err = unicorn.uc_mem_protect(_emulator._uc, address, size, (int)permissions);
+            if (err != uc_err.UC_ERR_OK)
                 throw new UnicornException(err);
         }
 
@@ -158,8 +158,8 @@ namespace Unicorn
             if (count < 0 || count > buffer.Length)
                 throw new ArgumentOutOfRangeException(nameof(count), "Count must be non-negative and less or equal to the length of data.");
 
-            var err = UnicornLib.uc_mem_write(_emulator._uc, address, buffer, count);
-            if (err != UnicornError.UC_ERR_OK)
+            var err = unicorn.uc_mem_write(_emulator._uc, address, buffer, count);
+            if (err != uc_err.UC_ERR_OK)
                 throw new UnicornException(err);
         }
 
@@ -178,8 +178,8 @@ namespace Unicorn
             if (count < 0 || count > buffer.Length)
                 throw new ArgumentOutOfRangeException(nameof(count), "Count must be non-negative and less or equal to the length of data.");
 
-            var err = UnicornLib.uc_mem_read(_emulator._uc, address, buffer, count);
-            if (err != UnicornError.UC_ERR_OK)
+            var err = unicorn.uc_mem_read(_emulator._uc, address, buffer, count);
+            if (err != uc_err.UC_ERR_OK)
                 throw new UnicornException(err);
         }
     }

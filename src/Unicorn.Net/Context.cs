@@ -9,12 +9,14 @@ namespace Unicorn
     /// </summary>
     public class Context : IDisposable
     {
+        //TODO: Consider making strongly typed Contexts, like x86Context etc...
+
         internal Context(Emulator emulator)
         {
             Debug.Assert(emulator != null);
 
-            var err = UnicornLib.uc_context_alloc(emulator._uc, ref _context);
-            if (err != UnicornError.UC_ERR_OK)
+            var err = unicorn.uc_context_alloc(emulator._uc, ref _context);
+            if (err != uc_err.UC_ERR_OK)
                 throw new UnicornException(err);
 
             _arch = emulator._arch;
@@ -22,8 +24,8 @@ namespace Unicorn
         }
 
         internal bool _disposed;
-        internal readonly UnicornArch _arch;
-        internal readonly UnicornMode _mode;
+        internal readonly uc_arch _arch;
+        internal readonly uc_mode _mode;
         internal readonly UIntPtr _context;
 
         internal void Capture(Emulator emulator)
@@ -32,8 +34,8 @@ namespace Unicorn
             Debug.Assert(emulator._arch == _arch);
             Debug.Assert(emulator._mode == _mode);
 
-            var err = UnicornLib.uc_context_save(emulator._uc, _context);
-            if (err != UnicornError.UC_ERR_OK)
+            var err = unicorn.uc_context_save(emulator._uc, _context);
+            if (err != uc_err.UC_ERR_OK)
                 throw new UnicornException(err);
         }
 
@@ -43,8 +45,8 @@ namespace Unicorn
             Debug.Assert(emulator._arch == _arch);
             Debug.Assert(emulator._mode == _mode);
 
-            var err = UnicornLib.uc_context_restore(emulator._uc, _context);
-            if (err != UnicornError.UC_ERR_OK)
+            var err = unicorn.uc_context_restore(emulator._uc, _context);
+            if (err != uc_err.UC_ERR_OK)
                 throw new UnicornException(err);
         }
 
@@ -77,8 +79,8 @@ namespace Unicorn
             if (_disposed)
                 return;
 
-            var err = UnicornLib.uc_free(_context);
-            Debug.Assert(err == UnicornError.UC_ERR_OK);
+            var err = unicorn.uc_free(_context);
+            Debug.Assert(err == uc_err.UC_ERR_OK);
 
             _disposed = true;
         }

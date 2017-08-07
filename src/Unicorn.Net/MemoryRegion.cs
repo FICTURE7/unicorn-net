@@ -8,7 +8,7 @@ namespace Unicorn
     public struct MemoryRegion
     {
         // Wrap the native uc_mem_region structure.
-        internal MemoryRegion(UnicornLib.uc_mem_region region)
+        internal MemoryRegion(unicorn.uc_mem_region region)
         {
             _begin = region.begin;
             _end = region.end;

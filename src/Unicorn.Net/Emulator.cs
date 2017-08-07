@@ -9,28 +9,31 @@ namespace Unicorn
     /// </summary>
     public abstract class Emulator : IDisposable
     {
-        internal Emulator(UnicornArch arch, UnicornMode mode)
+        internal Emulator(uc_arch arch, uc_mode mode)
         {
             var uc = UIntPtr.Zero;
-            var err = UnicornLib.uc_open(arch, mode, ref uc);
-            if (err != UnicornError.UC_ERR_OK)
+            var err = unicorn.uc_open(arch, mode, ref uc);
+            if (err != uc_err.UC_ERR_OK)
                 throw new UnicornException(err);
 
             _uc = uc;
             _arch = arch;
             _mode = mode;
             _memory = new Memory(this);
+            _hooks = new Hooks(this);
         }
 
         // To determine if we've been disposed or not.
         private bool _disposed;
         // Memory object instance which represents the memory of the emulator.
         private readonly Memory _memory;
+        // Hooks object instance which represents the hooks of the emulator.
+        private readonly Hooks _hooks;
 
         // Arch with which the Emulator instance was initialized.
-        internal readonly UnicornArch _arch;
+        internal readonly uc_arch _arch;
         // Mode with which the Emulator instance was initialized.
-        internal readonly UnicornMode _mode;
+        internal readonly uc_mode _mode;
         // Pointer to the native unicorn engine handle.
         internal readonly UIntPtr _uc;
 
@@ -44,6 +47,19 @@ namespace Unicorn
                 CheckDisposed();
 
                 return _memory;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Unicorn.Hooks"/> of the <see cref="Emulator"/>.
+        /// </summary>
+        public Hooks Hooks
+        {
+            get
+            {
+                CheckDisposed();
+
+                return _hooks;
             }
         }
 
@@ -78,6 +94,8 @@ namespace Unicorn
             get
             {
                 CheckDisposed();
+
+                //TODO: Make contexts reusable so we don't create new instances and do unneeded allocations?
 
                 var context = new Context(this);
                 context.Capture(this);
@@ -134,8 +152,8 @@ namespace Unicorn
         {
             CheckDisposed();
 
-            var err = UnicornLib.uc_emu_stop(_uc);
-            if (err != UnicornError.UC_ERR_OK)
+            var err = unicorn.uc_emu_stop(_uc);
+            if (err != uc_err.UC_ERR_OK)
                 throw new UnicornException(err);
         }
 
@@ -166,8 +184,8 @@ namespace Unicorn
                 return;
 
             //NOTE: Might consider throwing an exception here?
-            var err = UnicornLib.uc_close(_uc);
-            Debug.Assert(err == UnicornError.UC_ERR_OK, $"Disposal uc_close of Emulator instance did not return UC_ERR_OK, but {err}.");
+            var err = unicorn.uc_close(_uc);
+            Debug.Assert(err == uc_err.UC_ERR_OK, $"Disposal uc_close of Emulator instance did not return UC_ERR_OK, but {err}.");
 
             _disposed = true;
         }
@@ -180,8 +198,8 @@ namespace Unicorn
 
         private void InternalStart(ulong begin, ulong end, ulong timeout, int count)
         {
-            var err = UnicornLib.uc_emu_start(_uc, begin, end, timeout, count);
-            if (err != UnicornError.UC_ERR_OK)
+            var err = unicorn.uc_emu_start(_uc, begin, end, timeout, count);
+            if (err != uc_err.UC_ERR_OK)
                 throw new UnicornException(err);
         }
     }

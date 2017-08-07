@@ -28,8 +28,8 @@ namespace Unicorn
             _emulator.CheckDisposed();
 
             var value = 0L;
-            var err = UnicornLib.uc_reg_read(_emulator._uc, regId, ref value);
-            if (err != UnicornError.UC_ERR_OK)
+            var err = unicorn.uc_reg_read(_emulator._uc, regId, ref value);
+            if (err != uc_err.UC_ERR_OK)
                 throw new UnicornException(err);
             return value;
         }
@@ -43,8 +43,8 @@ namespace Unicorn
         {
             _emulator.CheckDisposed();
 
-            var err = UnicornLib.uc_reg_write(_emulator._uc, regId, ref value);
-            if (err != UnicornError.UC_ERR_OK)
+            var err = unicorn.uc_reg_write(_emulator._uc, regId, ref value);
+            if (err != uc_err.UC_ERR_OK)
                 throw new UnicornException(err);
         }
     }
