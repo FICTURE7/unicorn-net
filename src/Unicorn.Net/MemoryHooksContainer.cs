@@ -43,25 +43,23 @@ namespace Unicorn
         /// </summary>
         /// <param name="type"></param>
         /// <param name="callback"></param>
-        /// <param name="start"></param>
+        /// <param name="begin"></param>
         /// <param name="end"></param>
         /// <param name="userData"></param>
-        public void Add(MemoryHookType type, MemoryHookCallback callback, ulong start, ulong end, object userData)
+        public void Add(MemoryHookType type, MemoryHookCallback callback, ulong begin, ulong end, object userData)
         {
             Emulator.CheckDisposed();
 
             var wrapper = new uc_cb_hookmem((uc, _type, addr, size, value, user_data) =>
             {
-                Debug.Assert(uc == Emulator._uc);
+                Debug.Assert(uc == Emulator.Bindings.UCHandle);
                 callback(Emulator, (MemoryType)_type, addr, size, value, userData);
             });
 
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
             var hh = UIntPtr.Zero;
 
-            var err = unicorn.uc_hook_add(Emulator._uc, ref hh, (uc_hook_type)type, ptr, UIntPtr.Zero, start, end);
-            if (err != uc_err.UC_ERR_OK)
-                throw new UnicornException(err);
+            Emulator.Bindings.HookAdd(ref hh, (Bindings.HookType)type, ptr, begin, end);
         }
 
         /// <summary>
@@ -69,25 +67,23 @@ namespace Unicorn
         /// </summary>
         /// <param name="type"></param>
         /// <param name="callback"></param>
-        /// <param name="start"></param>
+        /// <param name="begin"></param>
         /// <param name="end"></param>
         /// <param name="userData"></param>
-        public void Add(MemoryEventHookType type, MemoryEventHookCallback callback, ulong start, ulong end, object userData)
+        public void Add(MemoryEventHookType type, MemoryEventHookCallback callback, ulong begin, ulong end, object userData)
         {
             Emulator.CheckDisposed();
 
             var wrapper = new uc_cb_eventmem((uc, _type, addr, size, value, user_data) =>
             {
-                Debug.Assert(uc == Emulator._uc);
+                Debug.Assert(uc == Emulator.Bindings.UCHandle);
                 return callback(Emulator, (MemoryType)_type, addr, size, value, userData);
             });
 
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
             var hh = UIntPtr.Zero;
 
-            var err = unicorn.uc_hook_add(Emulator._uc, ref hh, (uc_hook_type)type, ptr, UIntPtr.Zero, start, end);
-            if (err != uc_err.UC_ERR_OK)
-                throw new UnicornException(err);
+            Emulator.Bindings.HookAdd(ref hh, (Bindings.HookType)type, ptr, begin, end);
         }
     }
 
@@ -99,22 +95,22 @@ namespace Unicorn
         /// <summary>
         /// Read memory.
         /// </summary>
-        Read = 1024,
+        Read = Bindings.HookType.MemRead,
 
         /// <summary>
         /// Write memory.
         /// </summary>
-        Write = 2048,
+        Write = Bindings.HookType.MemWrite,
 
         /// <summary>
         /// Fetch memory.
         /// </summary>
-        Fetch = 4096,
+        Fetch = Bindings.HookType.MemFetch,
 
         /// <summary>
         /// Read memory successful access.
         /// </summary>
-        ReadAfter = 8192
+        ReadAfter = Bindings.HookType.MemReadAfter
     }
 
     /// <summary>
@@ -125,31 +121,31 @@ namespace Unicorn
         /// <summary>
         /// Unmapped memory read.
         /// </summary>
-        UnmappedRead = 16,
+        UnmappedRead = Bindings.HookType.MemReadUnmapped,
 
         /// <summary>
         /// Unmapped memory write.
         /// </summary>
-        UnmappedWrite = 32,
+        UnmappedWrite = Bindings.HookType.MemWriteUnmapped,
 
         /// <summary>
         /// Unmapped memory fetch.
         /// </summary>
-        UnmappedFetch = 64,
+        UnmappedFetch = Bindings.HookType.MemFetchUnmapped,
 
         /// <summary>
         /// Protected memory read.
         /// </summary>
-        ProtectedRead = 128,
+        ProtectedRead = Bindings.HookType.MemReadProtected,
 
         /// <summary>
         /// Protected memory write.
         /// </summary>
-        ProtectedWrite = 256,
+        ProtectedWrite = Bindings.HookType.MemWriteProtected,
 
         /// <summary>
         /// Protected memory fetch.
         /// </summary>
-        ProtectedFetch = 512,
+        ProtectedFetch = Bindings.HookType.MemFetchProtected,
     }
 }

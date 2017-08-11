@@ -10,7 +10,7 @@ namespace Unicorn.Internal
     {
         // Misc
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int uc_version(UIntPtr major, UIntPtr minor);
+        public static extern int uc_version(ref int major, ref int minor);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr uc_strerror(uc_err err);
@@ -65,14 +65,6 @@ namespace Unicorn.Internal
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern uc_err uc_mem_regions(UIntPtr uc, ref UIntPtr regions, ref int count);
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct uc_mem_region
-        {
-            public ulong begin;
-            public ulong end;
-            public ulong perms;
-        }
 
         // Context Alloc/Save/Restore.
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]

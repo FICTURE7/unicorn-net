@@ -5,21 +5,21 @@
     /// </summary>
     public enum x86Mode
     {
-        // Prefixed the identifiers with a 'b' because identifiers can start with digits.
+        // Prefixed the identifiers with a 'b' because identifiers cant start with digits.
 
         /// <summary>
         /// 16-bit mode.
         /// </summary>
-        b16 = 2,
+        b16 = Bindings.Mode.x86b16,
 
         /// <summary>
         /// 32-bit mode.
         /// </summary>
-        b32 = 4,
+        b32 = Bindings.Mode.x86b32,
 
         /// <summary>
         /// 64-bit mode.
         /// </summary>
-        b64 = 8
+        b64 = Bindings.Mode.x86b64
     }
 }

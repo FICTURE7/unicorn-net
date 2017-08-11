@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using Unicorn.Internal;
 
 namespace Unicorn
@@ -18,7 +17,7 @@ namespace Unicorn
         }
         
         /// <summary>
-        /// Initializes a new instance with the specified message describing the cause of the exception.
+        /// Initializes a new instance of the <see cref="UnicornException"/> class with the specified message describing the cause of the exception.
         /// </summary>
         /// <param name="message">Message describing the cause of the exception.</param>
         public UnicornException(string message) : base(message)
@@ -26,16 +25,25 @@ namespace Unicorn
             // Space
         }
 
-        internal UnicornException(uc_err err) : base(GetUnicornErrorString(err))
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UnicornException"/> class with the specified <see cref="Bindings.Error"/>.
+        /// </summary>
+        /// <param name="error"><see cref="Bindings.Error"/> error code.</param>
+        public UnicornException(Bindings.Error error) : base(Bindings.ErrorToString(error))
+        {
+            _err = error;
+        }
+
+        internal UnicornException(uc_err err) : this((Bindings.Error)err)
         {
             // Space
         }
 
-        private static string GetUnicornErrorString(uc_err err)
-        {
-            var ptr = unicorn.uc_strerror(err);
-            var errString = Marshal.PtrToStringAnsi(ptr);
-            return errString;
-        }
+        private readonly Bindings.Error _err;
+
+        /// <summary>
+        /// Gets the <see cref="Bindings.Error"/> of the <see cref="UnicornException"/>.
+        /// </summary>
+        public Bindings.Error Error => _err;
     }
 }

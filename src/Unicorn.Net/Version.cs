@@ -1,7 +1,4 @@
-﻿using System;
-using Unicorn.Internal;
-
-namespace Unicorn
+﻿namespace Unicorn
 {
     /// <summary>
     /// Represents a version number.
@@ -10,7 +7,10 @@ namespace Unicorn
     {
         static Version()
         {
-            var nativeVersion = unicorn.uc_version(UIntPtr.Zero, UIntPtr.Zero);
+            var mmajor = 0;
+            var mminor = 0;
+
+            var nativeVersion = Bindings.Version(ref mmajor, ref mminor);
             var major = nativeVersion >> 0x8;
             var minor = nativeVersion & 0xF;
 

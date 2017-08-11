@@ -42,12 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bindings.cs" />
     <Compile Include="CodeHooksContainer.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Emulator.cs" />
     <Compile Include="Hooks.cs" />
     <Compile Include="HooksContainer.cs" />
-    <Compile Include="HookType.cs" />
     <Compile Include="Internal\uc_arch.cs" />
     <Compile Include="Internal\uc_err.cs" />
     <Compile Include="Internal\uc_hook_type.cs" />
@@ -68,7 +68,9 @@
     <Compile Include="x86\x86Mode.cs" />
     <Compile Include="x86\x86Registers.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Internal\uc_mem_region.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

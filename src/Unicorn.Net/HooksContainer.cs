@@ -10,12 +10,14 @@ namespace Unicorn
         internal HooksContainer(Emulator emulator)
         {
             Debug.Assert(emulator != null);
-            Emulator = emulator;
+            _emulator = emulator;
         }
+
+        private readonly Emulator _emulator;
 
         /// <summary>
         /// <see cref="Unicorn.Emulator"/> instance which owns this <see cref="HooksContainer"/>.
         /// </summary>
-        protected readonly Emulator Emulator;
+        protected Emulator Emulator => _emulator;
     }
 }

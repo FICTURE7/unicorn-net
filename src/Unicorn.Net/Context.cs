@@ -15,17 +15,15 @@ namespace Unicorn
         {
             Debug.Assert(emulator != null);
 
-            var err = unicorn.uc_context_alloc(emulator._uc, ref _context);
-            if (err != uc_err.UC_ERR_OK)
-                throw new UnicornException(err);
+            emulator.Bindings.ContextAlloc(ref _context);
 
             _arch = emulator._arch;
             _mode = emulator._mode;
         }
 
         internal bool _disposed;
-        internal readonly uc_arch _arch;
-        internal readonly uc_mode _mode;
+        internal readonly Bindings.Arch _arch;
+        internal readonly Bindings.Mode _mode;
         internal readonly UIntPtr _context;
 
         internal void Capture(Emulator emulator)
@@ -34,9 +32,7 @@ namespace Unicorn
             Debug.Assert(emulator._arch == _arch);
             Debug.Assert(emulator._mode == _mode);
 
-            var err = unicorn.uc_context_save(emulator._uc, _context);
-            if (err != uc_err.UC_ERR_OK)
-                throw new UnicornException(err);
+            emulator.Bindings.ContextSave(_context);
         }
 
         internal void Restore(Emulator emulator)
@@ -45,9 +41,7 @@ namespace Unicorn
             Debug.Assert(emulator._arch == _arch);
             Debug.Assert(emulator._mode == _mode);
 
-            var err = unicorn.uc_context_restore(emulator._uc, _context);
-            if (err != uc_err.UC_ERR_OK)
-                throw new UnicornException(err);
+            emulator.Bindings.ContextRestore(_context);
         }
 
         // No real need for the dispose pattern here, but it
@@ -79,8 +73,14 @@ namespace Unicorn
             if (_disposed)
                 return;
 
-            var err = unicorn.uc_free(_context);
-            Debug.Assert(err == uc_err.UC_ERR_OK);
+            try
+            {
+                Bindings.Free(_context);
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine("Exception thrown during disposal of Context object.");
+            }
 
             _disposed = true;
         }

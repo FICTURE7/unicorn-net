@@ -1,6 +1,4 @@
-﻿using Unicorn.Internal;
-
-namespace Unicorn
+﻿namespace Unicorn
 {
     /// <summary>
     /// Represents a memory region for emulation.
@@ -8,11 +6,11 @@ namespace Unicorn
     public struct MemoryRegion
     {
         // Wrap the native uc_mem_region structure.
-        internal MemoryRegion(unicorn.uc_mem_region region)
+        internal MemoryRegion(ulong begin, ulong end, MemoryPermissions perms)
         {
-            _begin = region.begin;
-            _end = region.end;
-            _perms = (MemoryPermissions)region.perms;
+            _begin = begin;
+            _end = end;
+            _perms = perms;
         }
 
         private readonly ulong _begin;

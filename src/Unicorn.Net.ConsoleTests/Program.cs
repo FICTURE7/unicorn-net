@@ -7,6 +7,8 @@ namespace Unicorn.ConsoleTests
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine("Unicorn version - " + Version.Current);
+
             using (var emulator = new x86Emulator(x86Mode.b32))
             {
                 ulong addr = 0x1000000;
@@ -19,11 +21,10 @@ namespace Unicorn.ConsoleTests
                 var ecx = 0x1234;
                 var edx = 0x7890;
 
-                // Add a code hook.
-                emulator.Hooks.Code.Add(CodeHook, 1, 0, null);
-
                 // Map 2mb of memory.
                 emulator.Memory.Map(addr, 2 * 1024 * 1024, MemoryPermissions.All);
+                emulator.Hooks.Code.Add(CodeHook, 1, 0, null);
+                emulator.Hooks.Code.Add(CodeHook, 1, 0, null);
 
                 // Capture context.
                 Console.WriteLine("-> Capturing context...");

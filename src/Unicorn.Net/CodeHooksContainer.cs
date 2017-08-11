@@ -28,25 +28,23 @@ namespace Unicorn
         /// Adds a <see cref="CodeHookCallback"/> to the <see cref="Emulator"/>.
         /// </summary>
         /// <param name="callback"></param>
-        /// <param name="start"></param>
+        /// <param name="address"></param>
         /// <param name="end"></param>
         /// <param name="userData"></param>
-        public void Add(CodeHookCallback callback, ulong start, ulong end, object userData)
+        public void Add(CodeHookCallback callback, ulong address, ulong end, object userData)
         {
             Emulator.CheckDisposed();
 
             var wrapper = new uc_cb_hookcode((uc, addr, size, user_data) =>
             {
-                Debug.Assert(uc == Emulator._uc);
+                Debug.Assert(uc == Emulator.Bindings.UCHandle);
                 callback(Emulator, addr, size, userData);
             });
 
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
             var hh = UIntPtr.Zero;
 
-            var err = unicorn.uc_hook_add(Emulator._uc, ref hh, uc_hook_type.UC_HOOK_CODE, ptr, UIntPtr.Zero, start, end);
-            if (err != uc_err.UC_ERR_OK)
-                throw new UnicornException(err);
+            Emulator.Bindings.HookAdd(ref hh, Bindings.HookType.Code, ptr, address, end);
         }
     }
 }

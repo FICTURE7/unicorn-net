@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using Unicorn.Internal;
 
 namespace Unicorn
 {
@@ -9,18 +8,15 @@ namespace Unicorn
     /// </summary>
     public abstract class Emulator : IDisposable
     {
-        internal Emulator(uc_arch arch, uc_mode mode)
+        internal Emulator(Bindings.Arch arch, Bindings.Mode mode)
         {
-            var uc = UIntPtr.Zero;
-            var err = unicorn.uc_open(arch, mode, ref uc);
-            if (err != uc_err.UC_ERR_OK)
-                throw new UnicornException(err);
-
-            _uc = uc;
             _arch = arch;
             _mode = mode;
+            _bindings = new Bindings();
             _memory = new Memory(this);
             _hooks = new Hooks(this);
+
+            _bindings.Open(arch, mode);
         }
 
         // To determine if we've been disposed or not.
@@ -30,12 +26,16 @@ namespace Unicorn
         // Hooks object instance which represents the hooks of the emulator.
         private readonly Hooks _hooks;
 
+        // Bindings to the unicorn engine.
+        private readonly Bindings _bindings;
+
         // Arch with which the Emulator instance was initialized.
-        internal readonly uc_arch _arch;
+        internal readonly Bindings.Arch _arch;
         // Mode with which the Emulator instance was initialized.
-        internal readonly uc_mode _mode;
-        // Pointer to the native unicorn engine handle.
-        internal readonly UIntPtr _uc;
+        internal readonly Bindings.Mode _mode;
+
+
+        internal Bindings Bindings => _bindings;
 
         /// <summary>
         /// Gets the <see cref="Unicorn.Memory"/> of the <see cref="Emulator"/>.
@@ -60,29 +60,6 @@ namespace Unicorn
                 CheckDisposed();
 
                 return _hooks;
-            }
-        }
-
-        /// <summary>
-        /// Gets the mode of the <see cref="Emulator"/>.
-        /// </summary>
-        public int Mode
-        {
-            get
-            {
-                CheckDisposed();
-
-                // -> Unicorn returns UC_ERR_ARGS when the emulator is not in arm?
-
-                /*
-                var mode = 0;
-                var err = UnicornLib.uc_query(_uc, UnicornQuery.UC_QUERY_MODE, ref mode);
-                if (err != UnicornError.UC_ERR_OK)
-                    throw new UnicornException(err);
-                Debug.Assert(mode == (int)_mode);
-                */
-
-                return (int)_mode;
             }
         }
 
@@ -119,13 +96,13 @@ namespace Unicorn
         /// <summary>
         /// Starts emulation at the specified begin address and end address.
         /// </summary>
-        /// <param name="beginAddr">Address at which to begin emulation.</param>
-        /// <param name="endAddr">Address at which to end emulation.</param>
-        public void Start(ulong beginAddr, ulong endAddr)
+        /// <param name="begin">Address at which to begin emulation.</param>
+        /// <param name="end">Address at which to end emulation.</param>
+        public void Start(ulong begin, ulong end)
         {
             CheckDisposed();
 
-            InternalStart(beginAddr, endAddr, 0, 0);
+            Bindings.EmuStart(begin, end, 0, 0);
         }
 
         /// <summary>
@@ -142,7 +119,7 @@ namespace Unicorn
 
             // Convert TimeSpan value into micro seconds.
             var microSeconds = (ulong)(Math.Round(timeout.TotalMilliseconds * 1000));
-            InternalStart(begin, end, microSeconds, count);
+            Bindings.EmuStart(begin, end, microSeconds, count);
         }
 
         /// <summary>
@@ -152,9 +129,7 @@ namespace Unicorn
         {
             CheckDisposed();
 
-            var err = unicorn.uc_emu_stop(_uc);
-            if (err != uc_err.UC_ERR_OK)
-                throw new UnicornException(err);
+            Bindings.EmuStop();
         }
 
         /// <summary>
@@ -184,8 +159,14 @@ namespace Unicorn
                 return;
 
             //NOTE: Might consider throwing an exception here?
-            var err = unicorn.uc_close(_uc);
-            Debug.Assert(err == uc_err.UC_ERR_OK, $"Disposal uc_close of Emulator instance did not return UC_ERR_OK, but {err}.");
+            try
+            {
+                Bindings.Close();
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine("Closing of unicorn engine handle threw an exception.");
+            }
 
             _disposed = true;
         }
@@ -194,13 +175,6 @@ namespace Unicorn
         {
             if (_disposed)
                 throw new ObjectDisposedException(null, "Can not access disposed Emulator object.");
-        }
-
-        private void InternalStart(ulong begin, ulong end, ulong timeout, int count)
-        {
-            var err = unicorn.uc_emu_start(_uc, begin, end, timeout, count);
-            if (err != uc_err.UC_ERR_OK)
-                throw new UnicornException(err);
         }
     }
 }

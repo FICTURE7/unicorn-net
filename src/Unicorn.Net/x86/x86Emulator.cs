@@ -1,6 +1,4 @@
-﻿using Unicorn.Internal;
-
-namespace Unicorn.x86
+﻿namespace Unicorn.x86
 {
     /// <summary>
     /// Represents an x86 architecture <see cref="Emulator"/>.
@@ -12,7 +10,7 @@ namespace Unicorn.x86
         /// <see cref="x86Mode"/> to use.
         /// </summary>
         /// <param name="mode">Mode to use.</param>
-        public x86Emulator(x86Mode mode) : base(uc_arch.UC_ARCH_X86, (uc_mode)mode)
+        public x86Emulator(x86Mode mode) : base(Bindings.Arch.x86, (Bindings.Mode)mode)
         {
             _registers = new x86Registers(this);
         }
@@ -35,6 +33,6 @@ namespace Unicorn.x86
         /// <summary>
         /// Gets the <see cref="x86Mode"/> of the <see cref="x86Emulator"/>.
         /// </summary>
-        public new x86Mode Mode => (x86Mode)base.Mode;
+        public x86Mode Mode => (x86Mode)_mode;
     }
 }
