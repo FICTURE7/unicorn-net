@@ -2,8 +2,10 @@
 Slightly fancier *WIP* .NET binding/wrapper for the [Unicorn engine](https://github.com/unicorn-engine/unicorn).
 
 #### NOTE
+The API is very prone to changes at the moment.
 
 ### Examples
+
 Here is an example of how to use it. This is also the same example as the official documentation available [here](http://www.unicorn-engine.org/docs/tutorial.html) but in C# and using Unicorn.Net.
 ```csharp
 using (var emulator = new x86Emulator(x86Mode.b32))
@@ -33,7 +35,84 @@ using (var emulator = new x86Emulator(x86Mode.b32))
 }
 ```
 
+#### Registers
+Reading and writing to registers.
+##### NOTE
+Currently there is no way to write to registers using register IDs, but this may change.
+```csharp
+// Assume emulator is an instance of the x86Emulator type.
+
+// Reading from registers.
+var val = emulator.Registers.ECX;
+// Writing to registers.
+emulator.Registers.ECX = 0x10;
+```
+
+#### Memory
+Mapping, unmapping, reading, writing and changing memory permissions.
+```csharp
+var addr = 0x100000;
+// Getting memory regions.
+var regions = emulator.Memory.Regions;
+// Getting memory page size.
+var pageSize = emulator.Memory.PageSize;
+
+// Mapping memory.
+emulator.Memory.Map(addr, 2 * 1024, 2 * 1024, MemoryPermissions.All);
+// Unmapping memory.
+emulator.Memory.Unmap(addr + (4 * 1024), 4 * 1024);
+// Changing memory permissions.
+emulator.Memory.Protect(addr + (4 * 1024), 4 * 1024, MemoryPermissions.Read);
+
+// Code to write to memory.
+var code = new byte[]
+{
+    0x41, // INC ECX
+    0x4a  // DEC EDX
+}
+
+// Buffer thats going to be the storage for data read from memory.
+var buffer = new byte[2];
+
+// Writing to memory.
+emulator.Memory.Write(code, 0, code.Length);
+// Reading to memory.
+emulator.Memory.Read(buffer, 0, buffer.Length);
+```
+
+#### Hooking
+Currently hooking is still under the works and may change.
+```csharp
+// Adding a memory read hook.
+emulator.Hooks.Memory.Add(MemoryHookType.Read, (emu, type, address, size, val, userData) => {
+    Console.WriteLine(" stuff was read from memory.");
+}, addr, addr + (ulong)code.Length, null);
+```
+
 #### Contexts
+Capturing and restoring contexts.
+```csharp
+// emulator.Context will create a new Context object
+// which you will to dispose afterwards. Hence the `using` statement.
+
+// Capturing the context.
+using (var ctx = emulator.Context)
+{
+    ...
+    
+    // To restore the context simply do this.
+    emulator.Context = ctx;
+}
+```
+
+#### Raw Bindings
+Unicorn.Net also provide some raw bindings through the `Bindings` class.
+```csharp
+var bindings = new Bindings();
+bindings.Open(...);
+bindings.MemMap(...);
+...
+```
 
 
 ### TODO
