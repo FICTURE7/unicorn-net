@@ -593,6 +593,17 @@ namespace Unicorn
         }
 
         /// <summary>
+        /// Binds to uc_hook_del.
+        /// </summary>
+        /// <param name="hh"></param>
+        public void HookRemove(IntPtr hh)
+        {
+            var err = unicorn.uc_hook_del(_uc, hh);
+            if (err != uc_err.UC_ERR_OK)
+                throw new UnicornException(err);
+        }
+
+        /// <summary>
         /// Binds to uc_query.
         /// </summary>
         /// <param name="type"></param>
