@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unicorn.Net", "src\Unicorn.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unicorn.Net.ConsoleTests", "src\Unicorn.Net.ConsoleTests\Unicorn.Net.ConsoleTests.csproj", "{67AAEB9A-8964-4B13-94A8-AC0135D171AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unicorn.Net.Samples.x86", "samples\Unicorn.Net.Samples.x86\Unicorn.Net.Samples.x86.csproj", "{0316C62F-7453-4386-BC0F-FE22956AEC24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{67AAEB9A-8964-4B13-94A8-AC0135D171AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67AAEB9A-8964-4B13-94A8-AC0135D171AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67AAEB9A-8964-4B13-94A8-AC0135D171AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0316C62F-7453-4386-BC0F-FE22956AEC24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0316C62F-7453-4386-BC0F-FE22956AEC24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0316C62F-7453-4386-BC0F-FE22956AEC24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0316C62F-7453-4386-BC0F-FE22956AEC24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
