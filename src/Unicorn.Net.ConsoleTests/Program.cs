@@ -23,8 +23,8 @@ namespace Unicorn.ConsoleTests
 
                 // Map 2mb of memory.
                 emulator.Memory.Map(addr, 2 * 1024 * 1024, MemoryPermissions.All);
-                emulator.Hooks.Code.Add(CodeHook, 1, 0, null);
-                emulator.Hooks.Code.Add(CodeHook, 1, 0, null);
+
+                var handle = emulator.Hooks.Code.Add(CodeHook, null);
 
                 // Capture context.
                 Console.WriteLine("-> Capturing context...");

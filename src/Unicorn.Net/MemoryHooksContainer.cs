@@ -46,9 +46,12 @@ namespace Unicorn
         /// <param name="begin"></param>
         /// <param name="end"></param>
         /// <param name="userData"></param>
-        public void Add(MemoryHookType type, MemoryHookCallback callback, ulong begin, ulong end, object userData)
+        public HookHandle Add(MemoryHookType type, MemoryHookCallback callback, ulong begin, ulong end, object userData)
         {
             Emulator.CheckDisposed();
+
+            if (callback == null)
+                throw new ArgumentNullException(nameof(callback));
 
             var wrapper = new uc_cb_hookmem((uc, _type, addr, size, value, user_data) =>
             {
@@ -59,7 +62,7 @@ namespace Unicorn
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
             var hh = IntPtr.Zero;
 
-            Emulator.Bindings.HookAdd(ref hh, (Bindings.HookType)type, ptr, IntPtr.Zero,begin, end);
+            return Add((Bindings.HookType)type, ptr, begin, end);
         }
 
         /// <summary>
@@ -70,9 +73,12 @@ namespace Unicorn
         /// <param name="begin"></param>
         /// <param name="end"></param>
         /// <param name="userData"></param>
-        public void Add(MemoryEventHookType type, MemoryEventHookCallback callback, ulong begin, ulong end, object userData)
+        public HookHandle Add(MemoryEventHookType type, MemoryEventHookCallback callback, ulong begin, ulong end, object userData)
         {
             Emulator.CheckDisposed();
+
+            if (callback == null)
+                throw new ArgumentNullException(nameof(callback));
 
             var wrapper = new uc_cb_eventmem((uc, _type, addr, size, value, user_data) =>
             {
@@ -83,7 +89,7 @@ namespace Unicorn
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
             var hh = IntPtr.Zero;
 
-            Emulator.Bindings.HookAdd(ref hh, (Bindings.HookType)type, ptr, IntPtr.Zero, begin, end);
+            return Add((Bindings.HookType)type, ptr, begin, end);
         }
     }
 

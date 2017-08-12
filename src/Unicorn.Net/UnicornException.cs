@@ -44,6 +44,6 @@ namespace Unicorn
         /// <summary>
         /// Gets the <see cref="Bindings.Error"/> of the <see cref="UnicornException"/>.
         /// </summary>
-        public Bindings.Error Error => _err;
+        public Bindings.Error ErrorCode => _err;
     }
 }

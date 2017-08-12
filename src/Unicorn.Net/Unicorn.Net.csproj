@@ -46,6 +46,7 @@
     <Compile Include="CodeHooksContainer.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Emulator.cs" />
+    <Compile Include="HookHandle.cs" />
     <Compile Include="Hooks.cs" />
     <Compile Include="HooksContainer.cs" />
     <Compile Include="Internal\uc_arch.cs" />

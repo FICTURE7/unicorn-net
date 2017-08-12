@@ -28,13 +28,39 @@ namespace Unicorn
         /// Adds a <see cref="CodeHookCallback"/> to the <see cref="Emulator"/>.
         /// </summary>
         /// <param name="callback"></param>
-        /// <param name="address"></param>
-        /// <param name="end"></param>
         /// <param name="userData"></param>
-        public void Add(CodeHookCallback callback, ulong address, ulong end, object userData)
+        /// <returns></returns>
+        public HookHandle Add(CodeHookCallback callback, object userData)
         {
             Emulator.CheckDisposed();
 
+            if (callback == null)
+                throw new ArgumentNullException(nameof(callback));
+
+            return AddInternal(callback, 1, 0, userData);
+        }
+
+        /// <summary>
+        /// Adds a <see cref="CodeHookCallback"/> to the <see cref="Emulator"/>.
+        /// </summary>
+        /// <param name="callback"></param>
+        /// <param name="begin"></param>
+        /// <param name="end"></param>
+        /// <param name="userData"></param>
+        public HookHandle Add(CodeHookCallback callback, ulong begin, ulong end, object userData)
+        {
+            Emulator.CheckDisposed();
+
+            if (callback == null)
+                throw new ArgumentNullException(nameof(callback));
+            if (begin > end)
+                throw new ArgumentException("Begin cannot be greater than end. Use Add(CodeHookCallback, object) instead to add a global hook.");
+
+            return AddInternal(callback, begin, end, userData);
+        }
+
+        private HookHandle AddInternal(CodeHookCallback callback, ulong begin, ulong end, object userData)
+        {
             var wrapper = new uc_cb_hookcode((uc, addr, size, user_data) =>
             {
                 Debug.Assert(uc == Emulator.Bindings.UCHandle);
@@ -44,7 +70,7 @@ namespace Unicorn
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
             var hh = IntPtr.Zero;
 
-            Emulator.Bindings.HookAdd(ref hh, Bindings.HookType.Code, ptr, IntPtr.Zero, address, end);
+            return Add(Bindings.HookType.Code, ptr, begin, end);
         }
     }
 }
