@@ -5,6 +5,7 @@ obj/
 # Visual Studio
 .vs/
 Debug/
+Release/
 *.VC.db
 *.VC.opendb
 
