@@ -57,9 +57,9 @@ namespace Unicorn
             });
 
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
-            var hh = UIntPtr.Zero;
+            var hh = IntPtr.Zero;
 
-            Emulator.Bindings.HookAdd(ref hh, (Bindings.HookType)type, ptr, begin, end);
+            Emulator.Bindings.HookAdd(ref hh, (Bindings.HookType)type, ptr, IntPtr.Zero,begin, end);
         }
 
         /// <summary>
@@ -81,9 +81,9 @@ namespace Unicorn
             });
 
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
-            var hh = UIntPtr.Zero;
+            var hh = IntPtr.Zero;
 
-            Emulator.Bindings.HookAdd(ref hh, (Bindings.HookType)type, ptr, begin, end);
+            Emulator.Bindings.HookAdd(ref hh, (Bindings.HookType)type, ptr, IntPtr.Zero, begin, end);
         }
     }
 

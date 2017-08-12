@@ -350,7 +350,7 @@ namespace Unicorn
         /// Binds to uc_free.
         /// </summary>
         /// <param name="addr"></param>
-        public static void Free(UIntPtr addr)
+        public static void Free(IntPtr addr)
         {
             var err = unicorn.uc_free(addr);
             if (err != uc_err.UC_ERR_OK)
@@ -365,12 +365,12 @@ namespace Unicorn
             // Space
         }
 
-        private UIntPtr _uc;
+        private IntPtr _uc;
 
         /// <summary>
         /// Gets the handle of the <see cref="Bindings"/> returned by <see cref="Open(Arch, Mode)"/>.
         /// </summary>
-        public UIntPtr UCHandle => _uc;
+        public IntPtr UCHandle => _uc;
 
         /// <summary>
         /// Binds to uc_open.
@@ -447,7 +447,7 @@ namespace Unicorn
         /// </summary>
         /// <param name="regions"></param>
         /// <param name="count"></param>
-        public void MemRegions(ref UIntPtr regions, ref int count)
+        public void MemRegions(ref IntPtr regions, ref int count)
         {
             var err = unicorn.uc_mem_regions(_uc, ref regions, ref count);
             if (err != uc_err.UC_ERR_OK)
@@ -461,20 +461,19 @@ namespace Unicorn
         public void MemRegions(ref MemoryRegion[] regions)
         {
             var count = 0;
-            var ptr = UIntPtr.Zero;
+            var ptr = IntPtr.Zero;
 
             MemRegions(ref ptr, ref count);
 
             regions = new MemoryRegion[count];
-            var signedPtr = new IntPtr(ptr.ToUInt32());
             var size = Marshal.SizeOf(typeof(uc_mem_region));
             for (int i = 0; i < count; i++)
             {
-                var nativeStruct = (uc_mem_region)Marshal.PtrToStructure(signedPtr, typeof(uc_mem_region));
+                var nativeStruct = (uc_mem_region)Marshal.PtrToStructure(ptr, typeof(uc_mem_region));
                 var region = new MemoryRegion(nativeStruct.begin, nativeStruct.end, (MemoryPermissions)nativeStruct.perms);
 
                 regions[i] = region;
-                signedPtr += size;
+                ptr += size;
             }
 
             Free(ptr);
@@ -548,7 +547,7 @@ namespace Unicorn
         /// Binds to uc_context_alloc.
         /// </summary>
         /// <param name="ctx"></param>
-        public void ContextAlloc(ref UIntPtr ctx)
+        public void ContextAlloc(ref IntPtr ctx)
         {
             var err = unicorn.uc_context_alloc(_uc, ref ctx);
             if (err != uc_err.UC_ERR_OK)
@@ -559,7 +558,7 @@ namespace Unicorn
         /// Binds to uc_context_save.
         /// </summary>
         /// <param name="ctx"></param>
-        public void ContextSave(UIntPtr ctx)
+        public void ContextSave(IntPtr ctx)
         {
             var err = unicorn.uc_context_save(_uc, ctx);
             if (err != uc_err.UC_ERR_OK)
@@ -570,7 +569,7 @@ namespace Unicorn
         /// Binds to uc_context_restore.
         /// </summary>
         /// <param name="ctx"></param>
-        public void ContextRestore(UIntPtr ctx)
+        public void ContextRestore(IntPtr ctx)
         {
             var err = unicorn.uc_context_restore(_uc, ctx);
             if (err != uc_err.UC_ERR_OK)
@@ -583,13 +582,12 @@ namespace Unicorn
         /// <param name="hh"></param>
         /// <param name="type"></param>
         /// <param name="callback"></param>
+        /// <param name="userData"></param>
         /// <param name="address"></param>
         /// <param name="end"></param>
-        public void HookAdd(ref UIntPtr hh, HookType type, IntPtr callback, ulong address, ulong end)
+        public void HookAdd(ref IntPtr hh, HookType type, IntPtr callback, IntPtr userData, ulong address, ulong end)
         {
-            //NOTE: Setting the user_data parameter NULL (UIntPtr.Zero).
-
-            var err = unicorn.uc_hook_add(_uc, ref hh, (uc_hook_type)type, callback, UIntPtr.Zero, address, end);
+            var err = unicorn.uc_hook_add(_uc, ref hh, (uc_hook_type)type, callback, userData, address, end);
             if (err != uc_err.UC_ERR_OK)
                 throw new UnicornException(err);
         }

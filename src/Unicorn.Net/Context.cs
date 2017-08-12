@@ -24,7 +24,7 @@ namespace Unicorn
         internal bool _disposed;
         internal readonly Bindings.Arch _arch;
         internal readonly Bindings.Mode _mode;
-        internal readonly UIntPtr _context;
+        internal readonly IntPtr _context;
 
         internal void Capture(Emulator emulator)
         {

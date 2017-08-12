@@ -16,10 +16,10 @@ namespace Unicorn.Internal
         public static extern IntPtr uc_strerror(uc_err err);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_free(UIntPtr mem);
+        public static extern uc_err uc_free(IntPtr mem);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_query(UIntPtr uc, uc_query_type query, ref int result);
+        public static extern uc_err uc_query(IntPtr uc, uc_query_type query, ref int result);
 
 #if !RELEASE
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
@@ -28,72 +28,72 @@ namespace Unicorn.Internal
 
         // Open/Close
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_open(uc_arch arch, uc_mode mode, ref UIntPtr uc);
+        public static extern uc_err uc_open(uc_arch arch, uc_mode mode, ref IntPtr uc);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_close(UIntPtr uc);
+        public static extern uc_err uc_close(IntPtr uc);
 
         // Registers Read/Write
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_reg_read(UIntPtr uc, int regid, ref long value);
+        public static extern uc_err uc_reg_read(IntPtr uc, int regid, ref long value);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_reg_write(UIntPtr uc, int regid, ref long value);
+        public static extern uc_err uc_reg_write(IntPtr uc, int regid, ref long value);
 
         // Emulator Start/Stop
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_emu_start(UIntPtr uc, ulong begin, ulong end, ulong timeout, int count);
+        public static extern uc_err uc_emu_start(IntPtr uc, ulong begin, ulong end, ulong timeout, int count);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_emu_stop(UIntPtr uc);
+        public static extern uc_err uc_emu_stop(IntPtr uc);
 
         // Memory Read/Write/Map/Unmap/Protect/Regions
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_mem_map(UIntPtr uc, ulong address, int size, int perms);
+        public static extern uc_err uc_mem_map(IntPtr uc, ulong address, int size, int perms);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_mem_unmap(UIntPtr uc, ulong address, int size);
+        public static extern uc_err uc_mem_unmap(IntPtr uc, ulong address, int size);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_mem_write(UIntPtr uc, ulong address, byte[] bytes, int size);
+        public static extern uc_err uc_mem_write(IntPtr uc, ulong address, byte[] bytes, int size);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_mem_read(UIntPtr uc, ulong address, byte[] bytes, int size);
+        public static extern uc_err uc_mem_read(IntPtr uc, ulong address, byte[] bytes, int size);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_mem_protect(UIntPtr uc, ulong address, int size, int perms);
+        public static extern uc_err uc_mem_protect(IntPtr uc, ulong address, int size, int perms);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_mem_regions(UIntPtr uc, ref UIntPtr regions, ref int count);
+        public static extern uc_err uc_mem_regions(IntPtr uc, ref IntPtr regions, ref int count);
 
         // Context Alloc/Save/Restore.
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_context_alloc(UIntPtr uc, ref UIntPtr context);
+        public static extern uc_err uc_context_alloc(IntPtr uc, ref IntPtr context);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_context_save(UIntPtr uc, UIntPtr context);
+        public static extern uc_err uc_context_save(IntPtr uc, IntPtr context);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_context_restore(UIntPtr uc, UIntPtr context);
+        public static extern uc_err uc_context_restore(IntPtr uc, IntPtr context);
 
         // Hook Add/Del.
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern unsafe uc_err uc_hook_add(UIntPtr uc, ref UIntPtr hh, uc_hook_type type, IntPtr callback, UIntPtr user_data, ulong address, ulong end);
+        public static extern unsafe uc_err uc_hook_add(IntPtr uc, ref IntPtr hh, uc_hook_type type, IntPtr callback, IntPtr user_data, ulong address, ulong end);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_hook_del(UIntPtr uc, UIntPtr hh);
+        public static extern uc_err uc_hook_del(IntPtr uc, IntPtr hh);
     }
 
     // Callbacks
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    internal delegate void uc_cb_hookcode(UIntPtr uc, ulong address, int size, UIntPtr user_data);
+    internal delegate void uc_cb_hookcode(IntPtr uc, ulong address, int size, IntPtr user_data);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    internal delegate void uc_cb_hookintr(UIntPtr uc, ulong into, UIntPtr user_data);
+    internal delegate void uc_cb_hookintr(IntPtr uc, ulong into, IntPtr user_data);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    internal delegate void uc_cb_hookmem(UIntPtr uc, uc_mem_type type, ulong address, int size, ulong value, UIntPtr user_data);
+    internal delegate void uc_cb_hookmem(IntPtr uc, uc_mem_type type, ulong address, int size, ulong value, IntPtr user_data);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    internal delegate bool uc_cb_eventmem(UIntPtr uc, uc_mem_type type, ulong address, int size, ulong value, UIntPtr user_data);
+    internal delegate bool uc_cb_eventmem(IntPtr uc, uc_mem_type type, ulong address, int size, ulong value, IntPtr user_data);
 }

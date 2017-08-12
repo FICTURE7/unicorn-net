@@ -42,9 +42,9 @@ namespace Unicorn
             });
 
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
-            var hh = UIntPtr.Zero;
+            var hh = IntPtr.Zero;
 
-            Emulator.Bindings.HookAdd(ref hh, Bindings.HookType.Code, ptr, address, end);
+            Emulator.Bindings.HookAdd(ref hh, Bindings.HookType.Code, ptr, IntPtr.Zero, address, end);
         }
     }
 }

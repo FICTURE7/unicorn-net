@@ -34,7 +34,6 @@ namespace Unicorn
         // Mode with which the Emulator instance was initialized.
         internal readonly Bindings.Mode _mode;
 
-
         internal Bindings Bindings => _bindings;
 
         /// <summary>
