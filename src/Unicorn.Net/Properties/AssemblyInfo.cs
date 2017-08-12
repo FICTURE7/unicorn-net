@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Unicorn.Net")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription(".NET binding/wrapper for the Unicorn engine.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Unicorn.Net")]
