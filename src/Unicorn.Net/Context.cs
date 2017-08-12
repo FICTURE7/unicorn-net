@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using Unicorn.Internal;
 
 namespace Unicorn
 {
