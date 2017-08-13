@@ -96,6 +96,7 @@ namespace Unicorn
     /// <summary>
     /// Types of memory accesses for <see cref="MemoryHookCallback"/>.
     /// </summary>
+    [Flags]
     public enum MemoryHookType
     {
         /// <summary>
@@ -122,6 +123,7 @@ namespace Unicorn
     /// <summary>
     /// Types of invalid memory accesses for <see cref="MemoryEventHookCallback"/>.
     /// </summary>
+    [Flags]
     public enum MemoryEventHookType
     {
         /// <summary>
