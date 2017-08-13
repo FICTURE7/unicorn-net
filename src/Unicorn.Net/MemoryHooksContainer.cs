@@ -43,6 +43,22 @@ namespace Unicorn
         /// </summary>
         /// <param name="type"></param>
         /// <param name="callback"></param>
+        /// <returns></returns>
+        public HookHandle Add(MemoryHookType type, MemoryHookCallback callback)
+        {
+            Emulator.CheckDisposed();
+
+            if (callback == null)
+                throw new ArgumentNullException(nameof(callback));
+
+            return AddInternal(type, callback, 1, 0, null);
+        }
+
+        /// <summary>
+        /// Adds a <see cref="MemoryHookCallback"/> of the specified <see cref="MemoryHookType"/> to the <see cref="Emulator"/>.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="callback"></param>
         /// <param name="begin"></param>
         /// <param name="end"></param>
         /// <param name="userData"></param>
@@ -53,16 +69,24 @@ namespace Unicorn
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
 
-            var wrapper = new uc_cb_hookmem((uc, _type, addr, size, value, user_data) =>
-            {
-                Debug.Assert(uc == Emulator.Bindings.UCHandle);
-                callback(Emulator, (MemoryType)_type, addr, size, value, userData);
-            });
+            return AddInternal(type, callback, begin, end, userData);
+        }
 
-            var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
-            var hh = IntPtr.Zero;
+        /// <summary>
+        /// Adds a <see cref="MemoryEventHookCallback"/> of the specified <see cref="MemoryHookType"/> to the <see cref="Emulator"/>.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="callback"></param>
+        /// <param name="userData"></param>
+        /// <returns></returns>
+        public HookHandle Add(MemoryEventHookType type, MemoryEventHookCallback callback, object userData)
+        {
+            Emulator.CheckDisposed();
 
-            return Add((Bindings.HookType)type, ptr, begin, end);
+            if (callback == null)
+                throw new ArgumentNullException(nameof(callback));
+
+            return AddInternal(type, callback, 1, 0, userData);
         }
 
         /// <summary>
@@ -79,11 +103,32 @@ namespace Unicorn
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
+            if (begin > end)
+                throw new ArgumentException("Begin cannot be greater than end. Use Add(MemoryHookEventType, MemoryEventHookCallback, object) instead to add a global hook.");
 
+            return AddInternal(type, callback, begin, end, userData);
+        }
+
+        private HookHandle AddInternal(MemoryEventHookType type, MemoryEventHookCallback callback, ulong begin, ulong end, object userData)
+        {
             var wrapper = new uc_cb_eventmem((uc, _type, addr, size, value, user_data) =>
             {
                 Debug.Assert(uc == Emulator.Bindings.UCHandle);
                 return callback(Emulator, (MemoryType)_type, addr, size, value, userData);
+            });
+
+            var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
+            var hh = IntPtr.Zero;
+
+            return Add((Bindings.HookType)type, ptr, begin, end);
+        }
+
+        private HookHandle AddInternal(MemoryHookType type, MemoryHookCallback callback, ulong begin, ulong end, object userData)
+        {
+            var wrapper = new uc_cb_hookmem((uc, _type, addr, size, value, user_data) =>
+            {
+                Debug.Assert(uc == Emulator.Bindings.UCHandle);
+                callback(Emulator, (MemoryType)_type, addr, size, value, userData);
             });
 
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);

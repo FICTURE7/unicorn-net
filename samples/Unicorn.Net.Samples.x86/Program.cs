@@ -79,7 +79,7 @@ namespace Unicorn.Net.Samples.x86
                 emulator.Registers.EDX = 0x7890;
 
                 emulator.Hooks.Code.Add(CodeHook, null);
-                emulator.Hooks.Memory.Add(MemoryEventHookType.UnmappedRead | MemoryEventHookType.UnmappedWrite, InvalidMemoryHook, 1, 0, null);
+                emulator.Hooks.Memory.Add(MemoryEventHookType.UnmappedRead | MemoryEventHookType.UnmappedWrite, InvalidMemoryHook, null);
 
                 // Start emulating the machine written machine code.
                 emulator.Start(addr, addr + (ulong)code.Length);
