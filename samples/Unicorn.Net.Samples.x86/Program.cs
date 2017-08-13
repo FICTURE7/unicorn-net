@@ -21,7 +21,7 @@ namespace Unicorn.Net.Samples.x86
             };
 
             Console.WriteLine("===================================");
-            Console.WriteLine("Emulate i386 code that read from invalid memory");
+            Console.WriteLine("Emulate i386 code that read from invalid memory.");
 
             using (var emulator = new x86Emulator(x86Mode.b32))
             {
@@ -54,6 +54,41 @@ namespace Unicorn.Net.Samples.x86
             }
         }
 
+        // test_i386_loop
+        public static void TestLoop()
+        {
+            var addr = 0x1000000UL;
+            var code = new byte[]
+            {
+                0x41, // INC ecx
+                0x4A, // DEC edx
+                0xEB, // JMP self-loop
+                0xFE
+            };
+
+            Console.WriteLine("===================================");
+            Console.WriteLine("Emulate i386 code that emulates forever.");
+
+            using (var emulator = new x86Emulator(x86Mode.b32))
+            {
+                // Map 2MB of memory.
+                emulator.Memory.Map(addr, 2 * 1024 * 1024, MemoryPermissions.All);
+                // Write machine code to be emulated.
+                emulator.Memory.Write(addr, code, code.Length);
+
+                // Initialize registers.
+                emulator.Registers.ECX = 0x1234;
+                emulator.Registers.EDX = 0x7890;
+
+                // Emulate code for 2 seconds, so we can exit the code since it loops forever.
+                emulator.Start(addr, addr + (ulong)code.Length, TimeSpan.FromSeconds(2), 0);
+
+                Console.WriteLine(">>> Emulation done. Below is the CPU context");
+                Console.WriteLine($">>> ECX = 0x{emulator.Registers.ECX.ToString("x2")}");
+                Console.WriteLine($">>> EDX = 0x{emulator.Registers.EDX.ToString("x2")}");
+            }
+        }
+
         public static void CodeHook(Emulator emulator, ulong address, int size, object userData)
         {
             var eflags = ((x86Emulator)emulator).Registers.EFLAGS;
@@ -65,6 +100,7 @@ namespace Unicorn.Net.Samples.x86
         public static void Main(string[] args)
         {
             TestInvalidMemoryRead();
+            TestLoop();
 
             Console.ReadLine();
         }
