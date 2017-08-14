@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bindings.cs" />
+    <Compile Include="BlockHooksContainer.cs" />
     <Compile Include="CodeHooksContainer.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Emulator.cs" />

@@ -34,6 +34,7 @@ namespace Unicorn.Net.Samples.x86
                 emulator.Registers.ECX = 0x1234;
                 emulator.Registers.EDX = 0x7890;
 
+                emulator.Hooks.Block.Add(BlockHook, null);
                 // Trace all instructions.
                 emulator.Hooks.Code.Add(CodeHook, null);
 
@@ -54,6 +55,7 @@ namespace Unicorn.Net.Samples.x86
             }
         }
 
+        // test_i386_invalid_mem_write
         public static void TestInvalidMemoryWrite()
         {
             var addr = 0x1000000UL;
@@ -145,6 +147,7 @@ namespace Unicorn.Net.Samples.x86
             }
         }
 
+        // hook_code
         public static void CodeHook(Emulator emulator, ulong address, int size, object userData)
         {
             var eflags = ((x86Emulator)emulator).Registers.EFLAGS;
@@ -153,6 +156,13 @@ namespace Unicorn.Net.Samples.x86
             Console.WriteLine($">>> --- EFLAGS is {eflags.ToString("x2")}");
         }
 
+        // hook_block
+        private static void BlockHook(Emulator emulator, ulong address, int size, object userData)
+        {
+            Console.WriteLine($">>> Tracing basic block at 0x{address.ToString("x2")}, block size = 0x{size.ToString("x2")}");
+        }
+
+        // hook_mem_invalid
         private static bool InvalidMemoryHook(Emulator emulator, MemoryType type, ulong address, int size, ulong value, object userData)
         {
             switch (type)
