@@ -54,7 +54,7 @@ namespace Unicorn
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
             if (begin > end)
-                throw new ArgumentException("Begin cannot be greater than end. Use Add(CodeHookCallback, object) instead to add a global hook.");
+                throw new ArgumentException("Begin address cannot be greater than end address. Use Add(CodeHookCallback, object) instead to add a global hook.");
 
             return AddInternal(callback, begin, end, userData);
         }
