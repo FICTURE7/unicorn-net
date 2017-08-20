@@ -27,7 +27,7 @@ namespace Unicorn
         public int Count => _handles.Count;
 
         /// <summary>
-        /// <see cref="Unicorn.Emulator"/> instance which owns this <see cref="HooksContainer"/>.
+        /// Gets the <see cref="Unicorn.Emulator"/> instance which owns this <see cref="HooksContainer"/>.
         /// </summary>
         protected Emulator Emulator => _emulator;
 
