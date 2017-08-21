@@ -68,8 +68,6 @@ namespace Unicorn
             });
 
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
-            var hh = IntPtr.Zero;
-
             return Add(Bindings.HookType.Block, ptr, begin, end);
         }
     }
