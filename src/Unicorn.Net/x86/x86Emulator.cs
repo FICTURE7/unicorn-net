@@ -33,6 +33,14 @@
         /// <summary>
         /// Gets the <see cref="x86Mode"/> of the <see cref="x86Emulator"/>.
         /// </summary>
-        public x86Mode Mode => (x86Mode)_mode;
+        public x86Mode Mode
+        {
+            get
+            {
+                CheckDisposed();
+
+                return (x86Mode)_mode;
+            }
+        }
     }
 }
