@@ -16,7 +16,7 @@ def main(args):
 
         name = ins[ins.rindex('_') + 1:]
         code = "/// <summary>\n/// Represents the {0} instruction.\n/// </summary>\n".format(name)
-        code += "public Instruction {0} = new Instruction({1});\n".format(name, insid)
+        code += "public static readonly Instruction {0} = new Instruction({1});\n\n".format(name, insid)
 
         insid += 1
         final_code += code
