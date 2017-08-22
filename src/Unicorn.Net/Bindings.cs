@@ -593,6 +593,23 @@ namespace Unicorn
         }
 
         /// <summary>
+        /// Binds to uc_hook_add.
+        /// </summary>
+        /// <param name="hh"></param>
+        /// <param name="type"></param>
+        /// <param name="callback"></param>
+        /// <param name="userData"></param>
+        /// <param name="address"></param>
+        /// <param name="end"></param>
+        /// <param name="instruction"></param>
+        public void HookAdd(ref IntPtr hh, HookType type, IntPtr callback, IntPtr userData, ulong address, ulong end, int instruction)
+        {
+            var err = unicorn.uc_hook_add(_uc, ref hh, (uc_hook_type)type, callback, userData, address, end, instruction);
+            if (err != uc_err.UC_ERR_OK)
+                throw new UnicornException(err);
+        }
+
+        /// <summary>
         /// Binds to uc_hook_del.
         /// </summary>
         /// <param name="hh"></param>

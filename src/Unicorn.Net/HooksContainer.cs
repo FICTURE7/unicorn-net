@@ -32,6 +32,11 @@ namespace Unicorn
         protected Emulator Emulator => _emulator;
 
         /// <summary>
+        /// Gets the list of <see cref="HookHandle"/> in this <see cref="HooksContainer"/>.
+        /// </summary>
+        protected List<HookHandle> Handles => _handles;
+
+        /// <summary>
         /// Adds a hook to <see cref="Emulator"/>.
         /// </summary>
         /// <param name="type"></param>

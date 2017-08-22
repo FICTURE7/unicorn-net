@@ -81,6 +81,9 @@ namespace Unicorn.Internal
         public static extern unsafe uc_err uc_hook_add(IntPtr uc, ref IntPtr hh, uc_hook_type type, IntPtr callback, IntPtr user_data, ulong address, ulong end);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
+        public static extern unsafe uc_err uc_hook_add(IntPtr uc, ref IntPtr hh, uc_hook_type type, IntPtr callback, IntPtr user_data, ulong address, ulong end, int instruction);
+
+        [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern uc_err uc_hook_del(IntPtr uc, IntPtr hh);
     }
 
@@ -90,6 +93,12 @@ namespace Unicorn.Internal
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate void uc_cb_hookintr(IntPtr uc, ulong into, IntPtr user_data);
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    internal delegate int uc_cb_insn_in(IntPtr uc, int port, int size, IntPtr user_data);
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    internal delegate void uc_cb_insn_out(IntPtr uc, int port, int size, int value, IntPtr user_data);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate void uc_cb_hookmem(IntPtr uc, uc_mem_type type, ulong address, int size, ulong value, IntPtr user_data);

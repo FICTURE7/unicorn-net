@@ -50,6 +50,8 @@
     <Compile Include="HookHandle.cs" />
     <Compile Include="Hooks.cs" />
     <Compile Include="HooksContainer.cs" />
+    <Compile Include="Instruction.cs" />
+    <Compile Include="InstructionHooksContainer.cs" />
     <Compile Include="Internal\uc_arch.cs" />
     <Compile Include="Internal\uc_err.cs" />
     <Compile Include="Internal\uc_hook_type.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="UnicornException.cs" />
     <Compile Include="Version.cs" />
     <Compile Include="x86\x86Emulator.cs" />
+    <Compile Include="x86\x86Instructions.cs" />
     <Compile Include="x86\x86Mode.cs" />
     <Compile Include="x86\x86Registers.cs" />
   </ItemGroup>
