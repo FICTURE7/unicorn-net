@@ -103,8 +103,6 @@ namespace Unicorn
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
-            if (begin > end)
-                throw new ArgumentException("Begin address cannot be greater than end address. Use Add(MemoryHookEventType, MemoryEventHookCallback, object) instead to add a global hook.");
 
             return AddInternal(type, callback, begin, end, userData);
         }
