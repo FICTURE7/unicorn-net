@@ -12,3 +12,4 @@ Release/
 # Scripts output/input files.
 scripts/*.cs
 scripts/*.reg
+scripts/*.ins
