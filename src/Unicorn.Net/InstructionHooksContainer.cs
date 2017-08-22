@@ -40,6 +40,23 @@ namespace Unicorn
         /// </summary>
         /// <param name="callback"></param>
         /// <param name="instruction"></param>
+        /// <param name="userData"></param>
+        /// <returns></returns>
+        public HookHandle Add(InstructionInHookCallback callback, Instruction instruction, object userData)
+        {
+            Emulator.CheckDisposed();
+
+            if (callback == null)
+                throw new ArgumentNullException(nameof(callback));
+
+            return AddInInternal(callback, instruction, 1, 0, userData);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="callback"></param>
+        /// <param name="instruction"></param>
         /// <param name="begin"></param>
         /// <param name="end"></param>
         /// <param name="userData"></param>
@@ -51,6 +68,23 @@ namespace Unicorn
                 throw new ArgumentNullException(nameof(callback));
 
             return AddInInternal(callback, instruction, begin, end, userData);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="callback"></param>
+        /// <param name="instruction"></param>
+        /// <param name="userData"></param>
+        /// <returns></returns>
+        public HookHandle Add(InstructionOutHookCallback callback, Instruction instruction, object userData)
+        {
+            Emulator.CheckDisposed();
+
+            if (callback == null)
+                throw new ArgumentNullException(nameof(callback));
+
+            return AddOutInternal(callback, instruction, 1, 0, userData);
         }
 
         /// <summary>

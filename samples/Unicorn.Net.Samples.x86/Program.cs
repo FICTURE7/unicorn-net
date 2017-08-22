@@ -144,9 +144,9 @@ namespace Unicorn.Net.Samples.x86
                 // Trace all instructions.
                 emulator.Hooks.Code.Add(CodeHook, null);
                 // Hook x86 IN instructions.
-                emulator.Hooks.Instruction.Add(HookIn, x86Instructions.IN, 1, 0, null);
+                emulator.Hooks.Instruction.Add(HookIn, x86Instructions.IN, null);
                 // Hook x86 OUT instructions.
-                emulator.Hooks.Instruction.Add(HookOut, x86Instructions.OUT, 1, 0, null);
+                emulator.Hooks.Instruction.Add(HookOut, x86Instructions.OUT, null);
 
                 // Start emulating the machine written machine code.
                 emulator.Start(addr, addr + (ulong)code.Length);
