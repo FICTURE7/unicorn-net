@@ -113,6 +113,55 @@ namespace Unicorn.Net.Samples.x86
             }
         }
 
+        // test_i386_context_save
+        public static void TestContextSave()
+        {
+            var addr = 0x1000000UL;
+            var code = new byte[]
+            {
+                0x40, // INC eax
+            };
+
+            Console.WriteLine("===================================");
+            Console.WriteLine("Save/restore CPU context in opaque blob.");
+
+            using (var emulator = new x86Emulator(x86Mode.b32))
+            {
+                // Map 8KB of memory for emulation.
+                emulator.Memory.Map(addr, 8 * 1024, MemoryPermissions.All);
+                // Write machine code to emulate.
+                emulator.Memory.Write(addr, code, code.Length);
+
+                // Initialize registers.
+                emulator.Registers.EAX = 1;
+
+                // Emulate written machine code.
+                emulator.Start(addr, addr + (ulong)code.Length);
+
+                Console.WriteLine(">>> Emulation done. Below is the CPU context");
+                Console.WriteLine($">>> EAX = 0x{emulator.Registers.EAX.ToString("x2")}");
+
+                Console.WriteLine(">>> Saving CPU context");
+
+                using (var context = emulator.Context)
+                {
+                    Console.WriteLine(">>> Running emulation for the second time");
+
+                    // Emulate machine code again.
+                    emulator.Start(addr, addr + (ulong)code.Length);
+
+                    Console.WriteLine(">>> Emulation done. Below is the CPU context");
+                    Console.WriteLine($">>> EAX = 0x{emulator.Registers.EAX.ToString("x2")}");
+
+                    emulator.Context = context;
+                }
+
+                Console.WriteLine(">>> CPU context restored. Below is the CPU context");
+                Console.WriteLine($">>> EAX = 0x{emulator.Registers.EAX.ToString("x2")}");
+            }
+        }
+
+        // test_i386_inout
         public static void TestInOut()
         {
             var addr = 0x1000000UL;
@@ -275,6 +324,7 @@ namespace Unicorn.Net.Samples.x86
             TestInvalidMemoryRead();
             TestInvalidMemoryWrite();
             TestInOut();
+            TestContextSave();
             TestLoop();
 
             Console.ReadLine();
