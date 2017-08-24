@@ -16,6 +16,7 @@ namespace Unicorn
             _codeHooks = new CodeHooksContainer(emulator);
             _blockHooks = new BlockHooksContainer(emulator);
             _instructionHooks = new InstructionHooksContainer(emulator);
+            _interruptHooks = new InterruptHooksContainer(emulator);
         }
 
         // Emulator instance which owns this Hooks object instance.
@@ -24,6 +25,7 @@ namespace Unicorn
         private readonly CodeHooksContainer _codeHooks;
         private readonly BlockHooksContainer _blockHooks;
         private readonly InstructionHooksContainer _instructionHooks;
+        private readonly InterruptHooksContainer _interruptHooks;
 
         /// <summary>
         /// Gets the <see cref="MemoryHooksContainer"/> of the <see cref="Emulator"/>.
@@ -74,6 +76,19 @@ namespace Unicorn
                 _emulator.CheckDisposed();
 
                 return _instructionHooks;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="InterruptHooksContainer"/> of the <see cref="Emulator"/>.
+        /// </summary>
+        public InterruptHooksContainer Interrupt
+        {
+            get
+            {
+                _emulator.CheckDisposed();
+
+                return _interruptHooks;
             }
         }
     }

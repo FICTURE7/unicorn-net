@@ -92,7 +92,7 @@ namespace Unicorn.Internal
     internal delegate void uc_cb_hookcode(IntPtr uc, ulong address, int size, IntPtr user_data);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    internal delegate void uc_cb_hookintr(IntPtr uc, ulong into, IntPtr user_data);
+    internal delegate void uc_cb_hookintr(IntPtr uc, int into, IntPtr user_data);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate int uc_cb_insn_in(IntPtr uc, int port, int size, IntPtr user_data);
