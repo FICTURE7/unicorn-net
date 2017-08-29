@@ -8,9 +8,9 @@ namespace Unicorn
     /// <summary>
     /// Base class of hook containers.
     /// </summary>
-    public abstract class HooksContainer : IEnumerable<HookHandle>
+    public abstract class HookContainer : IEnumerable<HookHandle>
     {
-        internal HooksContainer(Emulator emulator)
+        internal HookContainer(Emulator emulator)
         {
             Debug.Assert(emulator != null);
 
@@ -22,17 +22,17 @@ namespace Unicorn
         private readonly List<HookHandle> _handles;
 
         /// <summary>
-        /// Gets the number of <see cref="HookHandle"/> in this <see cref="HooksContainer"/>.
+        /// Gets the number of <see cref="HookHandle"/> in this <see cref="HookContainer"/>.
         /// </summary>
         public int Count => _handles.Count;
 
         /// <summary>
-        /// Gets the <see cref="Unicorn.Emulator"/> instance which owns this <see cref="HooksContainer"/>.
+        /// Gets the <see cref="Unicorn.Emulator"/> instance which owns this <see cref="HookContainer"/>.
         /// </summary>
         protected Emulator Emulator => _emulator;
 
         /// <summary>
-        /// Gets the list of <see cref="HookHandle"/> in this <see cref="HooksContainer"/>.
+        /// Gets the list of <see cref="HookHandle"/> in this <see cref="HookContainer"/>.
         /// </summary>
         protected List<HookHandle> Handles => _handles;
 
@@ -67,9 +67,9 @@ namespace Unicorn
         }
 
         /// <summary>
-        /// Returns an <see cref="IEnumerable{T}"/> which iterates through the <see cref="HookHandle"/> of the <see cref="HooksContainer"/>.
+        /// Returns an <see cref="IEnumerable{T}"/> which iterates through the <see cref="HookHandle"/> of the <see cref="HookContainer"/>.
         /// </summary>
-        /// <returns>An <see cref="IEnumerable{T}"/> which iterates through the <see cref="HookHandle"/> of the <see cref="HooksContainer"/>.</returns>
+        /// <returns>An <see cref="IEnumerable{T}"/> which iterates through the <see cref="HookHandle"/> of the <see cref="HookContainer"/>.</returns>
         public IEnumerator<HookHandle> GetEnumerator()
         {
             return ((IEnumerable<HookHandle>)_handles).GetEnumerator();

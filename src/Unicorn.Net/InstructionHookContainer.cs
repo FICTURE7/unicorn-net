@@ -28,9 +28,9 @@ namespace Unicorn
     /// <summary>
     /// 
     /// </summary>
-    public class InstructionHooksContainer : HooksContainer
+    public class InstructionHookContainer : HookContainer
     {
-        internal InstructionHooksContainer(Emulator emulator) : base(emulator)
+        internal InstructionHookContainer(Emulator emulator) : base(emulator)
         {
             // Space
         }

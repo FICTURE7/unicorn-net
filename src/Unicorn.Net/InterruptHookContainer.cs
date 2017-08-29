@@ -16,9 +16,9 @@ namespace Unicorn
     /// <summary>
     /// 
     /// </summary>
-    public class InterruptHooksContainer : HooksContainer
+    public class InterruptHookContainer : HookContainer
     {
-        internal InterruptHooksContainer(Emulator emulator) : base(emulator)
+        internal InterruptHookContainer(Emulator emulator) : base(emulator)
         {
             // Space
         }

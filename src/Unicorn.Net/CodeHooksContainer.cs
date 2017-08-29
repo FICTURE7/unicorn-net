@@ -17,7 +17,7 @@ namespace Unicorn
     /// <summary>
     /// Represents hooks for code of an <see cref="Emulator"/>.
     /// </summary>
-    public class CodeHooksContainer : HooksContainer
+    public class CodeHooksContainer : HookContainer
     {
         internal CodeHooksContainer(Emulator emulator) : base(emulator)
         {

@@ -12,25 +12,25 @@ namespace Unicorn
             Debug.Assert(emulator != null);
 
             _emulator = emulator;
-            _memoryHooks = new MemoryHooksContainer(emulator);
+            _memoryHooks = new MemoryHookContainer(emulator);
             _codeHooks = new CodeHooksContainer(emulator);
             _blockHooks = new BlockHooksContainer(emulator);
-            _instructionHooks = new InstructionHooksContainer(emulator);
-            _interruptHooks = new InterruptHooksContainer(emulator);
+            _instructionHooks = new InstructionHookContainer(emulator);
+            _interruptHooks = new InterruptHookContainer(emulator);
         }
 
         // Emulator instance which owns this Hooks object instance.
         private readonly Emulator _emulator;
-        private readonly MemoryHooksContainer _memoryHooks;
+        private readonly MemoryHookContainer _memoryHooks;
         private readonly CodeHooksContainer _codeHooks;
         private readonly BlockHooksContainer _blockHooks;
-        private readonly InstructionHooksContainer _instructionHooks;
-        private readonly InterruptHooksContainer _interruptHooks;
+        private readonly InstructionHookContainer _instructionHooks;
+        private readonly InterruptHookContainer _interruptHooks;
 
         /// <summary>
-        /// Gets the <see cref="MemoryHooksContainer"/> of the <see cref="Emulator"/>.
+        /// Gets the <see cref="MemoryHookContainer"/> of the <see cref="Emulator"/>.
         /// </summary>
-        public MemoryHooksContainer Memory
+        public MemoryHookContainer Memory
         {
             get
             {
@@ -67,9 +67,9 @@ namespace Unicorn
         }
 
         /// <summary>
-        /// Gets the <see cref="InstructionHooksContainer"/> of the <see cref="Emulator"/>.
+        /// Gets the <see cref="InstructionHookContainer"/> of the <see cref="Emulator"/>.
         /// </summary>
-        public InstructionHooksContainer Instruction
+        public InstructionHookContainer Instruction
         {
             get
             {
@@ -80,9 +80,9 @@ namespace Unicorn
         }
 
         /// <summary>
-        /// Gets the <see cref="InterruptHooksContainer"/> of the <see cref="Emulator"/>.
+        /// Gets the <see cref="InterruptHookContainer"/> of the <see cref="Emulator"/>.
         /// </summary>
-        public InterruptHooksContainer Interrupt
+        public InterruptHookContainer Interrupt
         {
             get
             {
