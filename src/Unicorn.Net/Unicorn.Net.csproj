@@ -42,7 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bindings.Arch.cs" />
     <Compile Include="Bindings.cs" />
+    <Compile Include="Bindings.Error.cs" />
+    <Compile Include="Bindings.HookType.cs" />
+    <Compile Include="Bindings.Mode.cs" />
+    <Compile Include="Bindings.QueryType.cs" />
     <Compile Include="BlockHooksContainer.cs" />
     <Compile Include="CodeHooksContainer.cs" />
     <Compile Include="Context.cs" />
