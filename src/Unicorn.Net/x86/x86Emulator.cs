@@ -5,6 +5,8 @@
     /// </summary>
     public class x86Emulator : Emulator
     {
+        private readonly x86Registers _registers;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="x86Emulator"/> class with the specified
         /// <see cref="x86Mode"/> to use.
@@ -14,8 +16,6 @@
         {
             _registers = new x86Registers(this);
         }
-
-        private readonly x86Registers _registers;
 
         /// <summary>
         /// Gets the <see cref="x86Registers"/> of the <see cref="x86Emulator"/> instance.

@@ -7,11 +7,11 @@ namespace Unicorn
     /// </summary>
     public struct HookHandle
     {
+        internal readonly IntPtr _hh;
+
         internal HookHandle(IntPtr hh)
         {
             _hh = hh;
         }
-
-        internal readonly IntPtr _hh;
     }
 }

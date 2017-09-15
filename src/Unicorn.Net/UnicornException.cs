@@ -8,6 +8,8 @@ namespace Unicorn
     /// </summary>
     public class UnicornException : Exception
     {
+        private readonly Bindings.Error _err;
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="UnicornException"/> class.
         /// </summary>
@@ -38,8 +40,6 @@ namespace Unicorn
         {
             // Space
         }
-
-        private readonly Bindings.Error _err;
 
         /// <summary>
         /// Gets the <see cref="Bindings.Error"/> of the <see cref="UnicornException"/>.

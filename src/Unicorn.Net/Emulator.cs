@@ -8,17 +8,6 @@ namespace Unicorn
     /// </summary>
     public abstract class Emulator : IDisposable
     {
-        internal Emulator(Bindings.Arch arch, Bindings.Mode mode)
-        {
-            _arch = arch;
-            _mode = mode;
-            _bindings = new Bindings();
-            _memory = new Memory(this);
-            _hooks = new Hooks(this);
-
-            _bindings.Open(arch, mode);
-        }
-
         // To determine if we've been disposed or not.
         private bool _disposed;
         // Memory object instance which represents the memory of the emulator.
@@ -33,6 +22,17 @@ namespace Unicorn
         internal readonly Bindings.Arch _arch;
         // Mode with which the Emulator instance was initialized.
         internal readonly Bindings.Mode _mode;
+
+        internal Emulator(Bindings.Arch arch, Bindings.Mode mode)
+        {
+            _arch = arch;
+            _mode = mode;
+            _bindings = new Bindings();
+            _memory = new Memory(this);
+            _hooks = new Hooks(this);
+
+            _bindings.Open(arch, mode);
+        }
 
         internal Bindings Bindings => _bindings;
 

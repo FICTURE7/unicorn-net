@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Unicorn.Internal;
 
 namespace Unicorn
 {
@@ -8,15 +7,15 @@ namespace Unicorn
     /// </summary>
     public abstract class Registers
     {
+        // Emulator object instance which owns this Registers object instance.
+        private readonly Emulator _emulator;
+
         internal Registers(Emulator emulator)
         {
             Debug.Assert(emulator != null);
 
             _emulator = emulator;
         }
-
-        // Emulator object instance which owns this Registers object instance.
-        private readonly Emulator _emulator;
 
         /// <summary>
         /// Reads the value of the register with specified register ID.

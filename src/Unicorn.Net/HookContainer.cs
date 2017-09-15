@@ -10,6 +10,9 @@ namespace Unicorn
     /// </summary>
     public abstract class HookContainer : IEnumerable<HookHandle>
     {
+        private readonly Emulator _emulator;
+        private readonly List<HookHandle> _handles;
+
         internal HookContainer(Emulator emulator)
         {
             Debug.Assert(emulator != null);
@@ -17,9 +20,6 @@ namespace Unicorn
             _emulator = emulator;
             _handles = new List<HookHandle>();
         }
-
-        private readonly Emulator _emulator;
-        private readonly List<HookHandle> _handles;
 
         /// <summary>
         /// Gets the number of <see cref="HookHandle"/> in this <see cref="HookContainer"/>.
@@ -70,14 +70,8 @@ namespace Unicorn
         /// Returns an <see cref="IEnumerable{T}"/> which iterates through the <see cref="HookHandle"/> of the <see cref="HookContainer"/>.
         /// </summary>
         /// <returns>An <see cref="IEnumerable{T}"/> which iterates through the <see cref="HookHandle"/> of the <see cref="HookContainer"/>.</returns>
-        public IEnumerator<HookHandle> GetEnumerator()
-        {
-            return ((IEnumerable<HookHandle>)_handles).GetEnumerator();
-        }
+        public IEnumerator<HookHandle> GetEnumerator() => ((IEnumerable<HookHandle>)_handles).GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable<HookHandle>)_handles).GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable<HookHandle>)_handles).GetEnumerator();
     }
 }

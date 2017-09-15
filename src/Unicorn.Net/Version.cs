@@ -5,6 +5,8 @@
     /// </summary>
     public struct Version
     {
+        private static readonly Version _current;
+
         static Version()
         {
             var mmajor = 0;
@@ -16,8 +18,6 @@
 
             _current = new Version(major, minor);
         }
-
-        private static readonly Version _current;
 
         /// <summary>
         /// Gets the current <see cref="Version"/> of the wrapped unicorn-engine library.

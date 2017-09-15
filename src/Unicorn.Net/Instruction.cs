@@ -5,11 +5,10 @@
     /// </summary>
     public struct Instruction
     {
+        internal readonly int _id;
         internal Instruction(int id)
         {
             _id = id;
         }
-
-        internal readonly int _id;
     }
 }

@@ -5,6 +5,10 @@
     /// </summary>
     public struct MemoryRegion
     {
+        private readonly ulong _begin;
+        private readonly ulong _end;
+        private readonly MemoryPermissions _perms;
+
         // Wrap the native uc_mem_region structure.
         internal MemoryRegion(ulong begin, ulong end, MemoryPermissions perms)
         {
@@ -12,10 +16,6 @@
             _end = end;
             _perms = perms;
         }
-
-        private readonly ulong _begin;
-        private readonly ulong _end;
-        private readonly MemoryPermissions _perms;
         
         /// <summary>
         /// Gets the address at which the <see cref="MemoryRegion"/> starts.

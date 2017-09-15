@@ -10,6 +10,11 @@ namespace Unicorn
     {
         //TODO: Consider making strongly typed Contexts, like x86Context etc...
 
+        internal bool _disposed;
+        internal readonly Bindings.Arch _arch;
+        internal readonly Bindings.Mode _mode;
+        internal readonly IntPtr _context;
+
         internal Context(Emulator emulator)
         {
             Debug.Assert(emulator != null);
@@ -19,11 +24,6 @@ namespace Unicorn
             _arch = emulator._arch;
             _mode = emulator._mode;
         }
-
-        internal bool _disposed;
-        internal readonly Bindings.Arch _arch;
-        internal readonly Bindings.Mode _mode;
-        internal readonly IntPtr _context;
 
         internal void Capture(Emulator emulator)
         {

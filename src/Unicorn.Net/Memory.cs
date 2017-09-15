@@ -8,14 +8,14 @@ namespace Unicorn
     /// </summary>
     public class Memory
     {
+        // Emulator object instance which owns this Memory object instance.
+        private readonly Emulator _emulator;
+
         internal Memory(Emulator emulator)
         {
             Debug.Assert(emulator != null);
             _emulator = emulator;
         }
-
-        // Emulator object instance which owns this Memory object instance.
-        private readonly Emulator _emulator;
 
         /// <summary>
         /// Gets all the <see cref="MemoryRegion"/> mapped for emulation.

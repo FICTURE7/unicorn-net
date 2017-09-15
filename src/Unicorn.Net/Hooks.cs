@@ -7,6 +7,14 @@ namespace Unicorn
     /// </summary>
     public class Hooks
     {
+        // Emulator instance which owns this Hooks object instance.
+        private readonly Emulator _emulator;
+        private readonly MemoryHookContainer _memoryHooks;
+        private readonly CodeHooksContainer _codeHooks;
+        private readonly BlockHooksContainer _blockHooks;
+        private readonly InstructionHookContainer _instructionHooks;
+        private readonly InterruptHookContainer _interruptHooks;
+
         internal Hooks(Emulator emulator)
         {
             Debug.Assert(emulator != null);
@@ -18,14 +26,6 @@ namespace Unicorn
             _instructionHooks = new InstructionHookContainer(emulator);
             _interruptHooks = new InterruptHookContainer(emulator);
         }
-
-        // Emulator instance which owns this Hooks object instance.
-        private readonly Emulator _emulator;
-        private readonly MemoryHookContainer _memoryHooks;
-        private readonly CodeHooksContainer _codeHooks;
-        private readonly BlockHooksContainer _blockHooks;
-        private readonly InstructionHookContainer _instructionHooks;
-        private readonly InterruptHookContainer _interruptHooks;
 
         /// <summary>
         /// Gets the <see cref="MemoryHookContainer"/> of the <see cref="Emulator"/>.
