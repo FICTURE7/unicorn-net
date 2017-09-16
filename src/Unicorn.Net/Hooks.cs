@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace Unicorn
 {
@@ -30,6 +31,7 @@ namespace Unicorn
         /// <summary>
         /// Gets the <see cref="MemoryHookContainer"/> of the <see cref="Emulator"/>.
         /// </summary>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public MemoryHookContainer Memory
         {
             get
@@ -43,6 +45,7 @@ namespace Unicorn
         /// <summary>
         /// Gets the <see cref="CodeHooksContainer"/> of the <see cref="Emulator"/>.
         /// </summary>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public CodeHooksContainer Code
         {
             get
@@ -56,6 +59,7 @@ namespace Unicorn
         /// <summary>
         /// Gets the <see cref="BlockHooksContainer"/> of the <see cref="Emulator"/>.
         /// </summary>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public BlockHooksContainer Block
         {
             get
@@ -69,6 +73,7 @@ namespace Unicorn
         /// <summary>
         /// Gets the <see cref="InstructionHookContainer"/> of the <see cref="Emulator"/>.
         /// </summary>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public InstructionHookContainer Instruction
         {
             get
@@ -82,6 +87,7 @@ namespace Unicorn
         /// <summary>
         /// Gets the <see cref="InterruptHookContainer"/> of the <see cref="Emulator"/>.
         /// </summary>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public InterruptHookContainer Interrupt
         {
             get

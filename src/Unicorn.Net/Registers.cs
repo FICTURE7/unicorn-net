@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace Unicorn
 {
@@ -20,27 +21,31 @@ namespace Unicorn
         /// <summary>
         /// Reads the value of the register with specified register ID.
         /// </summary>
-        /// <param name="regId">Register ID.</param>
+        /// <param name="registerId">Register ID.</param>
         /// <returns>Value of register read.</returns>
-        protected long Read(int regId)
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
+        public long Read(int registerId)
         {
             _emulator.CheckDisposed();
 
             var value = 0L;
-            _emulator.Bindings.RegRead(regId, ref value);
+            _emulator.Bindings.RegRead(registerId, ref value);
             return value;
         }
 
         /// <summary>
         /// Writes the specified value to the register with the specified register ID.
         /// </summary>
-        /// <param name="regId">Register ID.</param>
+        /// <param name="registerId">Register ID.</param>
         /// <param name="value">Value to write to register.</param>
-        protected void Write(int regId, long value)
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
+        public void Write(int registerId, long value)
         {
             _emulator.CheckDisposed();
 
-            _emulator.Bindings.RegWrite(regId, ref value);
+            _emulator.Bindings.RegWrite(registerId, ref value);
         }
     }
 }

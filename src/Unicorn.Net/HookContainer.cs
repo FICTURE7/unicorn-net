@@ -37,19 +37,21 @@ namespace Unicorn
         protected List<HookHandle> Handles => _handles;
 
         /// <summary>
-        /// Adds a hook to <see cref="Emulator"/>.
+        /// Base method to add a hook to <see cref="Emulator"/>.
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="callback"></param>
-        /// <param name="begin"></param>
-        /// <param name="end"></param>
-        /// <returns></returns>
+        /// <param name="type">Type of hook.</param>
+        /// <param name="callback">Pointer to callback method.</param>
+        /// <param name="begin">Start address of where the hook is effective (inclusive).</param>
+        /// <param name="end">End address of where the hook is effective (inclusive).</param>
+        /// <returns>A <see cref="HookHandle"/> which represents hook.</returns>
         protected HookHandle Add(Bindings.HookType type, IntPtr callback, ulong begin, ulong end)
         {
-            var ptr = IntPtr.Zero;
-            Emulator.Bindings.HookAdd(ref ptr, type, callback, IntPtr.Zero, begin, end);
+            //NOTE: Not calling Emulator.CheckDispose() here because the child should take responsibility of doing so.
 
-            var handle = new HookHandle(ptr);
+            var hh = IntPtr.Zero;
+            Emulator.Bindings.HookAdd(ref hh, type, callback, IntPtr.Zero, begin, end);
+
+            var handle = new HookHandle(hh);
             _handles.Add(handle);
 
             return handle;
@@ -60,8 +62,13 @@ namespace Unicorn
         /// </summary>
         /// <param name="handle"><see cref="HookHandle"/> to the hook to remove.</param>
         /// <returns><c>true</c> if <paramref name="handle"/> was found and removed; otherwise <c>false</c>.</returns>
+        /// 
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public bool Remove(HookHandle handle)
         {
+            Emulator.CheckDisposed();
+
             Emulator.Bindings.HookRemove(handle._hh);
             return _handles.Remove(handle);
         }

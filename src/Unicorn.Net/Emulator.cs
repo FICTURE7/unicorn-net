@@ -39,6 +39,8 @@ namespace Unicorn
         /// <summary>
         /// Gets the <see cref="Unicorn.Memory"/> of the <see cref="Emulator"/>.
         /// </summary>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public Memory Memory
         {
             get
@@ -52,6 +54,8 @@ namespace Unicorn
         /// <summary>
         /// Gets the <see cref="Unicorn.Hooks"/> of the <see cref="Emulator"/>.
         /// </summary>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public Hooks Hooks
         {
             get
@@ -65,6 +69,10 @@ namespace Unicorn
         /// <summary>
         /// Gets or sets the <see cref="Unicorn.Context"/> of the <see cref="Emulator"/> instance.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="value"/> has a differnt mode or architecture than the <see cref="Emulator"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public Context Context
         {
             get
@@ -97,6 +105,8 @@ namespace Unicorn
         /// </summary>
         /// <param name="begin">Address at which to begin emulation.</param>
         /// <param name="end">Address at which to end emulation.</param>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public void Start(ulong begin, ulong end)
         {
             CheckDisposed();
@@ -112,6 +122,8 @@ namespace Unicorn
         /// <param name="end">Address at which to end emulation.</param>
         /// <param name="timeout">Duration to run emulation.</param>
         /// <param name="count">Number of instructions to execute.</param>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public void Start(ulong begin, ulong end, TimeSpan timeout, int count)
         {
             CheckDisposed();
@@ -124,6 +136,8 @@ namespace Unicorn
         /// <summary>
         /// Stops the emulation.
         /// </summary>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public void Stop()
         {
             CheckDisposed();

@@ -8,14 +8,14 @@ namespace Unicorn
     /// <summary>
     /// Callback for tracing basic blocks.
     /// </summary>
-    /// <param name="emulator"></param>
-    /// <param name="address"></param>
-    /// <param name="size"></param>
-    /// <param name="userData"></param>
-    public delegate void BlockHookCallback(Emulator emulator, ulong address, int size, object userData);
+    /// <param name="emulator"><see cref="Emulator"/> which raised the callback.</param>
+    /// <param name="address">Address where the code is being executed.</param>
+    /// <param name="size">Size of the block.</param>
+    /// <param name="userToken">Object associated with the callback.</param>
+    public delegate void BlockHookCallback(Emulator emulator, ulong address, int size, object userToken);
 
     /// <summary>
-    /// Represents hooks for block of an <see cref="Emulator"/>.
+    /// Represents hooks for basic block of an <see cref="Emulator"/>.
     /// </summary>
     public class BlockHooksContainer : HookContainer
     {
@@ -25,44 +25,61 @@ namespace Unicorn
         }
 
         /// <summary>
-        /// Adds a <see cref="BlockHookCallback"/> to the <see cref="Emulator"/>.
+        /// Adds a <see cref="BlockHookCallback"/> to the <see cref="Emulator"/> with the specified user token which
+        /// is called anytime the hook is triggered.
         /// </summary>
-        /// <param name="callback"></param>
-        /// <param name="userData"></param>
-        /// <returns></returns>
-        public HookHandle Add(BlockHookCallback callback, object userData)
+        /// 
+        /// <param name="callback"><see cref="BlockHookCallback"/> to add.</param>
+        /// <param name="userToken">Object associated with the callback.</param>
+        /// <returns>A <see cref="HookHandle"/> which represents the hook.</returns>
+        /// 
+        /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
+        public HookHandle Add(BlockHookCallback callback, object userToken)
         {
             Emulator.CheckDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
 
-            return AddInternal(callback, 1, 0, userData);
+            return AddInternal(callback, 1, 0, userToken);
         }
 
         /// <summary>
-        /// Adds a <see cref="BlockHookCallback"/> to the <see cref="Emulator"/>.
+        /// Adds a <see cref="BlockHookCallback"/> to the <see cref="Emulator"/> with the specified user token which
+        /// is called when the hook is triggered within the specified start address and end address.
         /// </summary>
-        /// <param name="callback"></param>
-        /// <param name="begin"></param>
-        /// <param name="end"></param>
-        /// <param name="userData"></param>
-        public HookHandle Add(BlockHookCallback callback, ulong begin, ulong end, object userData)
+        /// 
+        /// <param name="callback"><see cref="BlockHookCallback"/> to add.</param>
+        /// <param name="begin">Start address of where the hook is effective (inclusive).</param>
+        /// <param name="end">End address of where the hook is effective (inclusive).</param>
+        /// <param name="userToken">Object associated with the callback.</param>
+        /// <returns>A <see cref="HookHandle"/> which represents the hook.</returns>
+        /// 
+        /// <remarks>
+        /// If <paramref name="begin"/> &gt; <paramref name="end"/>, the callback is called anytime the hook triggers.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
+        public HookHandle Add(BlockHookCallback callback, ulong begin, ulong end, object userToken)
         {
             Emulator.CheckDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
 
-            return AddInternal(callback, begin, end, userData);
+            return AddInternal(callback, begin, end, userToken);
         }
 
-        private HookHandle AddInternal(BlockHookCallback callback, ulong begin, ulong end, object userData)
+        private HookHandle AddInternal(BlockHookCallback callback, ulong begin, ulong end, object userToken)
         {
             var wrapper = new uc_cb_hookcode((uc, addr, size, user_data) =>
             {
                 Debug.Assert(uc == Emulator.Bindings.UCHandle);
-                callback(Emulator, addr, size, userData);
+                callback(Emulator, addr, size, userToken);
             });
 
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);

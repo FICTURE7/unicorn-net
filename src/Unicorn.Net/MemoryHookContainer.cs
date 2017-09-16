@@ -8,25 +8,25 @@ namespace Unicorn
     /// <summary>
     /// Callback for hooking memory.
     /// </summary>
-    /// <param name="emulator"></param>
-    /// <param name="type"></param>
-    /// <param name="address"></param>
-    /// <param name="size"></param>
-    /// <param name="value"></param>
-    /// <param name="userData"></param>
-    public delegate void MemoryHookCallback(Emulator emulator, MemoryType type, ulong address, int size, ulong value, object userData);
+    /// <param name="emulator"><see cref="Emulator"/> which raised the callback.</param>
+    /// <param name="type">Type of memory access.</param>
+    /// <param name="address">Address where code is being executed.</param>
+    /// <param name="size">Size of data being read or written.</param>
+    /// <param name="value">Data being written to memory; irrelevant if <paramref name="type"/> is <see cref="MemoryType.Read"/>.</param>
+    /// <param name="userToken">Object associated with the callback.</param>
+    public delegate void MemoryHookCallback(Emulator emulator, MemoryType type, ulong address, int size, ulong value, object userToken);
 
     /// <summary>
     /// Callback for handling invalid memory accesses.
     /// </summary>
-    /// <param name="emulator"></param>
-    /// <param name="type"></param>
-    /// <param name="address"></param>
-    /// <param name="size"></param>
-    /// <param name="value"></param>
-    /// <param name="userData"></param>
-    /// <returns></returns>
-    public delegate bool MemoryEventHookCallback(Emulator emulator, MemoryType type, ulong address, int size, ulong value, object userData);
+    /// <param name="emulator"><see cref="Emulator"/> which raised the callback.</param>
+    /// <param name="type">Type of memory access.</param>
+    /// <param name="address">Address where code is being executed.</param>
+    /// <param name="size">Size of data being read or written.</param>
+    /// <param name="value">Data being written to memory; irrelevant if <paramref name="type"/> is <see cref="MemoryType.Read"/>.</param>
+    /// <param name="userToken">Object associated with the callback.</param>
+    /// <returns>Return <c>true</c> to continue execution; otherwise <c>false</c> to stop execution.</returns>
+    public delegate bool MemoryEventHookCallback(Emulator emulator, MemoryType type, ulong address, int size, ulong value, object userToken);
 
     /// <summary>
     /// Represents hooks for memory of an <see cref="Emulator"/>.
@@ -39,92 +39,127 @@ namespace Unicorn
         }
 
         /// <summary>
-        /// Adds a <see cref="MemoryHookCallback"/> of the specified <see cref="MemoryHookType"/> to the <see cref="Emulator"/>.
+        /// Adds a <see cref="MemoryHookCallback"/> to the <see cref="Emulator"/> with the specified <see cref="MemoryHookType"/> and user token which
+        /// is called anytime the hook is triggered.
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="callback"></param>
-        /// <returns></returns>
-        public HookHandle Add(MemoryHookType type, MemoryHookCallback callback)
+        /// 
+        /// <param name="type">Type of <see cref="MemoryHookType"/>.</param>
+        /// <param name="callback"><see cref="MemoryHookCallback"/> to add.</param>
+        /// <param name="userToken">Object associated with the callback.</param>
+        /// <returns>A <see cref="HookHandle"/> which represents the hook.</returns>
+        /// 
+        /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
+        public HookHandle Add(MemoryHookType type, MemoryHookCallback callback, object userToken)
         {
             Emulator.CheckDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
 
-            return AddInternal(type, callback, 1, 0, null);
+            return AddInternal(type, callback, 1, 0, userToken);
         }
 
         /// <summary>
-        /// Adds a <see cref="MemoryHookCallback"/> of the specified <see cref="MemoryHookType"/> to the <see cref="Emulator"/>.
+        /// Adds a <see cref="MemoryHookCallback"/> to the <see cref="Emulator"/> with the specified <see cref="MemoryHookType"/> and user token which
+        /// is called when the hook is triggered within the specified start address and end address.
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="callback"></param>
-        /// <param name="begin"></param>
-        /// <param name="end"></param>
-        /// <param name="userData"></param>
-        public HookHandle Add(MemoryHookType type, MemoryHookCallback callback, ulong begin, ulong end, object userData)
+        /// 
+        /// <param name="type">Type of <see cref="MemoryHookType"/>.</param>
+        /// <param name="callback"><see cref="MemoryHookCallback"/> to add.</param>
+        /// <param name="begin">Start address of where the hook is effective (inclusive).</param>
+        /// <param name="end">End address of where the hook is effective (inclusive).</param>
+        /// <param name="userToken">Object associated with the callback.</param>
+        /// <returns>A <see cref="HookHandle"/> which represents the hook.</returns>
+        /// 
+        /// <remarks>
+        /// If <paramref name="begin"/> &gt; <paramref name="end"/>, the callback is called anytime the hook triggers.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
+        public HookHandle Add(MemoryHookType type, MemoryHookCallback callback, ulong begin, ulong end, object userToken)
         {
             Emulator.CheckDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
 
-            return AddInternal(type, callback, begin, end, userData);
+            return AddInternal(type, callback, begin, end, userToken);
         }
 
         /// <summary>
-        /// Adds a <see cref="MemoryEventHookCallback"/> of the specified <see cref="MemoryHookType"/> to the <see cref="Emulator"/>.
+        /// Adds a <see cref="MemoryEventHookCallback"/> to the <see cref="Emulator"/> with the specified <see cref="MemoryEventHookType"/> and user token which
+        /// is called anytime the hook is triggered.
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="callback"></param>
-        /// <param name="userData"></param>
-        /// <returns></returns>
-        public HookHandle Add(MemoryEventHookType type, MemoryEventHookCallback callback, object userData)
+        /// 
+        /// <param name="type">Type of <see cref="MemoryEventHookType"/>.</param>
+        /// <param name="callback"><see cref="MemoryEventHookCallback"/> to add.</param>
+        /// <param name="userToken">Object associated with the callback.</param>
+        /// <returns>A <see cref="HookHandle"/> which represents the hook.</returns>
+        /// 
+        /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
+        public HookHandle Add(MemoryEventHookType type, MemoryEventHookCallback callback, object userToken)
         {
             Emulator.CheckDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
 
-            return AddInternal(type, callback, 1, 0, userData);
+            return AddEventInternal(type, callback, 1, 0, userToken);
         }
 
         /// <summary>
-        /// Adds a <see cref="MemoryEventHookCallback"/> of the specified <see cref="MemoryHookType"/> to the <see cref="Emulator"/>.
+        /// Adds a <see cref="MemoryEventHookCallback"/> to the <see cref="Emulator"/> with the specified <see cref="MemoryEventHookType"/> and user token which
+        /// is called when the hook is triggered within the specified start address and end address.
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="callback"></param>
-        /// <param name="begin"></param>
-        /// <param name="end"></param>
-        /// <param name="userData"></param>
-        public HookHandle Add(MemoryEventHookType type, MemoryEventHookCallback callback, ulong begin, ulong end, object userData)
+        /// 
+        /// <param name="type">Type of <see cref="MemoryEventHookType"/>.</param>
+        /// <param name="callback"><see cref="MemoryEventHookCallback"/> to add.</param>
+        /// <param name="begin">Start address of where the hook is effective (inclusive).</param>
+        /// <param name="end">End address of where the hook is effective (inclusive).</param>
+        /// <param name="userToken">Object associated with the callback.</param>
+        /// <returns>A <see cref="HookHandle"/> which represents the hook.</returns>
+        /// 
+        /// <remarks>
+        /// If <paramref name="begin"/> &gt; <paramref name="end"/>, the callback is called anytime the hook triggers.
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
+        public HookHandle Add(MemoryEventHookType type, MemoryEventHookCallback callback, ulong begin, ulong end, object userToken)
         {
             Emulator.CheckDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
 
-            return AddInternal(type, callback, begin, end, userData);
+            return AddEventInternal(type, callback, begin, end, userToken);
         }
 
-        private HookHandle AddInternal(MemoryEventHookType type, MemoryEventHookCallback callback, ulong begin, ulong end, object userData)
+        private HookHandle AddEventInternal(MemoryEventHookType type, MemoryEventHookCallback callback, ulong begin, ulong end, object userToken)
         {
             var wrapper = new uc_cb_eventmem((uc, _type, addr, size, value, user_data) =>
             {
                 Debug.Assert(uc == Emulator.Bindings.UCHandle);
-                return callback(Emulator, (MemoryType)_type, addr, size, value, userData);
+                return callback(Emulator, (MemoryType)_type, addr, size, value, userToken);
             });
 
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
             return Add((Bindings.HookType)type, ptr, begin, end);
         }
 
-        private HookHandle AddInternal(MemoryHookType type, MemoryHookCallback callback, ulong begin, ulong end, object userData)
+        private HookHandle AddInternal(MemoryHookType type, MemoryHookCallback callback, ulong begin, ulong end, object userToken)
         {
             var wrapper = new uc_cb_hookmem((uc, _type, addr, size, value, user_data) =>
             {
                 Debug.Assert(uc == Emulator.Bindings.UCHandle);
-                callback(Emulator, (MemoryType)_type, addr, size, value, userData);
+                callback(Emulator, (MemoryType)_type, addr, size, value, userToken);
             });
 
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);

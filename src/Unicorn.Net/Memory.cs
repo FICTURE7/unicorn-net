@@ -20,6 +20,9 @@ namespace Unicorn
         /// <summary>
         /// Gets all the <see cref="MemoryRegion"/> mapped for emulation.
         /// </summary>
+        /// 
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public MemoryRegion[] Regions
         {
             get
@@ -36,6 +39,9 @@ namespace Unicorn
         /// <summary>
         /// Gets the page size of <see cref="Memory"/> which is 4KB.
         /// </summary>
+        /// 
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public int PageSize
         {
             get
@@ -54,9 +60,20 @@ namespace Unicorn
         /// <param name="address">Starting address of memory region.</param>
         /// <param name="size">Size of memory region.</param>
         /// <param name="permissions">Permissions of memory region.</param>
+        /// 
+        /// <exception cref="ArgumentException"><paramref name="address"/> is not aligned with <see cref="PageSize"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="size"/> is not a multiple of <see cref="PageSize"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="size"/> is less than 0.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public void Map(ulong address, int size, MemoryPermissions permissions)
         {
             _emulator.CheckDisposed();
+
+            if ((address & (ulong)PageSize) != (ulong)PageSize)
+                throw new ArgumentException("Address must be aligned with page size.", nameof(address));
+            if ((size & PageSize) != PageSize)
+                throw new ArgumentException("Size must be a multiple of page size.", nameof(size));
 
             if (size < 0)
                 throw new ArgumentOutOfRangeException(nameof(size), "Size must be non-negative.");
@@ -71,6 +88,12 @@ namespace Unicorn
         /// </summary>
         /// <param name="address">Starting address of memory region.</param>
         /// <param name="size">Size of memory region.</param>
+        /// 
+        /// <exception cref="ArgumentException"><paramref name="address"/> is not aligned with <see cref="PageSize"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="size"/> is not a multiple of <see cref="PageSize"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="size"/> is less than 0.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public void Unmap(ulong address, int size)
         {
             _emulator.CheckDisposed();
@@ -92,6 +115,12 @@ namespace Unicorn
         /// <param name="address">Starting address of memory region.</param>
         /// <param name="size">Size of memory region.</param>
         /// <param name="permissions">Permissions of memory region.</param>
+        /// 
+        /// <exception cref="ArgumentException"><paramref name="address"/> is not aligned with <see cref="PageSize"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="size"/> is not a multiple of <see cref="PageSize"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="size"/> is less than 0.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public void Protect(ulong address, int size, MemoryPermissions permissions)
         {
             _emulator.CheckDisposed();
@@ -115,6 +144,11 @@ namespace Unicorn
         /// <param name="address">Address to write data.</param>
         /// <param name="buffer">Data to write.</param>
         /// <param name="count">Amount of data to write.</param>
+        /// 
+        /// <exception cref="ArgumentNullException"><paramref name="buffer"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 0 or greater than the length of <paramref name="buffer"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public void Write(ulong address, byte[] buffer, int count)
         {
             _emulator.CheckDisposed();
@@ -133,6 +167,11 @@ namespace Unicorn
         /// <param name="address">Address to read.</param>
         /// <param name="buffer">Buffer thats going to contain the read data.</param>
         /// <param name="count">Amount of data to read.</param>
+        /// 
+        /// <exception cref="ArgumentNullException"><paramref name="buffer"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 0 or greater than the length of <paramref name="buffer"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public void Read(ulong address, byte[] buffer, int count)
         {
             _emulator.CheckDisposed();
