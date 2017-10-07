@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arm\ArmEmulator.cs" />
+    <Compile Include="Arm\ArmMode.cs" />
+    <Compile Include="Arm\ArmRegisters.cs" />
     <Compile Include="Bindings.Arch.cs" />
     <Compile Include="Bindings.cs" />
     <Compile Include="Bindings.Error.cs" />
