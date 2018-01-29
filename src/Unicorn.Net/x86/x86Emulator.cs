@@ -5,6 +5,7 @@
     /// </summary>
     public class x86Emulator : Emulator
     {
+        // Registers of the x86 emulator.
         private readonly x86Registers _registers;
 
         /// <summary>

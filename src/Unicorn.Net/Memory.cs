@@ -70,9 +70,9 @@ namespace Unicorn
         {
             _emulator.CheckDisposed();
 
-            if ((address & (ulong)PageSize) != (ulong)PageSize)
+            if ((address & (ulong)PageSize) != 0)
                 throw new ArgumentException("Address must be aligned with page size.", nameof(address));
-            if ((size & PageSize) != PageSize)
+            if ((size & PageSize) != 0)
                 throw new ArgumentException("Size must be a multiple of page size.", nameof(size));
 
             if (size < 0)

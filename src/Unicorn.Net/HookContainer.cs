@@ -16,7 +16,6 @@ namespace Unicorn
         internal HookContainer(Emulator emulator)
         {
             Debug.Assert(emulator != null);
-
             _emulator = emulator;
             _handles = new List<HookHandle>();
         }
@@ -46,7 +45,7 @@ namespace Unicorn
         /// <returns>A <see cref="HookHandle"/> which represents hook.</returns>
         protected HookHandle Add(Bindings.HookType type, IntPtr callback, ulong begin, ulong end)
         {
-            //NOTE: Not calling Emulator.CheckDispose() here because the child should take responsibility of doing so.
+            //NOTE: Not calling Emulator.CheckDispose() here because the caller should take responsibility of doing so.
 
             var hh = IntPtr.Zero;
             Emulator.Bindings.HookAdd(ref hh, type, callback, IntPtr.Zero, begin, end);

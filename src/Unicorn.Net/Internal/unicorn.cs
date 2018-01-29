@@ -8,7 +8,7 @@ namespace Unicorn.Internal
     /// </summary>
     internal static class unicorn
     {
-        // Misc
+        #region Misc
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern int uc_version(ref int major, ref int minor);
 
@@ -25,29 +25,33 @@ namespace Unicorn.Internal
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern bool uc_arch_supported(int arch); // Not used.
 #endif
+        #endregion
 
-        // Open/Close
+        #region Open/Close
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern uc_err uc_open(uc_arch arch, uc_mode mode, ref IntPtr uc);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern uc_err uc_close(IntPtr uc);
+        #endregion
 
-        // Registers Read/Write
+        #region Registers Read/Write
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern uc_err uc_reg_read(IntPtr uc, int regid, ref long value);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern uc_err uc_reg_write(IntPtr uc, int regid, ref long value);
+        #endregion
 
-        // Emulator Start/Stop
+        #region Emulator Start/Stop
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern uc_err uc_emu_start(IntPtr uc, ulong begin, ulong end, ulong timeout, int count);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern uc_err uc_emu_stop(IntPtr uc);
+        #endregion
 
-        // Memory Read/Write/Map/Unmap/Protect/Regions
+        #region Memory Read/Write/Map/Unmap/Protect/Regions
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern uc_err uc_mem_map(IntPtr uc, ulong address, int size, int perms);
 
@@ -65,8 +69,9 @@ namespace Unicorn.Internal
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern uc_err uc_mem_regions(IntPtr uc, ref IntPtr regions, ref int count);
+        #endregion
 
-        // Context Alloc/Save/Restore.
+        #region Context Alloc/Save/Restore.
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern uc_err uc_context_alloc(IntPtr uc, ref IntPtr context);
 
@@ -75,19 +80,21 @@ namespace Unicorn.Internal
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern uc_err uc_context_restore(IntPtr uc, IntPtr context);
+        #endregion
 
-        // Hook Add/Del.
+        #region Hooks Add/Del
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern unsafe uc_err uc_hook_add(IntPtr uc, ref IntPtr hh, uc_hook_type type, IntPtr callback, IntPtr user_data, ulong address, ulong end);
+        public static extern uc_err uc_hook_add(IntPtr uc, ref IntPtr hh, uc_hook_type type, IntPtr callback, IntPtr user_data, ulong address, ulong end);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
-        public static extern unsafe uc_err uc_hook_add(IntPtr uc, ref IntPtr hh, uc_hook_type type, IntPtr callback, IntPtr user_data, ulong address, ulong end, int instruction);
+        public static extern uc_err uc_hook_add(IntPtr uc, ref IntPtr hh, uc_hook_type type, IntPtr callback, IntPtr user_data, ulong address, ulong end, int instruction);
 
         [DllImport("unicorn", CallingConvention = CallingConvention.Cdecl)]
         public static extern uc_err uc_hook_del(IntPtr uc, IntPtr hh);
+        #endregion
     }
 
-    // Callbacks
+    #region Callbacks
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate void uc_cb_hookcode(IntPtr uc, ulong address, int size, IntPtr user_data);
 
@@ -105,4 +112,5 @@ namespace Unicorn.Internal
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate bool uc_cb_eventmem(IntPtr uc, uc_mem_type type, ulong address, int size, ulong value, IntPtr user_data);
+    #endregion
 }

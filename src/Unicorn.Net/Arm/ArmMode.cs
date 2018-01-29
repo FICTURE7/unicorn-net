@@ -6,6 +6,11 @@
     public enum ArmMode
     {
         /// <summary>
+        /// ARM mode.
+        /// </summary>
+        Arm = Bindings.Mode.ARM,
+
+        /// <summary>
         /// Thumb mode.
         /// </summary>
         Thumb = Bindings.Mode.ARMThumb,

@@ -1,4 +1,5 @@
 ﻿using System;
+using Unicorn.Arm;
 using Unicorn.x86;
 
 namespace Unicorn.ConsoleTests
@@ -8,6 +9,23 @@ namespace Unicorn.ConsoleTests
         public static void Main(string[] args)
         {
             Console.WriteLine("Unicorn version - " + Version.Current);
+
+            //using (var emulator = new ArmEmulator(ArmMode.Arm))
+            //{
+            //    ulong addr = 0x1000000;
+            //    byte[] x86code =
+            //    {
+            //        0x41, // INC ECX
+            //        0x4a  // DEC EDX
+            //    };
+
+
+            //    // Map 2mb of memory.
+            //    emulator.Memory.Map(addr, 2 * 1024 * 1024, MemoryPermissions.All);
+            //    emulator.Memory.Write(addr, x86code, x86code.Length);
+
+            //    emulator.Start(addr, addr + (ulong)x86code.Length);
+            //}
 
             using (var emulator = new x86Emulator(x86Mode.b32))
             {

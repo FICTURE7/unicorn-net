@@ -14,7 +14,6 @@ namespace Unicorn
         internal Registers(Emulator emulator)
         {
             Debug.Assert(emulator != null);
-
             _emulator = emulator;
         }
 
