@@ -10,23 +10,42 @@ namespace Unicorn.ConsoleTests
         {
             Console.WriteLine("Unicorn version - " + Version.Current);
 
-            //using (var emulator = new ArmEmulator(ArmMode.Arm))
-            //{
-            //    ulong addr = 0x1000000;
-            //    byte[] x86code =
-            //    {
-            //        0x41, // INC ECX
-            //        0x4a  // DEC EDX
-            //    };
+            using (var emulator = new ArmEmulator(ArmMode.Arm))
+            {
+                ulong addr = 0x10000;
 
+                // mov r0, #0x37; sub r1, r2, r3
+                byte[] armcode =
+                {
+                    0x37, 0x00, 0xa0, 0xe3, 0x03, 0x10, 0x42, 0xe0
+                };
 
-            //    // Map 2mb of memory.
-            //    emulator.Memory.Map(addr, 2 * 1024 * 1024, MemoryPermissions.All);
-            //    emulator.Memory.Write(addr, x86code, x86code.Length);
+                // Map 2mb of memory.
+                emulator.Memory.Map(addr, 2 * 1024 * 1024, MemoryPermissions.All);
+                emulator.Memory.Write(addr, armcode, armcode.Length);
 
-            //    emulator.Start(addr, addr + (ulong)x86code.Length);
-            //}
+                emulator.Registers.R0 = 0x1234;
+                emulator.Registers.R2 = 0x6789;
+                emulator.Registers.R3 = 0x3333;
 
+                emulator.Hooks.Block.Add((emu, address, size, userToken) =>
+                {
+                    Console.WriteLine($">>> Tracing basic block at 0x{address.ToString("x2")}, block size = 0x{size.ToString("x2")}");
+                }, null);
+
+                emulator.Hooks.Code.Add((emu, address, size, userToken) =>
+                {
+                    Console.WriteLine($">>> Tracing instruction at 0x{address.ToString("x2")}, instruction size = 0x{size.ToString("x2")}");
+                }, null);
+
+                emulator.Start(addr, addr + (ulong)armcode.Length);
+
+                Console.WriteLine(">>> Emulation done. Below is the CPU context");
+                Console.WriteLine($">>> R0 = 0x{emulator.Registers.R0.ToString("x2")}");
+                Console.WriteLine($">>> R1 = 0x{emulator.Registers.R1.ToString("x2")}");
+            }
+
+            /*
             using (var emulator = new x86Emulator(x86Mode.b32))
             {
                 ulong addr = 0x1000000;
@@ -68,6 +87,7 @@ namespace Unicorn.ConsoleTests
                 Console.WriteLine($"ECX = {emulator.Registers.ECX}");
                 Console.WriteLine($"EDX = {emulator.Registers.EDX}");
             }
+            */
 
             Console.ReadLine();
         }

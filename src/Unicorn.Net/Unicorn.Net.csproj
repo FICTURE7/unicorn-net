@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arm\ArmEmulator.cs" />
+    <Compile Include="Arm\ArmInstructions.cs" />
     <Compile Include="Arm\ArmMode.cs" />
     <Compile Include="Arm\ArmRegisters.cs" />
     <Compile Include="Bindings.Arch.cs" />

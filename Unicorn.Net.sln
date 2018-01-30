@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unicorn.Net.Samples.x86", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unicorn.Net.Samples.Shellcode", "samples\Unicorn.Net.Samples.Shellcode\Unicorn.Net.Samples.Shellcode.csproj", "{725EC102-E74D-4D56-A827-C1750CDD97E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unicorn.Net.Samples.Arm", "samples\Unicorn.Net.Samples.Arm\Unicorn.Net.Samples.Arm.csproj", "{FA584EA7-B554-4C8F-8C7E-DECF28630856}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{725EC102-E74D-4D56-A827-C1750CDD97E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{725EC102-E74D-4D56-A827-C1750CDD97E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{725EC102-E74D-4D56-A827-C1750CDD97E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA584EA7-B554-4C8F-8C7E-DECF28630856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA584EA7-B554-4C8F-8C7E-DECF28630856}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA584EA7-B554-4C8F-8C7E-DECF28630856}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA584EA7-B554-4C8F-8C7E-DECF28630856}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
