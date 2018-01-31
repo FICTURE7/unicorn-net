@@ -1,9 +1,9 @@
-﻿namespace Unicorn.Arm
+﻿namespace Unicorn.ARM
 {
     /// <summary>
-    /// Defines the modes of an <see cref="ArmEmulator"/>.
+    /// Defines the modes of an <see cref="ARMEmulator"/>.
     /// </summary>
-    public enum ArmMode
+    public enum ARMMode
     {
         /// <summary>
         /// ARM mode.

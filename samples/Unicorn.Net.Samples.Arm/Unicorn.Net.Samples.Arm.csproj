@@ -7,8 +7,8 @@
     <ProjectGuid>{FA584EA7-B554-4C8F-8C7E-DECF28630856}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Unicorn.Net.Samples.Arm</RootNamespace>
-    <AssemblyName>Unicorn.Net.Samples.Arm</AssemblyName>
+    <RootNamespace>Unicorn.Net.Samples.ARM</RootNamespace>
+    <AssemblyName>Unicorn.Net.Samples.ARM</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

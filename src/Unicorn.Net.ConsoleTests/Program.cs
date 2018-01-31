@@ -1,5 +1,5 @@
 ﻿using System;
-using Unicorn.Arm;
+using Unicorn.ARM;
 using Unicorn.x86;
 
 namespace Unicorn.ConsoleTests
@@ -10,7 +10,7 @@ namespace Unicorn.ConsoleTests
         {
             Console.WriteLine("Unicorn version - " + Version.Current);
 
-            using (var emulator = new ArmEmulator(ArmMode.Arm))
+            using (var emulator = new ARMEmulator(ARMMode.Arm))
             {
                 ulong addr = 0x10000;
 

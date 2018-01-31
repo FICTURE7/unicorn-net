@@ -1,4 +1,6 @@
-﻿namespace Unicorn.x86
+﻿using System;
+
+namespace Unicorn.x86
 {
     /// <summary>
     /// Represents an x86 architecture <see cref="Emulator"/>.
@@ -21,6 +23,7 @@
         /// <summary>
         /// Gets the <see cref="x86Registers"/> of the <see cref="x86Emulator"/> instance.
         /// </summary>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public x86Registers Registers
         {
             get
@@ -34,6 +37,7 @@
         /// <summary>
         /// Gets the <see cref="x86Mode"/> of the <see cref="x86Emulator"/>.
         /// </summary>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public x86Mode Mode
         {
             get

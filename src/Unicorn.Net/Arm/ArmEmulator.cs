@@ -1,26 +1,30 @@
-﻿namespace Unicorn.Arm
+﻿using System;
+
+namespace Unicorn.ARM
 {
     /// <summary>
     /// Represents an ARM architecture <see cref="Emulator"/>.
     /// </summary>
-    public class ArmEmulator : Emulator
+    public class ARMEmulator : Emulator
     {
-        private readonly ArmRegisters _registers;
+        // Registers for the ARM emulator.
+        private readonly ARMRegisters _registers;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ArmEmulator"/> class with the specified
-        /// <see cref="ArmMode"/> to use.
+        /// Initializes a new instance of the <see cref="ARMEmulator"/> class with the specified
+        /// <see cref="ARMMode"/> to use.
         /// </summary>
         /// <param name="mode">Mode to use.</param>
-        public ArmEmulator(ArmMode mode) : base(Bindings.Arch.ARM, (Bindings.Mode)mode)
+        public ARMEmulator(ARMMode mode) : base(Bindings.Arch.ARM, (Bindings.Mode)mode)
         {
-            _registers = new ArmRegisters(this);
+            _registers = new ARMRegisters(this);
         }
 
         /// <summary>
-        /// Gets the <see cref="ArmRegisters"/> of the <see cref="ArmEmulator"/> instance.
+        /// Gets the <see cref="ARMRegisters"/> of the <see cref="ARMEmulator"/> instance.
         /// </summary>
-        public ArmRegisters Registers
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
+        public ARMRegisters Registers
         {
             get
             {
@@ -31,15 +35,16 @@
         }
 
         /// <summary>
-        /// Gets the <see cref="ArmMode"/> of the <see cref="ArmEmulator"/>.
+        /// Gets the <see cref="ARMMode"/> of the <see cref="ARMEmulator"/>.
         /// </summary>
-        public ArmMode Mode
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
+        public ARMMode Mode
         {
             get
             {
                 CheckDisposed();
 
-                return (ArmMode)_mode;
+                return (ARMMode)_mode;
             }
         }
     }

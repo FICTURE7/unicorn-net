@@ -44,7 +44,7 @@ namespace Unicorn
             /// </summary>
             MIPS3 = uc_mode.UC_MODE_MIPS3,
             /// <summary>
-            /// MIPS2R6 ISA mode.
+            /// MIPS32R6 ISA mode.
             /// </summary>
             MIPS32R6 = uc_mode.UC_MODE_MIPS32R6,
             /// <summary>

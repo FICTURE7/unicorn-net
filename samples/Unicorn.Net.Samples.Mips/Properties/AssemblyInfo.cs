@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Unicorn.Net.Samples.Arm")]
+[assembly: AssemblyTitle("Unicorn.Net.Samples.Mips")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Unicorn.Net.Samples.ARM")]
+[assembly: AssemblyProduct("Unicorn.Net.Samples.Mips")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("fa584ea7-b554-4c8f-8c7e-decf28630856")]
+[assembly: Guid("9edd021c-3265-415b-8f26-9a4fbd26f9d7")]
 
 // Version information for an assembly consists of the following four values:
 //

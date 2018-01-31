@@ -34,18 +34,12 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arm\ArmEmulator.cs" />
-    <Compile Include="Arm\ArmInstructions.cs" />
-    <Compile Include="Arm\ArmMode.cs" />
-    <Compile Include="Arm\ArmRegisters.cs" />
+    <Compile Include="ARM\ARMEmulator.cs" />
+    <Compile Include="ARM\ARMMode.cs" />
+    <Compile Include="ARM\ARMRegisters.cs" />
     <Compile Include="Bindings.Arch.cs" />
     <Compile Include="Bindings.cs" />
     <Compile Include="Bindings.Error.cs" />
@@ -73,6 +67,9 @@
     <Compile Include="MemoryHookContainer.cs" />
     <Compile Include="MemoryPermissions.cs" />
     <Compile Include="MemoryRegion.cs" />
+    <Compile Include="MIPS\MIPSEmulator.cs" />
+    <Compile Include="MIPS\MIPSMode.cs" />
+    <Compile Include="MIPS\MIPSRegisters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registers.cs" />
     <Compile Include="UnicornException.cs" />
@@ -85,6 +82,7 @@
   <ItemGroup>
     <Compile Include="Internal\uc_mem_region.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
