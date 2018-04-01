@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using Unicorn.x86;
+using Unicorn.X86;
 
 namespace Unicorn.Net.Samples.Shellcode
 {
@@ -28,7 +28,7 @@ namespace Unicorn.Net.Samples.Shellcode
 
             Console.WriteLine("Emulate i386 code");
 
-            using (var emulator = new x86Emulator(x86Mode.b32))
+            using (var emulator = new X86Emulator(X86Mode.b32))
             {
                 emulator.Memory.Map(addr, 2 * 1024 * 1024, MemoryPermissions.All);
                 emulator.Memory.Write(addr, code, code.Length);
@@ -51,7 +51,7 @@ namespace Unicorn.Net.Samples.Shellcode
         // hook_intr
         private static void HookInterrupt(Emulator emulator, int into, object userData)
         {
-            var registers = ((x86Emulator)emulator).Registers;
+            var registers = ((X86Emulator)emulator).Registers;
             var buffer = new byte[256];
 
             if (into != 0x80)
@@ -91,7 +91,7 @@ namespace Unicorn.Net.Samples.Shellcode
             Console.WriteLine($"Tracing instruction at 0x{address.ToString("x2")}, instruction size = 0x{size.ToString("x2")}");
 
             var tmp = new byte[16];
-            var eip = ((x86Emulator)emulator).Registers.EIP;
+            var eip = ((X86Emulator)emulator).Registers.EIP;
             var count = tmp.Length < size ? tmp.Length : size; // MIN
 
             Console.Write($"*** EIP = {eip.ToString("x2")} ***: ");

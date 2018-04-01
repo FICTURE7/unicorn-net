@@ -1,9 +1,9 @@
 ﻿namespace Unicorn.MIPS
 {
     /// <summary>
-    /// Defines the modes of an <see cref="MIPSEmulator"/>.
+    /// Defines the modes of an <see cref="MipsEmulator"/>.
     /// </summary>
-    public enum MIPSMode
+    public enum MipsMode
     {
         /// <summary>
         /// MicroMips mode.

@@ -8,7 +8,7 @@ namespace Unicorn
     /// </summary>
     public class Context : IDisposable
     {
-        //TODO: Consider making strongly typed Contexts, like x86Context etc...
+        //TODO: Consider making strongly typed Contexts, like X86Context etc...
 
         internal bool _disposed;
         internal readonly Bindings.Arch _arch;

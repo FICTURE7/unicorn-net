@@ -1,11 +1,11 @@
-﻿namespace Unicorn.x86
+﻿namespace Unicorn.X86
 {
     /// <summary>
-    /// Represents the registers of an <see cref="x86Emulator"/>.
+    /// Represents the registers of an <see cref="X86Emulator"/>.
     /// </summary>
-    public class x86Registers : Registers
+    public class X86Registers : Registers
     {
-        internal x86Registers(Emulator emulator) : base(emulator)
+        internal X86Registers(Emulator emulator) : base(emulator)
         {
             // Space
         }

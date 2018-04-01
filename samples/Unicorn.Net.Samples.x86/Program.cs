@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
-using Unicorn.x86;
+using Unicorn.X86;
 
-namespace Unicorn.Net.Samples.x86
+namespace Unicorn.Net.Samples.X86
 {
     // Similar to
-    // samples/sample_x86.c
+    // samples/sample_X86.c
 
     public class Program
     {
@@ -23,7 +23,7 @@ namespace Unicorn.Net.Samples.x86
             Console.WriteLine("===================================");
             Console.WriteLine("Emulate i386 code that read from invalid memory.");
 
-            using (var emulator = new x86Emulator(x86Mode.b32))
+            using (var emulator = new X86Emulator(X86Mode.b32))
             {
                 // Map 2MB of memory.
                 emulator.Memory.Map(addr, 2 * 1024 * 1024, MemoryPermissions.All);
@@ -70,7 +70,7 @@ namespace Unicorn.Net.Samples.x86
             Console.WriteLine("===================================");
             Console.WriteLine("Emulate i386 code that write to invalid memory.");
 
-            using (var emulator = new x86Emulator(x86Mode.b32))
+            using (var emulator = new X86Emulator(X86Mode.b32))
             {
                 // Map 2MB of memory.
                 emulator.Memory.Map(addr, 2 * 1024 * 1024, MemoryPermissions.All);
@@ -125,7 +125,7 @@ namespace Unicorn.Net.Samples.x86
             Console.WriteLine("===================================");
             Console.WriteLine("Save/restore CPU context in opaque blob.");
 
-            using (var emulator = new x86Emulator(x86Mode.b32))
+            using (var emulator = new X86Emulator(X86Mode.b32))
             {
                 // Map 8KB of memory for emulation.
                 emulator.Memory.Map(addr, 8 * 1024, MemoryPermissions.All);
@@ -177,7 +177,7 @@ namespace Unicorn.Net.Samples.x86
             Console.WriteLine("===================================");
             Console.WriteLine("Emulate i386 code with IN/OUT instructions.");
 
-            using (var emulator = new x86Emulator(x86Mode.b32))
+            using (var emulator = new X86Emulator(X86Mode.b32))
             {
                 // Map 2MB of memory.
                 emulator.Memory.Map(addr, 2 * 1024 * 1024, MemoryPermissions.All);
@@ -192,10 +192,10 @@ namespace Unicorn.Net.Samples.x86
                 emulator.Hooks.Block.Add(BlockHook, null);
                 // Trace all instructions.
                 emulator.Hooks.Code.Add(CodeHook, null);
-                // Hook x86 IN instructions.
-                emulator.Hooks.Instruction.Add(HookIn, x86Instructions.IN, null);
-                // Hook x86 OUT instructions.
-                emulator.Hooks.Instruction.Add(HookOut, x86Instructions.OUT, null);
+                // Hook X86 IN instructions.
+                emulator.Hooks.Instruction.Add(HookIn, X86Instructions.IN, null);
+                // Hook X86 OUT instructions.
+                emulator.Hooks.Instruction.Add(HookOut, X86Instructions.OUT, null);
 
                 // Start emulating the machine written machine code.
                 emulator.Start(addr, addr + (ulong)code.Length);
@@ -221,7 +221,7 @@ namespace Unicorn.Net.Samples.x86
             Console.WriteLine("===================================");
             Console.WriteLine("Emulate i386 code that emulates forever.");
 
-            using (var emulator = new x86Emulator(x86Mode.b32))
+            using (var emulator = new X86Emulator(X86Mode.b32))
             {
                 // Map 2MB of memory.
                 emulator.Memory.Map(addr, 2 * 1024 * 1024, MemoryPermissions.All);
@@ -244,7 +244,7 @@ namespace Unicorn.Net.Samples.x86
         // hook_code
         public static void CodeHook(Emulator emulator, ulong address, int size, object userData)
         {
-            var eflags = ((x86Emulator)emulator).Registers.EFLAGS;
+            var eflags = ((X86Emulator)emulator).Registers.EFLAGS;
 
             Console.WriteLine($">>> Tracing instruction at 0x{address.ToString("x2")}, instruction size = 0x{size.ToString("x2")}.");
             Console.WriteLine($">>> --- EFLAGS is {eflags.ToString("x2")}");
@@ -259,7 +259,7 @@ namespace Unicorn.Net.Samples.x86
         // hook_out
         private static void HookOut(Emulator emulator, int port, int size, int value, object userData)
         {
-            var registers = ((x86Emulator)emulator).Registers;
+            var registers = ((X86Emulator)emulator).Registers;
             var eip = registers.EIP;
             var tmp = 0L;
 
@@ -286,7 +286,7 @@ namespace Unicorn.Net.Samples.x86
         // hook_in
         private static int HookIn(Emulator emulator, int port, int size, object userData)
         {
-            var eip = ((x86Emulator)emulator).Registers.EIP;
+            var eip = ((X86Emulator)emulator).Registers.EIP;
             Console.WriteLine($">>> --- Reading from port 0x{port.ToString("x2")}, size: {size}, address: 0x{eip.ToString("x2")}");
 
             switch (size)

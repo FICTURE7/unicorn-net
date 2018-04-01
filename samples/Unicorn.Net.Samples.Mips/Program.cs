@@ -1,12 +1,12 @@
 ﻿using Unicorn.MIPS;
 
-namespace Unicorn.Net.Samples.Mips
+namespace Unicorn.Net.Samples.MIPS
 {
     public static class Program
     {
         public static void Main(string[] args)
         {
-            using (var emulator = new MIPSEmulator(Bindings.Mode.MIPS3))
+            using (var emulator = new MipsEmulator(MipsMode.III))
             {
 
             }

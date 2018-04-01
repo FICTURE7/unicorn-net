@@ -1,11 +1,11 @@
 ﻿namespace Unicorn.MIPS
 {
     /// <summary>
-    /// Represents the registers of an <see cref="MIPSEmulator"/>.
+    /// Represents the registers of an <see cref="MipsEmulator"/>.
     /// </summary>
-    public class MIPSRegisters : Registers
+    public class MipsRegisters : Registers
     {
-        internal MIPSRegisters(Emulator emulator) : base(emulator)
+        internal MipsRegisters(Emulator emulator) : base(emulator)
         {
             // Space
         }
