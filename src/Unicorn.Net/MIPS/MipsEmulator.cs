@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Unicorn.MIPS
+namespace Unicorn.Mips
 {
     /// <summary>
     /// Represents a MIPS architecture <see cref="Emulator"/>.
