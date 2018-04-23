@@ -1,4 +1,4 @@
-﻿namespace Unicorn.MIPS
+namespace Unicorn.Mips
 {
     /// <summary>
     /// Represents the registers of an <see cref="MipsEmulator"/>.
