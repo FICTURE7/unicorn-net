@@ -1,4 +1,4 @@
-﻿namespace Unicorn.MIPS
+namespace Unicorn.Mips
 {
     /// <summary>
     /// Defines the modes of an <see cref="MipsEmulator"/>.
