@@ -1,30 +1,30 @@
-﻿using System;
+using System;
 
-namespace Unicorn.MIPS
+namespace Unicorn.Mips
 {
     /// <summary>
     /// Represents a MIPS architecture <see cref="Emulator"/>.
     /// </summary>
-    public class MIPSEmulator : Emulator
+    public class MipsEmulator : Emulator
     {
         // Registsers for the MIPS emulator.
-        private readonly MIPSRegisters _registers;
+        private readonly MipsRegisters _registers;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MIPSEmulator"/> class with the specified
-        /// <see cref="MIPSMode"/> to use.
+        /// Initializes a new instance of the <see cref="MipsEmulator"/> class with the specified
+        /// <see cref="MipsMode"/> to use.
         /// </summary>
         /// <param name="mode">Mode to use.</param>
-        public MIPSEmulator(MIPSMode mode) : base(Bindings.Arch.MIPS, (Bindings.Mode)mode)
+        public MipsEmulator(MipsMode mode) : base(Bindings.Arch.MIPS, (Bindings.Mode)mode)
         {
-            _registers = new MIPSRegisters(this);
+            _registers = new MipsRegisters(this);
         }
 
         /// <summary>
-        /// Gets the <see cref="MIPSRegisters"/> of the <see cref="MIPSRegisters"/> instance.
+        /// Gets the <see cref="MipsRegisters"/> of the <see cref="MipsRegisters"/> instance.
         /// </summary>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
-        public MIPSRegisters Registers
+        public MipsRegisters Registers
         {
             get
             {
@@ -35,16 +35,16 @@ namespace Unicorn.MIPS
         }
 
         /// <summary>
-        /// Gets the <see cref="MIPSMode"/> of the <see cref="MIPSEmulator"/>.
+        /// Gets the <see cref="MipsMode"/> of the <see cref="MipsEmulator"/>.
         /// </summary>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
-        public MIPSMode Mode
+        public MipsMode Mode
         {
             get
             {
                 CheckDisposed();
 
-                return (MIPSMode)_mode;
+                return (MipsMode)_mode;
             }
         }
     }

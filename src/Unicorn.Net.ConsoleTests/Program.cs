@@ -1,6 +1,6 @@
 ﻿using System;
 using Unicorn.ARM;
-using Unicorn.x86;
+using Unicorn.X86;
 
 namespace Unicorn.ConsoleTests
 {
@@ -46,7 +46,7 @@ namespace Unicorn.ConsoleTests
             }
 
             /*
-            using (var emulator = new x86Emulator(x86Mode.b32))
+            using (var emulator = new X86Emulator(X86Mode.b32))
             {
                 ulong addr = 0x1000000;
                 byte[] x86code =
@@ -94,7 +94,7 @@ namespace Unicorn.ConsoleTests
 
         private static void CodeHook(Emulator emulator, ulong address, int size, object userData)
         {
-            var eflags = ((x86Emulator)emulator).Registers.EFLAGS;
+            var eflags = ((X86Emulator)emulator).Registers.EFLAGS;
 
             Console.WriteLine($"-> Tracing instruction at 0x{address.ToString("x2")} of size 0x{size.ToString("x2")}.");
             Console.WriteLine($"-> EFLAGS = {eflags.ToString("x2")}");

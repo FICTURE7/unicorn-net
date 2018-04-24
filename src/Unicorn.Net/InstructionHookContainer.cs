@@ -2,12 +2,12 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Unicorn.Internal;
-using Unicorn.x86;
+using Unicorn.X86;
 
 namespace Unicorn
 {
     /// <summary>
-    /// Callback for tracing <see cref="x86Instructions.IN"/>.
+    /// Callback for tracing <see cref="X86Instructions.IN"/>.
     /// </summary>
     /// <param name="emulator"><see cref="Emulator"/> which raised the callback.</param>
     /// <param name="port">Port number.</param>
@@ -17,7 +17,7 @@ namespace Unicorn
     public delegate int InstructionInHookCallback(Emulator emulator, int port, int size, object userToken);
 
     /// <summary>
-    /// Callback for tracing <see cref="x86Instructions.OUT"/>.
+    /// Callback for tracing <see cref="X86Instructions.OUT"/>.
     /// </summary>
     /// <param name="emulator"><see cref="Emulator"/> which raised the callback.</param>
     /// <param name="port">Port number.</param>

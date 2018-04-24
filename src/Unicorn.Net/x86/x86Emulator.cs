@@ -1,30 +1,30 @@
 ﻿using System;
 
-namespace Unicorn.x86
+namespace Unicorn.X86
 {
     /// <summary>
-    /// Represents an x86 architecture <see cref="Emulator"/>.
+    /// Represents an X86 architecture <see cref="Emulator"/>.
     /// </summary>
-    public class x86Emulator : Emulator
+    public class X86Emulator : Emulator
     {
-        // Registers of the x86 emulator.
-        private readonly x86Registers _registers;
+        // Registers of the X86 emulator.
+        private readonly X86Registers _registers;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="x86Emulator"/> class with the specified
-        /// <see cref="x86Mode"/> to use.
+        /// Initializes a new instance of the <see cref="X86Emulator"/> class with the specified
+        /// <see cref="X86Mode"/> to use.
         /// </summary>
         /// <param name="mode">Mode to use.</param>
-        public x86Emulator(x86Mode mode) : base(Bindings.Arch.x86, (Bindings.Mode)mode)
+        public X86Emulator(X86Mode mode) : base(Bindings.Arch.x86, (Bindings.Mode)mode)
         {
-            _registers = new x86Registers(this);
+            _registers = new X86Registers(this);
         }
 
         /// <summary>
-        /// Gets the <see cref="x86Registers"/> of the <see cref="x86Emulator"/> instance.
+        /// Gets the <see cref="X86Registers"/> of the <see cref="X86Emulator"/> instance.
         /// </summary>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
-        public x86Registers Registers
+        public X86Registers Registers
         {
             get
             {
@@ -35,16 +35,16 @@ namespace Unicorn.x86
         }
 
         /// <summary>
-        /// Gets the <see cref="x86Mode"/> of the <see cref="x86Emulator"/>.
+        /// Gets the <see cref="X86Mode"/> of the <see cref="X86Emulator"/>.
         /// </summary>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
-        public x86Mode Mode
+        public X86Mode Mode
         {
             get
             {
                 CheckDisposed();
 
-                return (x86Mode)_mode;
+                return (X86Mode)_mode;
             }
         }
     }

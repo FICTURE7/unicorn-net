@@ -8,7 +8,7 @@ The API is very prone to changes at the moment.
 
 Here is an example of how to use it. This is also the same example as the official documentation available [here](http://www.unicorn-engine.org/docs/tutorial.html) but in C# and using Unicorn.Net.
 ```csharp
-using (var emulator = new x86Emulator(x86Mode.b32))
+using (var emulator = new X86Emulator(X86Mode.b32))
 {
     ulong addr = 0x1000000;
     byte[] x86code =
@@ -40,7 +40,7 @@ Reading and writing to registers.
 ##### NOTE
 Currently there is no way to write to registers using register IDs, but this may change.
 ```csharp
-// Assume emulator is an instance of the x86Emulator type.
+// Assume emulator is an instance of the X86Emulator type.
 
 // Reading from registers.
 var val = emulator.Registers.ECX;

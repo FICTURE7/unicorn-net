@@ -1,9 +1,9 @@
-﻿namespace Unicorn.x86
+﻿namespace Unicorn.X86
 {
     /// <summary>
-    /// Defines the modes of an <see cref="x86Emulator"/>.
+    /// Defines the modes of an <see cref="X86Emulator"/>.
     /// </summary>
-    public enum x86Mode
+    public enum X86Mode
     {
         // Prefixed the identifiers with a 'b' because identifiers cant start with digits.
 
