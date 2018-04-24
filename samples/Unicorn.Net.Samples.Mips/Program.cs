@@ -1,4 +1,4 @@
-﻿using Unicorn.MIPS;
+﻿using Unicorn.Mips;
 
 namespace Unicorn.Net.Samples.MIPS
 {

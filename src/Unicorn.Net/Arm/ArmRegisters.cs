@@ -1,11 +1,11 @@
-﻿namespace Unicorn.ARM
+﻿namespace Unicorn.Arm
 {
     /// <summary>
-    /// Represents the registers of an <see cref="ARMEmulator"/>.
+    /// Represents the registers of an <see cref="ArmEmulator"/>.
     /// </summary>
-    public class ARMRegisters : Registers
+    public class ArmRegisters : Registers
     {
-        internal ARMRegisters(Emulator emulator) : base(emulator)
+        internal ArmRegisters(Emulator emulator) : base(emulator)
         {
             // Space
         }

@@ -1,7 +1,7 @@
 ﻿using System;
-using Unicorn.ARM;
+using Unicorn.Arm;
 
-namespace Unicorn.Net.Samples.ARM
+namespace Unicorn.Net.Samples.Arm
 {
     // Similar to sample_arm.c
     public class Program
@@ -21,7 +21,7 @@ namespace Unicorn.Net.Samples.ARM
         {
             Console.WriteLine("Emulate ARM code");
 
-            using (var emulator = new ARMEmulator(ARMMode.Arm))
+            using (var emulator = new ArmEmulator(ArmMode.Arm))
             {
                 ulong addr = 0x10000;
 
@@ -55,7 +55,7 @@ namespace Unicorn.Net.Samples.ARM
         {
             Console.WriteLine("Emulate THUMB code");
 
-            using (var emulator = new ARMEmulator(ARMMode.Thumb))
+            using (var emulator = new ArmEmulator(ArmMode.Thumb))
             {
                 ulong addr = 0x10000;
 

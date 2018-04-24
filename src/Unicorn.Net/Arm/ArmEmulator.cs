@@ -1,30 +1,30 @@
 ﻿using System;
 
-namespace Unicorn.ARM
+namespace Unicorn.Arm
 {
     /// <summary>
     /// Represents an ARM architecture <see cref="Emulator"/>.
     /// </summary>
-    public class ARMEmulator : Emulator
+    public class ArmEmulator : Emulator
     {
         // Registers for the ARM emulator.
-        private readonly ARMRegisters _registers;
+        private readonly ArmRegisters _registers;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ARMEmulator"/> class with the specified
-        /// <see cref="ARMMode"/> to use.
+        /// Initializes a new instance of the <see cref="ArmEmulator"/> class with the specified
+        /// <see cref="ArmMode"/> to use.
         /// </summary>
         /// <param name="mode">Mode to use.</param>
-        public ARMEmulator(ARMMode mode) : base(Bindings.Arch.ARM, (Bindings.Mode)mode)
+        public ArmEmulator(ArmMode mode) : base(Bindings.Arch.ARM, (Bindings.Mode)mode)
         {
-            _registers = new ARMRegisters(this);
+            _registers = new ArmRegisters(this);
         }
 
         /// <summary>
-        /// Gets the <see cref="ARMRegisters"/> of the <see cref="ARMEmulator"/> instance.
+        /// Gets the <see cref="ArmRegisters"/> of the <see cref="ArmEmulator"/> instance.
         /// </summary>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
-        public ARMRegisters Registers
+        public ArmRegisters Registers
         {
             get
             {
@@ -35,16 +35,16 @@ namespace Unicorn.ARM
         }
 
         /// <summary>
-        /// Gets the <see cref="ARMMode"/> of the <see cref="ARMEmulator"/>.
+        /// Gets the <see cref="ArmMode"/> of the <see cref="ArmEmulator"/>.
         /// </summary>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
-        public ARMMode Mode
+        public ArmMode Mode
         {
             get
             {
                 CheckDisposed();
 
-                return (ARMMode)_mode;
+                return (ArmMode)_mode;
             }
         }
     }
