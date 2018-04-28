@@ -1,6 +1,6 @@
 ﻿using Unicorn.Mips;
 
-namespace Unicorn.Net.Samples.MIPS
+namespace Unicorn.Net.Samples.Mips
 {
     public static class Program
     {

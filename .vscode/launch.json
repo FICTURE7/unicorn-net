@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/Unicorn.Net.ConsoleTests/bin/Debug/netcoreapp1.1/Unicorn.Net.ConsoleTests.dll",
+            "program": "${workspaceFolder}/src/Unicorn.Net.ConsoleTests/bin/Debug/netcoreapp2.0/Unicorn.Net.ConsoleTests.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/Unicorn.Net.ConsoleTests",
             "console": "internalConsole",

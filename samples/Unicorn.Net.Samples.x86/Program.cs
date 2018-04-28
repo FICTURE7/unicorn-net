@@ -5,7 +5,7 @@ using Unicorn.X86;
 namespace Unicorn.Net.Samples.X86
 {
     // Similar to
-    // samples/sample_X86.c
+    // samples/sample_x86.c
 
     public class Program
     {
