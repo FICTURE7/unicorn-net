@@ -1,5 +1,6 @@
 ﻿using System;
 using Unicorn.Arm;
+using Unicorn.Mips;
 using Unicorn.X86;
 
 namespace Unicorn.ConsoleTests
@@ -9,6 +10,25 @@ namespace Unicorn.ConsoleTests
         public static void Main(string[] args)
         {
             Console.WriteLine("Unicorn version - " + Version.Current);
+
+            using (var emulator = new MipsEmulator(MipsMode.b32 | MipsMode.BigEndian))
+            {
+                ulong addr = 0x10000;
+                byte[] mipscode =
+                {
+                      0x34, 0x21, 0x34, 0x56
+                };
+                
+                emulator.Memory.Map(addr, 2 * 1024 * 1024, MemoryPermissions.All);
+                emulator.Memory.Write(addr, mipscode, mipscode.Length);
+
+                emulator.Registers._1 = 0x6789;
+
+                emulator.Hooks.Code.Add(CodeHook, null);
+                emulator.Start(addr, addr + (ulong)mipscode.Length);
+
+                Console.WriteLine("{0}", emulator.Registers._1);
+            }
 
             using (var emulator = new ArmEmulator(ArmMode.Arm))
             {
@@ -94,7 +114,8 @@ namespace Unicorn.ConsoleTests
 
         private static void CodeHook(Emulator emulator, ulong address, int size, object userData)
         {
-            var eflags = ((X86Emulator)emulator).Registers.EFLAGS;
+            var casted = (X86Emulator)emulator;
+            var eflags = casted.Registers.EFLAGS;
 
             Console.WriteLine($"-> Tracing instruction at 0x{address.ToString("x2")} of size 0x{size.ToString("x2")}.");
             Console.WriteLine($"-> EFLAGS = {eflags.ToString("x2")}");

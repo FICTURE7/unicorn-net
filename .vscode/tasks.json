@@ -2,12 +2,48 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build Unicorn.Net",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
+                "-f",
+                "netstandard2.0",
+                "${workspaceFolder}/src/Unicorn.Net/Unicorn.Net.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build Unicorn.Net.ConsoleTests",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "-f",
+                "netcoreapp2.0",
                 "${workspaceFolder}/src/Unicorn.Net.ConsoleTests/Unicorn.Net.ConsoleTests.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build Unicorn.Net.Samples.Mips",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "-f",
+                "netcoreapp2.0",
+                "${workspaceFolder}/samples/Unicorn.Net.Samples.Mips/Unicorn.Net.Samples.Mips.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build all",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}"
             ],
             "problemMatcher": "$msCompile"
         }

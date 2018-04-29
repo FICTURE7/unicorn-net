@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unicorn.Net.Samples.Mips", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unicorn.Net.Samples.Shellcode", "samples\Unicorn.Net.Samples.Shellcode\Unicorn.Net.Samples.Shellcode.csproj", "{7366613D-0132-42DF-BC16-899259FCA10B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unicorn.Net.Samples.x86", "samples\Unicorn.Net.Samples.x86\Unicorn.Net.Samples.x86.csproj", "{2B3D5780-B146-49D6-B855-4088897DF742}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unicorn.Net.Samples.X86", "samples\Unicorn.Net.Samples.X86\Unicorn.Net.Samples.X86.csproj", "{2B3D5780-B146-49D6-B855-4088897DF742}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
