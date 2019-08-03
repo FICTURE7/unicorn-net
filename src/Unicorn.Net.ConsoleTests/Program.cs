@@ -8,7 +8,7 @@ namespace Unicorn.ConsoleTests
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Unicorn version - " + Version.Current);
+            Console.WriteLine("Unicorn version - " + UnicornVersion.Current);
 
             using (var emulator = new MipsEmulator(MipsMode.b32 | MipsMode.BigEndian))
             {
