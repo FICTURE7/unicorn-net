@@ -23,7 +23,7 @@ namespace Unicorn.Arm
         /// Gets the <see cref="ArmRegisters"/> of the <see cref="ArmEmulator"/> instance.
         /// </summary>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
-        public ArmRegisters Registers
+        public new ArmRegisters Registers
         {
             get
             {
@@ -36,7 +36,7 @@ namespace Unicorn.Arm
         /// Gets the <see cref="ArmMode"/> of the <see cref="ArmEmulator"/>.
         /// </summary>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
-        public ArmMode Mode
+        public new ArmMode Mode
         {
             get
             {

@@ -23,7 +23,7 @@ namespace Unicorn.X86
         /// Gets the <see cref="X86Registers"/> of the <see cref="X86Emulator"/> instance.
         /// </summary>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
-        public X86Registers Registers
+        public new X86Registers Registers
         {
             get
             {
@@ -36,7 +36,7 @@ namespace Unicorn.X86
         /// Gets the <see cref="X86Mode"/> of the <see cref="X86Emulator"/>.
         /// </summary>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
-        public X86Mode Mode
+        public new X86Mode Mode
         {
             get
             {

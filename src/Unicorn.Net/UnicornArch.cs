@@ -3,7 +3,7 @@
 namespace Unicorn
 {
     /// <summary>
-    /// Types of CPU architecture.
+    /// Types of unicorn-engine CPU architecture.
     /// </summary>
     public enum UnicornArch
     {

@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace Unicorn
 {
     /// <summary>
     /// Represents a unicorn-engine emulator.
     /// </summary>
-    public abstract class Emulator : IDisposable
+    public class Emulator : IDisposable
     {
         private bool _disposed;
-        private readonly Memory _memory;
         private readonly Hooks _hooks;
+        private readonly Memory _memory;
+        private readonly Registers _registers;
         private readonly IntPtr _handle;
 
         internal readonly UnicornArch _arch;
@@ -20,12 +20,50 @@ namespace Unicorn
         /// <summary>
         /// Gets the handle of the <see cref="Emulator"/>.
         /// </summary>
-        internal IntPtr Handle => _handle;
+        public IntPtr Handle => _handle;
 
         /// <summary>
         /// Gets the <see cref="IBindings"/> of the <see cref="Emulator"/>.
         /// </summary>
         internal IBindings Bindings { get; }
+
+        /// <summary>
+        /// Gets the <see cref="UnicornMode"/> of the <see cref="Emulator"/>.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
+        public UnicornMode Mode
+        {
+            get
+            {
+                ThrowIfDisposed();
+                return _mode;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="UnicornArch"/> of the <see cref="Emulator"/>.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
+        public UnicornArch Arch
+        {
+            get
+            {
+                ThrowIfDisposed();
+                return _arch;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Unicorn.Registers"/> of the <see cref="Emulator"/>.
+        /// </summary>
+        public Registers Registers
+        {
+            get
+            {
+                ThrowIfDisposed();
+                return _registers;
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="Unicorn.Memory"/> of the <see cref="Emulator"/>.
@@ -85,22 +123,33 @@ namespace Unicorn
             }
         }
 
-        internal Emulator(UnicornArch arch, UnicornMode mode) : this(arch, mode, Unicorn.Bindings.Instance)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Emulator"/> class with the specified <see cref="UnicornArch"/>
+        /// and <see cref="UnicornMode"/>.
+        /// </summary>
+        /// <param name="arch"><see cref="UnicornArch"/> to use.</param>
+        /// <param name="mode"><see cref="UnicornMode"/> to use.</param>
+        public Emulator(UnicornArch arch, UnicornMode mode) : this(arch, mode, Unicorn.Bindings.Instance)
         {
-            /* Space. */
+            /* Space */
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Emulator"/> class with the specified <see cref="IBindings"/>
+        /// instance.
+        /// </summary>
         internal Emulator(UnicornArch arch, UnicornMode mode, IBindings bindings)
         {
             _arch = arch;
             _mode = mode;
+            _registers = new Registers(this);
             _memory = new Memory(this);
             _hooks = new Hooks(this);
 
             Bindings = bindings;
             Bindings.Open(arch, mode, ref _handle);
         }
-        
+
         /// <summary>
         /// Starts emulation at the specified begin address and end address.
         /// </summary>
@@ -168,28 +217,21 @@ namespace Unicorn
                 return;
 
             try { Bindings.Close(Handle); }
-            catch
-            {
-                Debug.WriteLine("Bindings.Close() threw an exception.");
-            }
+            catch { Debug.WriteLine("Bindings.Close() threw an exception."); }
 
             _disposed = true;
         }
+
+        internal void RegRead(int regId, ref long value)
+            => Bindings.RegRead(Handle, regId, ref value);
+
+        internal void RegWrite(int regId, ref long value)
+            => Bindings.RegWrite(Handle, regId, ref value);
 
         internal void ThrowIfDisposed()
         {
             if (_disposed)
                 throw new ObjectDisposedException(null, "Can not access disposed Emulator object.");
-        }
-
-        internal void EmuStart()
-        {
-
-        }
-
-        internal void EmuStop()
-        {
-
         }
     }
 }

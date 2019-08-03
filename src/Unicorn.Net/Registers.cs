@@ -6,7 +6,7 @@ namespace Unicorn
     /// <summary>
     /// Represents the registers of an <see cref="Emulator"/>.
     /// </summary>
-    public abstract class Registers
+    public class Registers
     {
         // Emulator object instance which owns this Registers object instance.
         private readonly Emulator _emulator;
@@ -26,10 +26,10 @@ namespace Unicorn
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public long Read(int registerId)
         {
-            var value = 0L;
+            long value = 0;
 
             _emulator.ThrowIfDisposed();
-            _emulator.Bindings.RegRead(_emulator.Handle, registerId, ref value);
+            _emulator.RegRead(registerId, ref value);
             return value;
         }
 
@@ -43,7 +43,7 @@ namespace Unicorn
         public void Write(int registerId, long value)
         {
             _emulator.ThrowIfDisposed();
-            _emulator.Bindings.RegWrite(_emulator.Handle, registerId, ref value);
+            _emulator.RegWrite(registerId, ref value);
         }
     }
 }

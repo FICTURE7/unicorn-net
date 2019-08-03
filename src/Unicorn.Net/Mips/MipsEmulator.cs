@@ -23,7 +23,7 @@ namespace Unicorn.Mips
         /// Gets the <see cref="MipsRegisters"/> of the <see cref="MipsRegisters"/> instance.
         /// </summary>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
-        public MipsRegisters Registers
+        public new MipsRegisters Registers
         {
             get
             {
@@ -36,7 +36,7 @@ namespace Unicorn.Mips
         /// Gets the <see cref="MipsMode"/> of the <see cref="MipsEmulator"/>.
         /// </summary>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
-        public MipsMode Mode
+        public new MipsMode Mode
         {
             get
             {
