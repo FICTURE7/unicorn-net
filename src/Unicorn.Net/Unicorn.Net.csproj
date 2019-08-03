@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.1;netstandard2.0</TargetFrameworks>
@@ -8,7 +8,7 @@
 
     <Description>.NET binding/wrapper for the Unicorn engine.</Description>
     <Copyright>Copyright 2018 (c) FICTURE7</Copyright>
-    <Authors>FICTURE7;Grégoire Geis</Authors>
+    <Authors>FICTURE7</Authors>
 
     <PackageId>Unicorn.Net</PackageId>
     <PackageVersion>$(Version)</PackageVersion>
