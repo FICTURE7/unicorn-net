@@ -10,7 +10,7 @@
             var mmajor = 0;
             var mminor = 0;
 
-            var nativeVersion = Binds.Version(ref mmajor, ref mminor);
+            var nativeVersion = Bindings.Instance.Version(ref mmajor, ref mminor);
             var major = nativeVersion >> 0x8;
             var minor = nativeVersion & 0xF;
 

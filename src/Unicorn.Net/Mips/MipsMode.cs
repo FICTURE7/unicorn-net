@@ -8,36 +8,36 @@ namespace Unicorn.Mips
         /// <summary>
         /// Big endian mode.
         /// </summary>
-        BigEndian = Bindings.Mode.BigEndian,
+        BigEndian = UnicornMode.BigEndian,
 
         /// <summary>
         /// Little endian mode.
         /// </summary>
-        LittleEndian = Bindings.Mode.LittleEndian,
+        LittleEndian = UnicornMode.LittleEndian,
 
         /// <summary>
         /// MicroMips mode.
         /// </summary>
-        Micro = Bindings.Mode.MIPSMicro,
+        Micro = UnicornMode.MIPSMicro,
 
         /// <summary>
         /// MIPS III ISA mode.
         /// </summary>
-        III = Bindings.Mode.MIPS3,
+        III = UnicornMode.MIPS3,
 
         /// <summary>
         /// MIPS32R6 ISA mode.
         /// </summary>
-        b32R6 = Bindings.Mode.MIPS32R6,
+        b32R6 = UnicornMode.MIPS32R6,
 
         /// <summary>
         /// MIPS32 ISA mode.
         /// </summary>
-        b32 = Bindings.Mode.MIPS32,
+        b32 = UnicornMode.MIPS32,
         
         /// <summary>
         /// MIPS64 ISA mode.
         /// </summary>
-        b64 = Bindings.Mode.MIPS64,
+        b64 = UnicornMode.MIPS64,
     }
 }

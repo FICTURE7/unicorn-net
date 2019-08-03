@@ -46,7 +46,7 @@ namespace Unicorn.Net.Samples.X86
                 }
                 catch (UnicornException ex)
                 {
-                    Debug.Assert(ex.ErrorCode == Bindings.Error.ReadUnmapped, "Unexpected error code in caught UnicornException.");
+                    Debug.Assert(ex.ErrorCode == UnicornError.ReadUnmapped, "Unexpected error code in caught UnicornException.");
                     Console.WriteLine($"Failed to start emulator instance. -> {ex.Message}.");
                 }
 

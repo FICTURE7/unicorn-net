@@ -22,14 +22,14 @@ namespace Unicorn
         /// </summary>
         /// <param name="registerId">Register ID.</param>
         /// <returns>Value of register read.</returns>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Binds.UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public long Read(int registerId)
         {
-            _emulator.CheckDisposed();
-
             var value = 0L;
-            _emulator.Bindings.RegRead(registerId, ref value);
+
+            _emulator.ThrowIfDisposed();
+            _emulator.Bindings.RegRead(_emulator.Handle, registerId, ref value);
             return value;
         }
 
@@ -38,13 +38,12 @@ namespace Unicorn
         /// </summary>
         /// <param name="registerId">Register ID.</param>
         /// <param name="value">Value to write to register.</param>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Binds.UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public void Write(int registerId, long value)
         {
-            _emulator.CheckDisposed();
-
-            _emulator.Bindings.RegWrite(registerId, ref value);
+            _emulator.ThrowIfDisposed();
+            _emulator.Bindings.RegWrite(_emulator.Handle, registerId, ref value);
         }
     }
 }

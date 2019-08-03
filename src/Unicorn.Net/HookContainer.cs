@@ -43,12 +43,12 @@ namespace Unicorn
         /// <param name="begin">Start address of where the hook is effective (inclusive).</param>
         /// <param name="end">End address of where the hook is effective (inclusive).</param>
         /// <returns>A <see cref="HookHandle"/> which represents hook.</returns>
-        protected HookHandle Add(Bindings.HookType type, IntPtr callback, ulong begin, ulong end)
+        protected HookHandle Add(UnicornHookType type, IntPtr callback, ulong begin, ulong end)
         {
             //NOTE: Not calling Emulator.CheckDispose() here because the caller should take responsibility of doing so.
 
             var hh = IntPtr.Zero;
-            Emulator.Bindings.HookAdd(ref hh, type, callback, IntPtr.Zero, begin, end);
+            Emulator.Bindings.HookAdd(Emulator.Handle, ref hh, type, callback, IntPtr.Zero, begin, end);
 
             var handle = new HookHandle(hh);
             _handles.Add(handle);
@@ -62,13 +62,13 @@ namespace Unicorn
         /// <param name="handle"><see cref="HookHandle"/> to the hook to remove.</param>
         /// <returns><c>true</c> if <paramref name="handle"/> was found and removed; otherwise <c>false</c>.</returns>
         /// 
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Binds.UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public bool Remove(HookHandle handle)
         {
-            Emulator.CheckDisposed();
+            Emulator.ThrowIfDisposed();
 
-            Emulator.Bindings.HookRemove(handle._hh);
+            Emulator.Bindings.HookDel(Emulator.Handle, handle._hh);
             return _handles.Remove(handle);
         }
 

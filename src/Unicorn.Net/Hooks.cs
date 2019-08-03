@@ -36,7 +36,7 @@ namespace Unicorn
         {
             get
             {
-                _emulator.CheckDisposed();
+                _emulator.ThrowIfDisposed();
 
                 return _memoryHooks;
             }
@@ -50,7 +50,7 @@ namespace Unicorn
         {
             get
             {
-                _emulator.CheckDisposed();
+                _emulator.ThrowIfDisposed();
 
                 return _codeHooks;
             }
@@ -64,7 +64,7 @@ namespace Unicorn
         {
             get
             {
-                _emulator.CheckDisposed();
+                _emulator.ThrowIfDisposed();
 
                 return _blockHooks;
             }
@@ -78,7 +78,7 @@ namespace Unicorn
         {
             get
             {
-                _emulator.CheckDisposed();
+                _emulator.ThrowIfDisposed();
 
                 return _instructionHooks;
             }
@@ -92,7 +92,7 @@ namespace Unicorn
         {
             get
             {
-                _emulator.CheckDisposed();
+                _emulator.ThrowIfDisposed();
 
                 return _interruptHooks;
             }

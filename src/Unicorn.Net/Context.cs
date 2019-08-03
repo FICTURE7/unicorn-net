@@ -11,18 +11,20 @@ namespace Unicorn
         //TODO: Consider making strongly typed Contexts, like X86Context etc...
 
         internal bool _disposed;
-        internal readonly Bindings.Arch _arch;
-        internal readonly Bindings.Mode _mode;
+        internal readonly UnicornArch _arch;
+        internal readonly UnicornMode _mode;
         internal readonly IntPtr _context;
+        private readonly Emulator _emulator;
 
         internal Context(Emulator emulator)
         {
             Debug.Assert(emulator != null);
 
-            emulator.Bindings.ContextAlloc(ref _context);
+            emulator.Bindings.ContextAlloc(emulator.Handle, ref _context);
 
             _arch = emulator._arch;
             _mode = emulator._mode;
+            _emulator = emulator;
         }
 
         internal void Capture(Emulator emulator)
@@ -31,7 +33,7 @@ namespace Unicorn
             Debug.Assert(emulator._arch == _arch);
             Debug.Assert(emulator._mode == _mode);
 
-            emulator.Bindings.ContextSave(_context);
+            emulator.Bindings.ContextSave(emulator.Handle, _context);
         }
 
         internal void Restore(Emulator emulator)
@@ -40,11 +42,8 @@ namespace Unicorn
             Debug.Assert(emulator._arch == _arch);
             Debug.Assert(emulator._mode == _mode);
 
-            emulator.Bindings.ContextRestore(_context);
+            emulator.Bindings.ContextRestore(emulator.Handle, _context);
         }
-
-        // No real need for the dispose pattern here, but it
-        // does not hurt.
 
         /// <summary>
         /// Finalizes the <see cref="Context"/> instance.
@@ -72,10 +71,7 @@ namespace Unicorn
             if (_disposed)
                 return;
 
-            try
-            {
-                Bindings.Free(_context);
-            }
+            try { _emulator.Bindings.Free(_context); }
             catch (Exception)
             {
                 Debug.WriteLine("Exception thrown during disposal of Context object.");

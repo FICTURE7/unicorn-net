@@ -8,21 +8,21 @@
         /// <summary>
         /// ARM mode.
         /// </summary>
-        Arm = Bindings.Mode.ARM,
+        Arm = UnicornMode.ARM,
 
         /// <summary>
         /// Thumb mode.
         /// </summary>
-        Thumb = Bindings.Mode.ARMThumb,
+        Thumb = UnicornMode.ARMThumb,
 
         /// <summary>
         /// Cortext-M series mode.
         /// </summary>
-        MClass = Bindings.Mode.ARMMClass,
+        MClass = UnicornMode.ARMMClass,
 
         /// <summary>
         /// ARMv8 A32 encoding mode.
         /// </summary>
-        v8 = Bindings.Mode.ARMv8
+        V8 = UnicornMode.ARMv8
     }
 }

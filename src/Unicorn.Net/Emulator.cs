@@ -8,45 +8,33 @@ namespace Unicorn
     /// </summary>
     public abstract class Emulator : IDisposable
     {
-        // To determine if we've been disposed or not.
         private bool _disposed;
-        // Memory object instance which represents the memory of the emulator.
         private readonly Memory _memory;
-        // Hooks object instance which represents the hooks of the emulator.
         private readonly Hooks _hooks;
+        private readonly IntPtr _handle;
 
-        // Bindings to the unicorn engine.
-        private readonly Bindings _bindings;
+        internal readonly UnicornArch _arch;
+        internal readonly UnicornMode _mode;
 
-        // Arch with which the Emulator instance was initialized.
-        internal readonly Bindings.Arch _arch;
-        // Mode with which the Emulator instance was initialized.
-        internal readonly Bindings.Mode _mode;
+        /// <summary>
+        /// Gets the handle of the <see cref="Emulator"/>.
+        /// </summary>
+        internal IntPtr Handle => _handle;
 
-        internal Emulator(Bindings.Arch arch, Bindings.Mode mode)
-        {
-            _arch = arch;
-            _mode = mode;
-            _bindings = new Bindings();
-            _memory = new Memory(this);
-            _hooks = new Hooks(this);
-
-            _bindings.Open(arch, mode);
-        }
-
-        internal Bindings Bindings => _bindings;
+        /// <summary>
+        /// Gets the <see cref="IBindings"/> of the <see cref="Emulator"/>.
+        /// </summary>
+        internal IBindings Bindings { get; }
 
         /// <summary>
         /// Gets the <see cref="Unicorn.Memory"/> of the <see cref="Emulator"/>.
         /// </summary>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public Memory Memory
         {
             get
             {
-                CheckDisposed();
-
+                ThrowIfDisposed();
                 return _memory;
             }
         }
@@ -54,14 +42,12 @@ namespace Unicorn
         /// <summary>
         /// Gets the <see cref="Unicorn.Hooks"/> of the <see cref="Emulator"/>.
         /// </summary>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public Hooks Hooks
         {
             get
             {
-                CheckDisposed();
-
+                ThrowIfDisposed();
                 return _hooks;
             }
         }
@@ -71,15 +57,13 @@ namespace Unicorn
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException"><paramref name="value"/> has a differnt mode or architecture than the <see cref="Emulator"/>.</exception>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public Context Context
         {
             get
             {
-                CheckDisposed();
-
-                //TODO: Make contexts reusable so we don't create new instances and do unneeded allocations?
+                ThrowIfDisposed();
 
                 var context = new Context(this);
                 context.Capture(this);
@@ -87,7 +71,7 @@ namespace Unicorn
             }
             set
             {
-                CheckDisposed();
+                ThrowIfDisposed();
 
                 if (value == null)
                     throw new ArgumentNullException(nameof(value));
@@ -100,49 +84,60 @@ namespace Unicorn
             }
         }
 
+        internal Emulator(UnicornArch arch, UnicornMode mode) : this(arch, mode, Unicorn.Bindings.Instance)
+        {
+            /* Space. */
+        }
+
+        internal Emulator(UnicornArch arch, UnicornMode mode, IBindings bindings)
+        {
+            _arch = arch;
+            _mode = mode;
+            _memory = new Memory(this);
+            _hooks = new Hooks(this);
+
+            Bindings = bindings;
+            Bindings.Open(arch, mode, ref _handle);
+        }
+        
         /// <summary>
         /// Starts emulation at the specified begin address and end address.
         /// </summary>
         /// <param name="begin">Address at which to begin emulation.</param>
         /// <param name="end">Address at which to end emulation.</param>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public void Start(ulong begin, ulong end)
         {
-            CheckDisposed();
-
-            Bindings.EmuStart(begin, end, 0, 0);
+            ThrowIfDisposed();
+            Bindings.EmuStart(Handle, begin, end, 0, 0);
         }
 
         /// <summary>
-        /// Starts emulation at the specified begin address, end address, timeout and number of instructions
-        /// to execute.
+        /// Starts emulation at the specified begin address, end address, timeout and number of instructions to execute.
         /// </summary>
         /// <param name="begin">Address at which to begin emulation.</param>
         /// <param name="end">Address at which to end emulation.</param>
         /// <param name="timeout">Duration to run emulation.</param>
         /// <param name="count">Number of instructions to execute.</param>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public void Start(ulong begin, ulong end, TimeSpan timeout, int count)
         {
-            CheckDisposed();
-
-            // Convert TimeSpan value into micro seconds.
-            var microSeconds = (ulong)(Math.Round(timeout.TotalMilliseconds * 1000));
-            Bindings.EmuStart(begin, end, microSeconds, count);
+            ThrowIfDisposed();
+            var microSeconds = (ulong)Math.Round(timeout.TotalMilliseconds * 1000);
+            Bindings.EmuStart(Handle, begin, end, microSeconds, count);
         }
 
         /// <summary>
         /// Stops the emulation.
         /// </summary>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public void Stop()
         {
-            CheckDisposed();
-
-            Bindings.EmuStop();
+            ThrowIfDisposed();
+            Bindings.EmuStop(Handle);
         }
 
         /// <summary>
@@ -171,23 +166,29 @@ namespace Unicorn
             if (_disposed)
                 return;
 
-            //NOTE: Might consider throwing an exception here?
-            try
+            try { Bindings.Close(Handle); }
+            catch
             {
-                Bindings.Close();
-            }
-            catch (Exception)
-            {
-                Debug.WriteLine("Closing of unicorn engine handle threw an exception.");
+                Debug.WriteLine("Bindings.Close() threw an exception.");
             }
 
             _disposed = true;
         }
 
-        internal void CheckDisposed()
+        internal void ThrowIfDisposed()
         {
             if (_disposed)
                 throw new ObjectDisposedException(null, "Can not access disposed Emulator object.");
+        }
+
+        internal void EmuStart()
+        {
+
+        }
+
+        internal void EmuStop()
+        {
+
         }
     }
 }

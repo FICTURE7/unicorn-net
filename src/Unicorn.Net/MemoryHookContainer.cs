@@ -49,11 +49,11 @@ namespace Unicorn
         /// <returns>A <see cref="HookHandle"/> which represents the hook.</returns>
         /// 
         /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Binds.UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public HookHandle Add(MemoryHookType type, MemoryHookCallback callback, object userToken)
         {
-            Emulator.CheckDisposed();
+            Emulator.ThrowIfDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
@@ -78,11 +78,11 @@ namespace Unicorn
         /// </remarks>
         /// 
         /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Binds.UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public HookHandle Add(MemoryHookType type, MemoryHookCallback callback, ulong begin, ulong end, object userToken)
         {
-            Emulator.CheckDisposed();
+            Emulator.ThrowIfDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
@@ -101,11 +101,11 @@ namespace Unicorn
         /// <returns>A <see cref="HookHandle"/> which represents the hook.</returns>
         /// 
         /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Binds.UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public HookHandle Add(MemoryEventHookType type, MemoryEventHookCallback callback, object userToken)
         {
-            Emulator.CheckDisposed();
+            Emulator.ThrowIfDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
@@ -130,11 +130,11 @@ namespace Unicorn
         /// </remarks>
         /// 
         /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Binds.UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public HookHandle Add(MemoryEventHookType type, MemoryEventHookCallback callback, ulong begin, ulong end, object userToken)
         {
-            Emulator.CheckDisposed();
+            Emulator.ThrowIfDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
@@ -146,24 +146,24 @@ namespace Unicorn
         {
             var wrapper = new uc_cb_eventmem((uc, _type, addr, size, value, user_data) =>
             {
-                Debug.Assert(uc == Emulator.Bindings.UCHandle);
+                Debug.Assert(uc == Emulator.Handle);
                 return callback(Emulator, (MemoryType)_type, addr, size, value, userToken);
             });
 
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
-            return Add((Bindings.HookType)type, ptr, begin, end);
+            return Add((UnicornHookType)type, ptr, begin, end);
         }
 
         private HookHandle AddInternal(MemoryHookType type, MemoryHookCallback callback, ulong begin, ulong end, object userToken)
         {
             var wrapper = new uc_cb_hookmem((uc, _type, addr, size, value, user_data) =>
             {
-                Debug.Assert(uc == Emulator.Bindings.UCHandle);
+                Debug.Assert(uc == Emulator.Handle);
                 callback(Emulator, (MemoryType)_type, addr, size, value, userToken);
             });
 
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
-            return Add((Bindings.HookType)type, ptr, begin, end);
+            return Add((UnicornHookType)type, ptr, begin, end);
         }
     }
 
@@ -176,22 +176,22 @@ namespace Unicorn
         /// <summary>
         /// Read memory.
         /// </summary>
-        Read = Bindings.HookType.MemRead,
+        Read = UnicornHookType.MemRead,
 
         /// <summary>
         /// Write memory.
         /// </summary>
-        Write = Bindings.HookType.MemWrite,
+        Write = UnicornHookType.MemWrite,
 
         /// <summary>
         /// Fetch memory.
         /// </summary>
-        Fetch = Bindings.HookType.MemFetch,
+        Fetch = UnicornHookType.MemFetch,
 
         /// <summary>
         /// Read memory successful access.
         /// </summary>
-        ReadAfter = Bindings.HookType.MemReadAfter
+        ReadAfter = UnicornHookType.MemReadAfter
     }
 
     /// <summary>
@@ -203,32 +203,32 @@ namespace Unicorn
         /// <summary>
         /// Unmapped memory read.
         /// </summary>
-        UnmappedRead = Bindings.HookType.MemReadUnmapped,
+        UnmappedRead = UnicornHookType.MemReadUnmapped,
 
         /// <summary>
         /// Unmapped memory write.
         /// </summary>
-        UnmappedWrite = Bindings.HookType.MemWriteUnmapped,
+        UnmappedWrite = UnicornHookType.MemWriteUnmapped,
 
         /// <summary>
         /// Unmapped memory fetch.
         /// </summary>
-        UnmappedFetch = Bindings.HookType.MemFetchUnmapped,
+        UnmappedFetch = UnicornHookType.MemFetchUnmapped,
 
         /// <summary>
         /// Protected memory read.
         /// </summary>
-        ProtectedRead = Bindings.HookType.MemReadProtected,
+        ProtectedRead = UnicornHookType.MemReadProtected,
 
         /// <summary>
         /// Protected memory write.
         /// </summary>
-        ProtectedWrite = Bindings.HookType.MemWriteProtected,
+        ProtectedWrite = UnicornHookType.MemWriteProtected,
 
         /// <summary>
         /// Protected memory fetch.
         /// </summary>
-        ProtectedFetch = Bindings.HookType.MemFetchProtected,
+        ProtectedFetch = UnicornHookType.MemFetchProtected,
     }
 
     /// <summary>

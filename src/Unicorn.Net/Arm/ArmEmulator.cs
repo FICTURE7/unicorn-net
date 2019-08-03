@@ -7,7 +7,6 @@ namespace Unicorn.Arm
     /// </summary>
     public class ArmEmulator : Emulator
     {
-        // Registers for the ARM emulator.
         private readonly ArmRegisters _registers;
 
         /// <summary>
@@ -15,7 +14,7 @@ namespace Unicorn.Arm
         /// <see cref="ArmMode"/> to use.
         /// </summary>
         /// <param name="mode">Mode to use.</param>
-        public ArmEmulator(ArmMode mode) : base(Bindings.Arch.ARM, (Bindings.Mode)mode)
+        public ArmEmulator(ArmMode mode) : base(UnicornArch.ARM, (UnicornMode)mode)
         {
             _registers = new ArmRegisters(this);
         }
@@ -28,8 +27,7 @@ namespace Unicorn.Arm
         {
             get
             {
-                CheckDisposed();
-
+                ThrowIfDisposed();
                 return _registers;
             }
         }
@@ -42,8 +40,7 @@ namespace Unicorn.Arm
         {
             get
             {
-                CheckDisposed();
-
+                ThrowIfDisposed();
                 return (ArmMode)_mode;
             }
         }

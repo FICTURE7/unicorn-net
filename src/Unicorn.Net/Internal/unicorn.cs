@@ -64,13 +64,13 @@ namespace Unicorn.Internal
         public static extern uc_err uc_mem_regions(IntPtr uc, ref IntPtr regions, ref int count);
 
         [DllImport(UNICORN_LIB, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_context_alloc(IntPtr uc, ref IntPtr context);
+        public static extern uc_err uc_context_alloc(IntPtr uc, ref IntPtr ctx);
 
         [DllImport(UNICORN_LIB, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_context_save(IntPtr uc, IntPtr context);
+        public static extern uc_err uc_context_save(IntPtr uc, IntPtr ctx);
 
         [DllImport(UNICORN_LIB, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_context_restore(IntPtr uc, IntPtr context);
+        public static extern uc_err uc_context_restore(IntPtr uc, IntPtr ctx);
 
         [DllImport(UNICORN_LIB, CallingConvention = CallingConvention.Cdecl)]
         public static extern uc_err uc_hook_add(IntPtr uc, ref IntPtr hh, uc_hook_type type, IntPtr callback, IntPtr user_data, ulong address, ulong end);

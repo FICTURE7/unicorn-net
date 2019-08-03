@@ -7,7 +7,6 @@ namespace Unicorn.X86
     /// </summary>
     public class X86Emulator : Emulator
     {
-        // Registers of the X86 emulator.
         private readonly X86Registers _registers;
 
         /// <summary>
@@ -15,7 +14,7 @@ namespace Unicorn.X86
         /// <see cref="X86Mode"/> to use.
         /// </summary>
         /// <param name="mode">Mode to use.</param>
-        public X86Emulator(X86Mode mode) : base(Bindings.Arch.x86, (Bindings.Mode)mode)
+        public X86Emulator(X86Mode mode) : base(UnicornArch.X86, (UnicornMode)mode)
         {
             _registers = new X86Registers(this);
         }
@@ -28,8 +27,7 @@ namespace Unicorn.X86
         {
             get
             {
-                CheckDisposed();
-
+                ThrowIfDisposed();
                 return _registers;
             }
         }
@@ -42,8 +40,7 @@ namespace Unicorn.X86
         {
             get
             {
-                CheckDisposed();
-
+                ThrowIfDisposed();
                 return (X86Mode)_mode;
             }
         }

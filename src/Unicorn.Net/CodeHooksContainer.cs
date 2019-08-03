@@ -34,11 +34,11 @@ namespace Unicorn
         /// <returns>A <see cref="HookHandle"/> which represents the hook.</returns>
         /// 
         /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Binds.UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public HookHandle Add(CodeHookCallback callback, object userToken)
         {
-            Emulator.CheckDisposed();
+            Emulator.ThrowIfDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
@@ -62,11 +62,11 @@ namespace Unicorn
         /// </remarks>
         /// 
         /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Binds.UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public HookHandle Add(CodeHookCallback callback, ulong begin, ulong end, object userToken)
         {
-            Emulator.CheckDisposed();
+            Emulator.ThrowIfDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
@@ -78,12 +78,12 @@ namespace Unicorn
         {
             var wrapper = new uc_cb_hookcode((uc, addr, size, user_data) =>
             {
-                Debug.Assert(uc == Emulator.Bindings.UCHandle);
+                Debug.Assert(uc == Emulator.Handle);
                 callback(Emulator, addr, size, userToken);
             });
 
             var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
-            return Add(Bindings.HookType.Code, ptr, begin, end);
+            return Add(UnicornHookType.Code, ptr, begin, end);
         }
     }
 }

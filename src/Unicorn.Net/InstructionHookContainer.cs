@@ -47,11 +47,11 @@ namespace Unicorn
         /// <returns>A <see cref="HookHandle"/> which represents the hook.</returns>
         /// 
         /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Binds.UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public HookHandle Add(InstructionInHookCallback callback, Instruction instruction, object userToken)
         {
-            Emulator.CheckDisposed();
+            Emulator.ThrowIfDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
@@ -72,11 +72,11 @@ namespace Unicorn
         /// <returns>A <see cref="HookHandle"/> which represents the hook.</returns>
         /// 
         /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Binds.UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public HookHandle Add(InstructionInHookCallback callback, Instruction instruction, ulong begin, ulong end, object userToken)
         {
-            Emulator.CheckDisposed();
+            Emulator.ThrowIfDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
@@ -95,11 +95,11 @@ namespace Unicorn
         /// <returns>A <see cref="HookHandle"/> which represents the hook.</returns>
         /// 
         /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Binds.UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public HookHandle Add(InstructionOutHookCallback callback, Instruction instruction, object userToken)
         {
-            Emulator.CheckDisposed();
+            Emulator.ThrowIfDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
@@ -120,11 +120,11 @@ namespace Unicorn
         /// <returns>A <see cref="HookHandle"/> which represents the hook.</returns>
         /// 
         /// <exception cref="ArgumentNullException"><paramref name="callback"/> is <c>null</c>.</exception>
-        /// <exception cref="UnicornException">Unicorn did not return <see cref="Bindings.Error.Ok"/>.</exception>
+        /// <exception cref="UnicornException">Unicorn did not return <see cref="Binds.UnicornError.Ok"/>.</exception>
         /// <exception cref="ObjectDisposedException"><see cref="Emulator"/> instance is disposed.</exception>
         public HookHandle Add(InstructionOutHookCallback callback, Instruction instruction, ulong begin, ulong end, object userToken)
         {
-            Emulator.CheckDisposed();
+            Emulator.ThrowIfDisposed();
 
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
@@ -136,7 +136,7 @@ namespace Unicorn
         {
             var wrapper = new uc_cb_insn_in((uc, port, size, user_data) =>
             {
-                Debug.Assert(uc == Emulator.Bindings.UCHandle);
+                Debug.Assert(uc == Emulator.Handle);
                 return callback(Emulator, port, size, userToken);
             });
 
@@ -148,7 +148,7 @@ namespace Unicorn
         {
             var wrapper = new uc_cb_insn_out((uc, port, size, value, user_data) =>
             {
-                Debug.Assert(uc == Emulator.Bindings.UCHandle);
+                Debug.Assert(uc == Emulator.Handle);
                 callback(Emulator, port, size, value, userToken);
             });
 
@@ -159,7 +159,7 @@ namespace Unicorn
         private HookHandle AddInternal(IntPtr callback, ulong begin, ulong end, Instruction inst)
         {
             var ptr = IntPtr.Zero;
-            Emulator.Bindings.HookAdd(ref ptr, Bindings.HookType.Instructions, callback, IntPtr.Zero, begin, end, inst._id);
+            Emulator.Bindings.HookAdd(Emulator.Handle, ref ptr, UnicornHookType.Instructions, callback, IntPtr.Zero, begin, end, inst._id);
 
             var handle = new HookHandle(ptr);
             Handles.Add(handle);

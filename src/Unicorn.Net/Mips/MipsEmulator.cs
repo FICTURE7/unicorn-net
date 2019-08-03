@@ -7,7 +7,6 @@ namespace Unicorn.Mips
     /// </summary>
     public class MipsEmulator : Emulator
     {
-        // Registsers for the MIPS emulator.
         private readonly MipsRegisters _registers;
 
         /// <summary>
@@ -15,7 +14,7 @@ namespace Unicorn.Mips
         /// <see cref="MipsMode"/> to use.
         /// </summary>
         /// <param name="mode">Mode to use.</param>
-        public MipsEmulator(MipsMode mode) : base(Bindings.Arch.MIPS, (Bindings.Mode)mode)
+        public MipsEmulator(MipsMode mode) : base(UnicornArch.MIPS, (UnicornMode)mode)
         {
             _registers = new MipsRegisters(this);
         }
@@ -28,8 +27,7 @@ namespace Unicorn.Mips
         {
             get
             {
-                CheckDisposed();
-
+                ThrowIfDisposed();
                 return _registers;
             }
         }
@@ -42,8 +40,7 @@ namespace Unicorn.Mips
         {
             get
             {
-                CheckDisposed();
-
+                ThrowIfDisposed();
                 return (MipsMode)_mode;
             }
         }
