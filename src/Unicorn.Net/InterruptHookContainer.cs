@@ -81,8 +81,7 @@ namespace Unicorn
                 callback(Emulator, into, userToken);
             });
 
-            var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
-            return Add(UnicornHookType.Interrupts, ptr, begin, end);
+            return Add(UnicornHookType.Interrupts, wrapper, begin, end);
         }
     }
 }

@@ -150,8 +150,7 @@ namespace Unicorn
                 return callback(Emulator, (MemoryType)_type, addr, size, value, userToken);
             });
 
-            var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
-            return Add((UnicornHookType)type, ptr, begin, end);
+            return Add((UnicornHookType)type, wrapper, begin, end);
         }
 
         private HookHandle AddInternal(MemoryHookType type, MemoryHookCallback callback, ulong begin, ulong end, object userToken)
@@ -162,8 +161,7 @@ namespace Unicorn
                 callback(Emulator, (MemoryType)_type, addr, size, value, userToken);
             });
 
-            var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
-            return Add((UnicornHookType)type, ptr, begin, end);
+            return Add((UnicornHookType)type, wrapper, begin, end);
         }
     }
 

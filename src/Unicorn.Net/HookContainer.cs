@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Unicorn
 {
@@ -43,14 +44,15 @@ namespace Unicorn
         /// <param name="begin">Start address of where the hook is effective (inclusive).</param>
         /// <param name="end">End address of where the hook is effective (inclusive).</param>
         /// <returns>A <see cref="HookHandle"/> which represents hook.</returns>
-        protected HookHandle Add(UnicornHookType type, IntPtr callback, ulong begin, ulong end)
+        protected HookHandle Add(UnicornHookType type, Delegate callback, ulong begin, ulong end)
         {
             //NOTE: Not calling Emulator.CheckDispose() here because the caller should take responsibility of doing so.
 
             var hh = IntPtr.Zero;
-            Emulator.Bindings.HookAdd(Emulator.Handle, ref hh, type, callback, IntPtr.Zero, begin, end);
+            var callbackPtr = Marshal.GetFunctionPointerForDelegate(callback);
+            Emulator.Bindings.HookAdd(Emulator.Handle, ref hh, type, callbackPtr, IntPtr.Zero, begin, end);
 
-            var handle = new HookHandle(hh);
+            var handle = new HookHandle(hh, callback);
             _handles.Add(handle);
 
             return handle;
@@ -67,7 +69,6 @@ namespace Unicorn
         public bool Remove(HookHandle handle)
         {
             Emulator.ThrowIfDisposed();
-
             Emulator.Bindings.HookDel(Emulator.Handle, handle._hh);
             return _handles.Remove(handle);
         }

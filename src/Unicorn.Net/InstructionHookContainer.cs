@@ -140,8 +140,7 @@ namespace Unicorn
                 return callback(Emulator, port, size, userToken);
             });
 
-            var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
-            return AddInternal(ptr, begin, end, instruction);
+            return AddInternal(wrapper, begin, end, instruction);
         }
 
         private HookHandle AddOutInternal(InstructionOutHookCallback callback, Instruction instruction, ulong begin, ulong end, object userToken)
@@ -152,16 +151,16 @@ namespace Unicorn
                 callback(Emulator, port, size, value, userToken);
             });
 
-            var ptr = Marshal.GetFunctionPointerForDelegate(wrapper);
-            return AddInternal(ptr, begin, end, instruction);
+            return AddInternal(wrapper, begin, end, instruction);
         }
 
-        private HookHandle AddInternal(IntPtr callback, ulong begin, ulong end, Instruction inst)
+        private HookHandle AddInternal(Delegate callback, ulong begin, ulong end, Instruction inst)
         {
             var ptr = IntPtr.Zero;
-            Emulator.Bindings.HookAdd(Emulator.Handle, ref ptr, UnicornHookType.Instructions, callback, IntPtr.Zero, begin, end, inst._id);
+            var callbackPtr = Marshal.GetFunctionPointerForDelegate(callback);
+            Emulator.Bindings.HookAdd(Emulator.Handle, ref ptr, UnicornHookType.Instructions, callbackPtr, IntPtr.Zero, begin, end, inst._id);
 
-            var handle = new HookHandle(ptr);
+            var handle = new HookHandle(ptr, callback);
             Handles.Add(handle);
 
             return handle;

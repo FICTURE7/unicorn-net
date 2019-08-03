@@ -27,8 +27,7 @@ namespace Unicorn
         {
             get
             {
-                var regions = (MemoryRegion[])null;
-
+                MemoryRegion[] regions = null;
                 _emulator.ThrowIfDisposed();
                 _emulator.Bindings.MemRegions(_emulator.Handle, ref regions);
                 return regions;
@@ -45,8 +44,7 @@ namespace Unicorn
         {
             get
             {
-                var size = 0;
-
+                int size = 0;
                 _emulator.ThrowIfDisposed();
                 _emulator.Bindings.Query(_emulator.Handle, UnicornQueryType.PageSize, ref size);
                 return size;

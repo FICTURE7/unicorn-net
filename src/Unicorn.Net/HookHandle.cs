@@ -8,10 +8,12 @@ namespace Unicorn
     public struct HookHandle
     {
         internal readonly IntPtr _hh;
+        private readonly Delegate _hCallback;
 
-        internal HookHandle(IntPtr hh)
+        internal HookHandle(IntPtr hh, Delegate d)
         {
             _hh = hh;
+            _hCallback = d;
         }
     }
 }
