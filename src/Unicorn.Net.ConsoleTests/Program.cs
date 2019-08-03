@@ -1,7 +1,6 @@
 ﻿using System;
 using Unicorn.Arm;
 using Unicorn.Mips;
-using Unicorn.X86;
 
 namespace Unicorn.ConsoleTests
 {
@@ -114,8 +113,8 @@ namespace Unicorn.ConsoleTests
 
         private static void CodeHook(Emulator emulator, ulong address, int size, object userData)
         {
-            var casted = (X86Emulator)emulator;
-            var eflags = casted.Registers.EFLAGS;
+            var casted = (MipsEmulator)emulator;
+            var eflags = casted.Registers._1;
 
             Console.WriteLine($"-> Tracing instruction at 0x{address.ToString("x2")} of size 0x{size.ToString("x2")}.");
             Console.WriteLine($"-> EFLAGS = {eflags.ToString("x2")}");
