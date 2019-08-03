@@ -60,23 +60,26 @@ namespace Unicorn
 
         public void MemRegions(IntPtr uc, ref MemoryRegion[] regions)
         {
-            var count = 0;
-            var regionsPtr = IntPtr.Zero;
+            uint count = 0;
+            IntPtr regionsPtr = IntPtr.Zero;
 
             ThrowIfError(uc_mem_regions(uc, ref regionsPtr, ref count));
 
             regions = new MemoryRegion[count];
 
-            var ptr = regionsPtr;
-            var size = Marshal.SizeOf(typeof(uc_mem_region));
-            for (int i = 0; i < count; i++)
+            if (count > 0 && regionsPtr != IntPtr.Zero)
             {
-                var nativeRegion = (uc_mem_region)Marshal.PtrToStructure(ptr, typeof(uc_mem_region));
-                regions[i] = new MemoryRegion(nativeRegion.begin, nativeRegion.end, (MemoryPermissions)nativeRegion.perms);
-                ptr += size;
-            }
+                var ptr = regionsPtr;
+                var size = Marshal.SizeOf(typeof(uc_mem_region));
+                for (int i = 0; i < count; i++)
+                {
+                    var nativeRegion = (uc_mem_region)Marshal.PtrToStructure(ptr, typeof(uc_mem_region));
+                    regions[i] = new MemoryRegion(nativeRegion.begin, nativeRegion.end, (MemoryPermissions)nativeRegion.perms);
+                    ptr += size;
+                }
 
-            Free(regionsPtr);
+                Free(regionsPtr);
+            }
         }
 
         public void MemUnmap(IntPtr uc, ulong address, int size)

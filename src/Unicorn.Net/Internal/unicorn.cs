@@ -61,7 +61,7 @@ namespace Unicorn.Internal
         public static extern uc_err uc_mem_protect(IntPtr uc, ulong address, int size, int perms);
 
         [DllImport(UNICORN_LIB, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uc_err uc_mem_regions(IntPtr uc, ref IntPtr regions, ref int count);
+        public static extern uc_err uc_mem_regions(IntPtr uc, ref IntPtr regions, ref uint count);
 
         [DllImport(UNICORN_LIB, CallingConvention = CallingConvention.Cdecl)]
         public static extern uc_err uc_context_alloc(IntPtr uc, ref IntPtr ctx);
